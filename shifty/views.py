@@ -2,4 +2,4 @@
 from django.shortcuts import render_to_response
 
 def index(request):
-    return render_to_response('index.html', {'name':'lol'})    
+    return render_to_response('shifty/index.html', {'name':'lol'})    
