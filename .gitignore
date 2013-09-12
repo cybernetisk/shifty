@@ -1,0 +1,5 @@
+# Ignore the database
+/django/*.sqlite
+
+# Ignore compiled stuff
+*.pyc
