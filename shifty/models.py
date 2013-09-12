@@ -6,6 +6,9 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     start = models.DateTimeField()
 
+    def __unicode__(self):
+        return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y").lstrip("0").lower())
+
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False)
     shift_type = models.ForeignKey("ShiftType", null=False)
