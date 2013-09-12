@@ -1,0 +1,48 @@
+<section>
+    <h2>Ny barkveld</h2>
+    Opprett nye skift for en barkveld.
+</section>
+<section id="sidebar-bar-date" style="height:270px; overflow:hidden;">
+    <header class="row">
+        <span class="large-3">Dato</span>
+        <span class="large-9 selected-date"></span>
+    </header>
+    <table class="datepicker">
+    </table>
+</section>
+<section class="shifts">
+    <header class="row">
+        <span class="large-3">Skift</span>
+        <span class="large-9 text-right">
+            <a class="default-shifts" href="#">+standard</a>
+            <a class="add-shift" href="#">+nytt</a>
+        </span>
+    </header>
+    <div class="shift row">
+        <span class="large-8">1x Skjenkemester</span>
+        <span class="large-4 text-right time">17:00 - 03:00</span>
+    </div>
+    <div class="add-shift-box row">
+        <div class="large-4">
+            <input type="text" placeholder="type" />
+        </div>
+        <div class="large-3">
+            <input type="text" class="text-center" placeholder="fra" pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])" />
+        </div>
+        <div class="large-3">
+            <input type="text" class="text-center" placeholder="til" pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])" />
+        </div>
+        <div class="large-2">
+            <button class="expand">add</button>
+        </div>
+    </div>
+</section>
+<section>
+    <header>
+        Kommentar
+    </header>
+    <textarea></textarea>
+</section>
+<section>
+    <button id="save-night">Lagre</button>
+</section>
