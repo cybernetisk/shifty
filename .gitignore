@@ -3,3 +3,6 @@
 
 # Ignore compiled stuff
 *.pyc
+
+*.egg-info
+/build/
