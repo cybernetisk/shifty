@@ -2,4 +2,8 @@
 from django.shortcuts import render_to_response
 
 def index(request):
-    return render_to_response('shifty/index.html', {'name':'lol'})    
+    return render_to_response('shifty/index.html', {'name':'lol'})   
+
+# added by marill 
+def shifts(request):
+    return render_to_response('shifty/shifts.html')    
