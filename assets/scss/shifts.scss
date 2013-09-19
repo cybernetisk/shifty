@@ -4,33 +4,65 @@
 // Neat for grid
 @import "neat/neat";
 
-column {
-	@include span-columns(2);
-	.shift {
-		color: #fff;
-		padding: 10px;
-		border: 1px solid none;
+
+$blue: rgba(91,192,222,1);
+$green: rgba(92,184,92,1);
+$yellow: rgba(240,173,78,1);
+$red: rgba(217,83,79,1);
+
+
+.event {
+	@include span-columns(12);
+	h2 {
+		margin-bottom: 5px;
+		text-decoration: underline;
+	}
+	column {
+		@include span-columns(2);
+		.shift {
+			color: #fff;
+			padding: 15px;
+			.title{
+				font-weight: bold;
+				font-size: 16px;
+				padding-bottom: 10px;
+			}
+			.time{
+				font-size: 14px;
+			}
+		}
+		.comments {
+			padding: 0px 10px 10px 10px;
+
+			.title{
+				font-weight: bold;
+				font-size: 22px;
+				padding-bottom: 5px;
+			}
+		}
 	}
 }
 
+
+
 .sm {
-    background: #5bc0de;
-    border-color: #31b0d5;
+   	background: $blue;
+   	border: 1px solid darken($blue, 10%);
 }
 
 .barfunk {
-    background: #5cb85c;
-    border-color: #449d44;
+    background: $green;
+    border: 1px solid darken($green, 10%);
 }
 
 .vakt {
-    background: #f0ad4e;
-    border-color: #ec971f;
+    background: $yellow;
+    border: 1px solid darken($yellow, 10%);
 }
 
 .dj {
-    background: #F0737F;
-    border-color: #BF5B64;
+    background: $red;
+    border: 1px solid darken($red, 10%);
 }
 
 .short {
@@ -41,3 +73,4 @@ column {
 .long {
 	height: 250px;
 }
+

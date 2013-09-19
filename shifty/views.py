@@ -7,4 +7,4 @@ def index(request):
 
 # added by marill 
 def shifts(request):
-    return render_to_response('shifty/shifts.html', {'shifts':Shift.objects.all()})    
+    return render_to_response('shifty/shifts.html', {'events':Event.objects.all()})    
