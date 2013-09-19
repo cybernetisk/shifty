@@ -1,0 +1,43 @@
+// Bourbon for general helpers
+@import 'bourbon/bourbon';
+
+// Neat for grid
+@import "neat/neat";
+
+column {
+	@include span-columns(2);
+	.shift {
+		color: #fff;
+		padding: 10px;
+		border: 1px solid none;
+	}
+}
+
+.sm {
+    background: #5bc0de;
+    border-color: #31b0d5;
+}
+
+.barfunk {
+    background: #5cb85c;
+    border-color: #449d44;
+}
+
+.vakt {
+    background: #f0ad4e;
+    border-color: #ec971f;
+}
+
+.dj {
+    background: #F0737F;
+    border-color: #BF5B64;
+}
+
+.short {
+	height: 115px;
+	margin-bottom: 20px;
+}
+
+.long {
+	height: 250px;
+}
