@@ -1,0 +1,16 @@
+- model: shifty.event
+  pk: 1
+  fields:
+    title: Fredagspub
+    start: 2013-12-13 18:00
+- model: shifty.shiftType
+  pk: 1
+  fields:
+    title: Skjenkemester
+- model: shifty.shift
+  pk: 1
+  fields:
+    event: 1
+    start: 2013-12-13 18:00
+    stop:  2013-12-13 22:00
+    shift_type: 1
