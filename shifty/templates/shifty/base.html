@@ -28,8 +28,23 @@
         </script>
     </head>
     <body>
-    {% block content %}
-    {% endblock %}
+    {% block header %}
+        <div class='header'>
+            <a class='logo' href='/'>
+                <span class='blue'>S</span>
+                <span class='yellow'>H</span>
+                <span class='green'>I</span>
+                <span class='red'>F</span>
+                <span class='blue'>T</span>
+                <span class='yellow'>Y</span>
+            </a>
+        </div>
+        {% endblock %}    
+    
+    <div class='container'>
+        {% block content %}
+        {% endblock %}
+    </div>
     <div id="admin-menu">
     </div>
     </body>

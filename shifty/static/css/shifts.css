@@ -1,0 +1,65 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+body {
+  margin: 0px; }
+
+.event {
+  display: block;
+  float: left;
+  margin-right: 2.35765%;
+  width: 100%; }
+  .event:last-child {
+    margin-right: 0; }
+  .event h2 {
+    margin-bottom: 5px; }
+  .event column {
+    display: block;
+    float: left;
+    margin-right: 2.35765%;
+    width: 14.70196%; }
+    .event column:last-child {
+      margin-right: 0; }
+    .event column .shift {
+      color: #fff;
+      padding: 15px; }
+      .event column .shift .title {
+        font-weight: bold;
+        font-size: 16px;
+        padding-bottom: 10px; }
+      .event column .shift .time {
+        font-size: 14px; }
+    .event column .comments {
+      padding: 0px 10px 10px 10px;
+      font-size: 14px; }
+      .event column .comments .title {
+        font-weight: bold;
+        font-size: 22px;
+        padding-bottom: 5px; }
+
+.sm {
+  background: #5bc0de;
+  border: 1px solid #31b0d5; }
+
+.barfunk {
+  background: #5cb85c;
+  border: 1px solid #449d44; }
+
+.vakt {
+  background: #f0ad4e;
+  border: 1px solid #ec971f; }
+
+.dj {
+  background: #d9534f;
+  border: 1px solid #c9302c; }
+
+.short {
+  height: 115px;
+  margin-bottom: 20px; }
+
+.long {
+  height: 250px; }
+
+/*# sourceMappingURL=shifts.css.map */

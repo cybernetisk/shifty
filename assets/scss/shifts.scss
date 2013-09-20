@@ -10,12 +10,13 @@ $green: rgba(92,184,92,1);
 $yellow: rgba(240,173,78,1);
 $red: rgba(217,83,79,1);
 
-
+body{
+	margin: 0px;
+}
 .event {
 	@include span-columns(12);
 	h2 {
 		margin-bottom: 5px;
-		text-decoration: underline;
 	}
 	column {
 		@include span-columns(2);
@@ -33,6 +34,7 @@ $red: rgba(217,83,79,1);
 		}
 		.comments {
 			padding: 0px 10px 10px 10px;
+			font-size: 14px;
 
 			.title{
 				font-weight: bold;

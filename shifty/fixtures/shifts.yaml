@@ -1,8 +1,9 @@
 - model: shifty.event
   pk: 1
   fields:
-    title: Fredagspub
+    title: Drinkaften
     start: 2013-12-13 18:00
+    description: "Cybernetisk Selskab inviterer til drinkaften i Escape!\n\n20 års aldersgrense."
 - model: shifty.shiftType
   pk: 1
   fields:

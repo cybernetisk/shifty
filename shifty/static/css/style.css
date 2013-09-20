@@ -6,6 +6,9 @@
 * {
   font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; }
 
+body {
+  margin: 0px; }
+
 h2 {
   font-weight: 100; }
 
@@ -122,6 +125,35 @@ table {
     width: 100%; }
     .row .large-12:last-child {
       margin-right: 0; }
+
+.container {
+  *zoom: 1;
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto; }
+  .container:before, .container:after {
+    content: " ";
+    display: table; }
+  .container:after {
+    clear: both; }
+
+.header {
+  height: 65px;
+  background-color: black;
+  padding: 0px 20px; }
+  .header .logo {
+    font-size: 50px;
+    font-weight: bold;
+    letter-spacing: -6px;
+    text-decoration: none; }
+    .header .logo .blue {
+      color: #5bc0de; }
+    .header .logo .yellow {
+      color: #f0ad4e; }
+    .header .logo .green {
+      color: #5cb85c; }
+    .header .logo .red {
+      color: #d9534f; }
 
 table.datepicker {
   -webkit-transition: all 0.3s ease-in-out;
