@@ -236,6 +236,8 @@ table.datepicker {
   color: #999999;
   overflow-y: auto;
   overflow-x: hidden; }
+  .popout.open {
+    right: 0; }
   .popout .close-button {
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);

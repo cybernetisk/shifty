@@ -23,11 +23,11 @@ shifty.views.Popout = Backbone.View.extend({
     },
 
     show: function() {
-        this.$el.css({right:0});
+        this.$el.addClass("open");
     },
 
     hide: function() {
-        this.$el.css({right:-300});
+        this.$el.removeClass("open");
     }
 });
 

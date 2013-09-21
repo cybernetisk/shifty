@@ -191,6 +191,10 @@ table.datepicker {
     overflow-y:auto;
     overflow-x:hidden;
 
+    &.open {
+        right:0;
+    }
+
     .close-button {
         @include transform(rotate(45deg));
 
