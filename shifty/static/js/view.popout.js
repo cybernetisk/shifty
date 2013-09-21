@@ -92,6 +92,52 @@ shifty.views.BarShifts = Backbone.View.extend({
     },
 
     insertDefaults: function() {
+        this.model.shifts.push({
+            id: 0,
+            count: 1,
+            shifttype: "Skjenkemester",
+            start: "17:00",
+            stop: "03:00"
+        }, {
+            id: 1,
+            count: 2,
+            shifttype: "Barfunk",
+            start: "17:30",
+            stop: "22:00"
+        }, {
+            id: 2,
+            count: 2,
+            shifttype: "Barfunk",
+            start: "21:30",
+            stop: "03:00"
+        }, {
+            id: 3,
+            count: 1,
+            shifttype: "Vakt",
+            start: "17:30",
+            stop: "00:00"
+        }, {
+            id: 4,
+            count: 1,
+            shifttype: "Vakt",
+            start: "20:00",
+            stop: "03:00"
+        }, {
+            id: 5,
+            count: 1,
+            shifttype: "DJ",
+            start: "17:30",
+            stop: "22:00"
+        }, {
+            id: 6,
+            count: 1,
+            shifttype: "DJ",
+            start: "21:30",
+            stop: "03:00"
+        });
+
+        this.render();
+
         return false;
     },
 
