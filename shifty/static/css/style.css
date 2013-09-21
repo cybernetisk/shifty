@@ -223,9 +223,9 @@ table.datepicker {
       right: 20px; }
 
 .popout {
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  -webkit-transition: right 0.3s ease-in-out;
+  -moz-transition: right 0.3s ease-in-out;
+  transition: right 0.3s ease-in-out;
   position: fixed;
   top: 0;
   right: -300px;
@@ -236,8 +236,17 @@ table.datepicker {
   color: #999999;
   overflow-y: auto;
   overflow-x: hidden; }
+  @media screen and (max-width: 600px) {
+    .popout {
+      -webkit-transition: none;
+      -moz-transition: none;
+      transition: none; } }
   .popout.open {
     right: 0; }
+    @media screen and (max-width: 600px) {
+      .popout.open {
+        right: 0;
+        width: 100%; } }
   .popout .close-button {
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
@@ -257,7 +266,9 @@ table.datepicker {
     transition: all 0.3s ease-in-out;
     border-bottom: 1px solid #444444;
     color: #999999;
-    padding: 20px 0; }
+    padding: 20px 0;
+    max-width: 300px;
+    margin: 0 auto; }
     .popout section header {
       color: white;
       margin-bottom: 10px; }

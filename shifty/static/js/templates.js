@@ -25,27 +25,25 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 function program1(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n    <div class=\"shift row\" data-index=\"";
-  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  var buffer = "", stack1, stack2;
+  buffer += "\n    <div class=\"shift row\" data-index=\""
+    + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">\n        <span class=\"no-click large-8\">";
-  if (stack1 = helpers.count) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.count; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  if (stack2 = helpers.count) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.count; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
     + "x ";
-  if (stack1 = helpers.shifttype) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.shifttype; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  if (stack2 = helpers.shifttype) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.shifttype; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
     + "</span>\n        <span class=\"no-click large-4 text-right time\">";
-  if (stack1 = helpers.start) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.start; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  if (stack2 = helpers.start) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.start; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
     + " - ";
-  if (stack1 = helpers.stop) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.stop; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  if (stack2 = helpers.stop) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.stop; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
     + "</span>\n    </div>\n    ";
   return buffer;
   }
@@ -53,7 +51,7 @@ function program1(depth0,data) {
   buffer += "<section>\n    <h2>Ny barkveld</h2>\n    Opprett nye skift for en barkveld.\n</section>\n<section id=\"sidebar-bar-date\" style=\"height:270px; overflow:hidden;\">\n    <header class=\"row\">\n        <span class=\"large-3\">Dato</span>\n        <span class=\"large-9 selected-date\"></span>\n    </header>\n    <table class=\"datepicker\">\n    </table>\n</section>\n<section class=\"shifts\">\n    <header class=\"row\">\n        <span class=\"large-3\">Skift</span>\n        <span class=\"large-9 text-right\">\n            <a class=\"default-shifts\" href=\"#\">+standard</a>\n        </span>\n    </header>\n    ";
   stack1 = helpers.each.call(depth0, depth0.shifts, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    <form class=\"shift-form add-shift-box row\" action=\"/\">\n        <input type=\"submit\" style=\"position:absolute;top:0;left:0;width:0;height:0;margin:0;padding:0;visibility:hidden;\" />\n        <input class=\"count text-center\" name=\"count\" value=\"\" required type=\"text\" placeholder=\"ant.\" />\n        <input class=\"shifttype\" name=\"shifttype\" value=\"\" required type=\"text\" placeholder=\"type\" />\n        <input name=\"start\" value=\"\" required type=\"text\" class=\"start text-center\" placeholder=\"fra\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n        <input name=\"stop\" value=\"\" required type=\"text\" class=\"start text-center\" placeholder=\"til\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n    </form>\n</section>\n<section>\n    <header>\n        Kommentar\n    </header>\n    <textarea></textarea>\n</section>\n<section>\n    <button id=\"save-night\">Lagre</button>\n</section>\n";
+  buffer += "\n    <form class=\"shift-form add-shift-box row\" action=\"/\">\n        <input type=\"submit\" style=\"position:absolute;top:0;left:0;width:0;height:0;margin:0;padding:0;visibility:hidden;\" />\n        <input class=\"count text-center\" name=\"count\" value=\"\" type=\"text\" placeholder=\"ant.\" />\n        <input class=\"shifttype\" name=\"shifttype\" value=\"\" type=\"text\" placeholder=\"type\" />\n        <input name=\"start\" value=\"\" type=\"text\" class=\"start text-center\" placeholder=\"fra\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n        <input name=\"stop\" value=\"\" type=\"text\" class=\"start text-center\" placeholder=\"til\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n    </form>\n</section>\n<section>\n    <header>\n        Kommentar\n    </header>\n    <textarea></textarea>\n</section>\n<section>\n    <button id=\"save-night\">Lagre</button>\n</section>\n";
   return buffer;
   });
 })();

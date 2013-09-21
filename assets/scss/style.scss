@@ -178,7 +178,7 @@ table.datepicker {
 }
 
 .popout {
-    @include transition (all 0.3s ease-in-out);
+    @include transition (right 0.3s ease-in-out);
 
     position:fixed;
     top:0;
@@ -191,8 +191,17 @@ table.datepicker {
     overflow-y:auto;
     overflow-x:hidden;
 
+    @media screen and (max-width: 600px) {
+        @include transition (none);
+    }
+
     &.open {
         right:0;
+
+        @media screen and (max-width: 600px) {
+            right:0;
+            width:100%;
+        }
     }
 
     .close-button {
@@ -215,6 +224,9 @@ table.datepicker {
         border-bottom:1px solid rgba(68,68,68,1);
         color:darken(white, 40%);
         padding:20px 0;
+
+        max-width:300px;
+        margin:0 auto;
 
         header {
             color:rgba(255,255,255,1);

@@ -18,17 +18,17 @@
         </span>
     </header>
     {{#each shifts}}
-    <div class="shift row" data-index="{{id}}">
+    <div class="shift row" data-index="{{@index}}">
         <span class="no-click large-8">{{count}}x {{shifttype}}</span>
         <span class="no-click large-4 text-right time">{{start}} - {{stop}}</span>
     </div>
     {{/each}}
     <form class="shift-form add-shift-box row" action="/">
         <input type="submit" style="position:absolute;top:0;left:0;width:0;height:0;margin:0;padding:0;visibility:hidden;" />
-        <input class="count text-center" name="count" value="" required type="text" placeholder="ant." />
-        <input class="shifttype" name="shifttype" value="" required type="text" placeholder="type" />
-        <input name="start" value="" required type="text" class="start text-center" placeholder="fra" pattern="(0[0-9]|1[0-9]|2[0-3])([:\.][0-5][0-9])" />
-        <input name="stop" value="" required type="text" class="start text-center" placeholder="til" pattern="(0[0-9]|1[0-9]|2[0-3])([:\.][0-5][0-9])" />
+        <input class="count text-center" name="count" value="" type="text" placeholder="ant." />
+        <input class="shifttype" name="shifttype" value="" type="text" placeholder="type" />
+        <input name="start" value="" type="text" class="start text-center" placeholder="fra" pattern="(0[0-9]|1[0-9]|2[0-3])([:\.][0-5][0-9])" />
+        <input name="stop" value="" type="text" class="start text-center" placeholder="til" pattern="(0[0-9]|1[0-9]|2[0-3])([:\.][0-5][0-9])" />
     </form>
 </section>
 <section>

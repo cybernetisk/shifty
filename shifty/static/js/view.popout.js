@@ -16,7 +16,8 @@ shifty.views.Popout = Backbone.View.extend({
         this.$el.html(html);
 
         var bar = new shifty.views.BarShifts({
-            el: this.$el.find(".popout-content")
+            el: this.$el.find(".popout-content"),
+            model: new shifty.models.Event({date: new Date()})
         });
         bar.render();
         this.views.push(bar);
@@ -47,34 +48,37 @@ shifty.views.BarShifts = Backbone.View.extend({
         "submit .shift-form": "addShift"
     },
 
-    model: {
-        date: new Date(),
-        shifts: []
-    },
-
     initialize: function(){
+        this.shifts = new shifty.collections.Shift();
     },
 
     render: function(){
+        var context = this.model.toJSON();
+        context.shifts = this.shifts.toJSON();
+
+        console.log(context);
+
         // Get and render the template
-        var html = Handlebars.templates['sidebar.bar'](this.model);
+        var html = Handlebars.templates['sidebar.bar'](context);
         this.$el.html(html);
+
+        var d = this.model.get("date");
 
         // Initialize the datepicker
         this.$el.find(".datepicker").datepicker();
 
         // Set the selected date
-        this.$el.find(".selected-date").html(this.model.date.getDate() + ". "+months[this.model.date.getMonth()]+" "+this.model.date.getFullYear());
+        this.$el.find(".selected-date").html(d.getDate() + ". "+months[d.getMonth()]+" "+d.getFullYear());
     },
 
     resizeDate: function(e) {
         this.$el.find("#sidebar-bar-date").css({height: 73+$(e.target).height()});
     },
 
-    selectedDate: function(e, date) {
-        this.model.date = date;
+    selectedDate: function(e, d) {
+        this.model.set({date: d});
 
-        this.$el.find(".selected-date").html(date.getDate() + ". "+months[date.getMonth()]+" "+date.getFullYear());
+        this.$el.find(".selected-date").html(d.getDate() + ". "+months[d.getMonth()]+" "+d.getFullYear());
 
         this.toggleDatepicker();
     },
@@ -92,49 +96,46 @@ shifty.views.BarShifts = Backbone.View.extend({
     },
 
     insertDefaults: function() {
-        this.model.shifts.push({
-            id: 0,
+        var shifts = [{
             count: 1,
             shifttype: "Skjenkemester",
             start: "17:00",
             stop: "03:00"
         }, {
-            id: 1,
             count: 2,
             shifttype: "Barfunk",
             start: "17:30",
             stop: "22:00"
         }, {
-            id: 2,
             count: 2,
             shifttype: "Barfunk",
             start: "21:30",
             stop: "03:00"
         }, {
-            id: 3,
             count: 1,
             shifttype: "Vakt",
             start: "17:30",
             stop: "00:00"
         }, {
-            id: 4,
             count: 1,
             shifttype: "Vakt",
             start: "20:00",
             stop: "03:00"
         }, {
-            id: 5,
             count: 1,
             shifttype: "DJ",
             start: "17:30",
             stop: "22:00"
         }, {
-            id: 6,
             count: 1,
             shifttype: "DJ",
             start: "21:30",
             stop: "03:00"
-        });
+        }];
+
+        for (var i in shifts) {
+            this.shifts.add(new shifty.models.Shift(shifts[i]));
+        }
 
         this.render();
 
@@ -146,31 +147,32 @@ shifty.views.BarShifts = Backbone.View.extend({
         var fields = $form.serializeArray();
         var shift = {};
 
-        shift.id = this.model.shifts.length;
-
         for (var i = 0; i < fields.length; i++) {
             shift[fields[i].name] = fields[i].value;
         }
 
-        this.model.shifts[shift.id] = shift;
+        var m = new shifty.models.Shift(shift);
 
-        this.render();
+        if (m.isValid()) {
+            this.shifts.add(m);
+            this.render();
+        } else {
+            console.log(m.validationError);
+        }
 
         return false;
     },
 
     editShift: function(e) {
-        var $el = $(e.target), i = $el.data("index");
-
-        m = this.model.shifts[i];
+        var $el = $(e.target), i = $el.data("index"), m = this.shifts.at(i);
 
         var $form = this.$el.find("form.shift-form");
 
-        for (var key in m) {
-            $form.find("input[name="+key+"]").val(m[key]);
+        for (var key in m.attributes) {
+            $form.find("input[name="+key+"]").val(m.get(key));
         }
 
-        $form.prepend('<input name="id" type="hidden" value="'+m.id+'" />');
+        m.destroy();
 
         $el.remove();
     }
