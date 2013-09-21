@@ -43,11 +43,13 @@ shifty.views.BarShifts = Backbone.View.extend({
         "resize .datepicker": "resizeDate",
         "click .selected-date": "toggleDatepicker",
         "click .default-shifts": "insertDefaults",
-        "click .add-shift": "addShift"
+        "click .shift": "editShift",
+        "submit .shift-form": "addShift"
     },
 
     model: {
-        date: new Date()
+        date: new Date(),
+        shifts: []
     },
 
     initialize: function(){
@@ -55,7 +57,7 @@ shifty.views.BarShifts = Backbone.View.extend({
 
     render: function(){
         // Get and render the template
-        var html = Handlebars.templates['sidebar.bar']({});
+        var html = Handlebars.templates['sidebar.bar'](this.model);
         this.$el.html(html);
 
         // Initialize the datepicker
@@ -93,7 +95,37 @@ shifty.views.BarShifts = Backbone.View.extend({
         return false;
     },
 
-    addShift: function() {
+    addShift: function(e) {
+        var $form = $(e.target);
+        var fields = $form.serializeArray();
+        var shift = {};
+
+        shift.id = this.model.shifts.length;
+
+        for (var i = 0; i < fields.length; i++) {
+            shift[fields[i].name] = fields[i].value;
+        }
+
+        this.model.shifts[shift.id] = shift;
+
+        this.render();
+
         return false;
+    },
+
+    editShift: function(e) {
+        var $el = $(e.target), i = $el.data("index");
+
+        m = this.model.shifts[i];
+
+        var $form = this.$el.find("form.shift-form");
+
+        for (var key in m) {
+            $form.find("input[name="+key+"]").val(m[key]);
+        }
+
+        $form.prepend('<input name="id" type="hidden" value="'+m.id+'" />');
+
+        $el.remove();
     }
 });
