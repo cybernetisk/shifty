@@ -9,6 +9,9 @@ class Event(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y").lstrip("0").lower())
 
+    def getOrderedShifts(self):
+        return self.shift_set.all().order_by('shift_type')
+
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False)
     shift_type = models.ForeignKey("ShiftType", null=False)
@@ -18,6 +21,14 @@ class Shift(models.Model):
     
     def __unicode__(self):
         return self.shift_type.title
+
+
+    def getIsTwin(self, shift):
+        if self.start == shift.start:
+            return True
+        else:
+            return False
+
 
 class ShiftType(models.Model):
     title = models.CharField(max_length=30)

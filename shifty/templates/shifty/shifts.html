@@ -10,44 +10,17 @@
 	{% for event in events %}
 	<div class='event'>
 	<h2>{{ event.start|date:"l d F Y"|capfirst }} - {{ event.title }}</h2>
-		<column>
-			<div class='shift sm long'>
-				<div class='title'>Skjenkemester</div>
-				<div class='time'>17:30 - 03:00</div>
-			</div>
-		</column>
-		<column>
-			<div class='shift barfunk short'>
-				<div class='title'>Barfunk</div>
-				<div class='time'>17:30 - 03:00</div>
-			</div>
-			<div class='shift barfunk short'>
-				<div class='title'>Barfunk</div>
-				<div class='time'>17:30 - 03:00</div>
-			</div>
-		</column>
-		<column>
-			<div class='shift vakt short'>
-				<div class='title'>Vakt</div>
-				<div class='time'>17:30 - 03:00</div>
-			</div>
-			<div class='shift vakt short'>
-				<div class='title'>Vakt</div>
-				<div class='time'>17:30 - 03:00</div>
-			</div>
-		</column>
-		<column>
-			<div class='shift vakt long'>
-				<div class='title'>Vakt</div>
-				<div class='time'>17:30 - 03:00</div>
-			</div>
-		</column>
-		<column>
-			<div class='shift dj long'>
-				<div class='title'>DJ</div>
-				<div class='time'>17:30 - 03:00</div>
-			</div>
-		</column>
+		{% for shift in event.getOrderedShifts %}
+			<column>
+				<div class='{{ shift|lower }}'>
+					<div class='title'>{{shift}}</div>
+					<div class='time'>{{shift.start|date:"H:i"}}-{{shift.stop|date:"H:i"}}</div>
+				</div>
+			</column>	
+
+
+
+		{% endfor %}
 		<column>
 			<div class='comments'>
 				<div class='title'>Kommentarer</div>
