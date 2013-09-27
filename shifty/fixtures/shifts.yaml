@@ -8,10 +8,25 @@
   pk: 1
   fields:
     title: Skjenkemester
+  pk: 2
+  fields:
+    title: Barfunk
 - model: shifty.shift
   pk: 1
   fields:
     event: 1
-    start: 2013-12-13 18:00
-    stop:  2013-12-13 22:00
+    start: 2013-12-13 17:30
+    stop:  2013-12-14 03:00
     shift_type: 1
+  pk: 2
+  fields:
+    event: 1
+    start: 2013-12-13 17:30
+    stop:  2013-12-13 22:00
+    shift_type: 2
+  pk: 3
+  fields:
+    event: 1
+    start: 2013-12-13 22:00
+    stop:  2013-12-14 03:00
+    shift_type: 2
