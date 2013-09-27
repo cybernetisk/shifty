@@ -10,7 +10,7 @@ class Event(models.Model):
         return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y").lstrip("0").lower())
 
     def getOrderedShifts(self):
-        return self.shift_set.all().order_by('shift_type')
+        return self.shifts.all().order_by('shift_type')
 
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
