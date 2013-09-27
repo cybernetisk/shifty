@@ -42,10 +42,7 @@ shifty.views.BarShifts = Backbone.View.extend({
     events: {
         "select .datepicker": "selectedDate",
         "resize .datepicker": "resizeDate",
-        "click .selected-date": "toggleDatepicker",
-        "click .default-shifts": "insertDefaults",
-        "click .shift": "editShift",
-        "submit .shift-form": "addShift"
+        "click .date-header": "toggleDatepicker"
     },
 
     initialize: function(){
@@ -61,6 +58,13 @@ shifty.views.BarShifts = Backbone.View.extend({
         // Get and render the template
         var html = Handlebars.templates['sidebar.bar'](context);
         this.$el.html(html);
+
+        var shiftList = new shifty.views.ShiftList({
+            el: this.$el.find(".shifts"),
+            collection: this.shifts,
+            parent: this
+        });
+        shiftList.render();
 
         var d = this.model.get("date");
 
@@ -175,5 +179,91 @@ shifty.views.BarShifts = Backbone.View.extend({
         m.destroy();
 
         $el.remove();
+    }
+});
+
+shifty.views.ShiftList = Backbone.View.extend({
+    initialize: function(opts) {
+        this.p = opts.parent;
+    },
+
+    events: {
+        "click .default-shifts": "addDefault",
+        "submit .add-shift-box": "addShift"
+    },
+
+    render: function() {
+        var context = {};
+        context.shifts = this.collection.toJSON();
+
+        // Get and render the template
+        var html = Handlebars.templates['sidebar.shiftlist'](context);
+        this.$el.html(html);
+    },
+
+    addDefault: function(d) {
+        var shifts = [{
+            count: 1,
+            shifttype: "Skjenkemester",
+            start: "17:00",
+            stop: "03:00"
+        }, {
+            count: 2,
+            shifttype: "Barfunk",
+            start: "17:30",
+            stop: "22:00"
+        }, {
+            count: 2,
+            shifttype: "Barfunk",
+            start: "21:30",
+            stop: "03:00"
+        }, {
+            count: 1,
+            shifttype: "Vakt",
+            start: "17:30",
+            stop: "00:00"
+        }, {
+            count: 1,
+            shifttype: "Vakt",
+            start: "20:00",
+            stop: "03:00"
+        }, {
+            count: 1,
+            shifttype: "DJ",
+            start: "17:30",
+            stop: "22:00"
+        }, {
+            count: 1,
+            shifttype: "DJ",
+            start: "21:30",
+            stop: "03:00"
+        }];
+
+        for (var i in shifts) {
+            this.collection.add(new shifty.models.Shift(shifts[i]));
+        }
+
+        this.render();
+    },
+
+    addShift: function(e) {
+        var $form = $(e.target);
+        var fields = $form.serializeArray();
+        var shift = {};
+
+        for (var i = 0; i < fields.length; i++) {
+            shift[fields[i].name] = fields[i].value;
+        }
+
+        var m = new shifty.models.Shift(shift);
+
+        if (m.isValid()) {
+            this.collection.add(m);
+            this.render();
+        } else {
+            console.log(m.validationError);
+        }
+
+        return false;
     }
 });

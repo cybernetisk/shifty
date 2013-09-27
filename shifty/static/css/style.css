@@ -272,10 +272,11 @@ table.datepicker {
     .popout section header {
       color: white;
       margin-bottom: 10px; }
+      .popout section header.date-header {
+        cursor: pointer; }
       .popout section header .selected-date {
         text-align: right;
-        color: #999999;
-        cursor: pointer; }
+        color: #999999; }
       .popout section header span a {
         color: #999999;
         text-decoration: none; }

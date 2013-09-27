@@ -232,10 +232,13 @@ table.datepicker {
             color:rgba(255,255,255,1);
             margin-bottom:10px;
 
+            &.date-header {
+                cursor:pointer;
+            }
+
             .selected-date {
                 text-align:right;
                 color:darken(white, 40%);
-                cursor:pointer;
             }
 
             span {
