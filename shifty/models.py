@@ -13,8 +13,8 @@ class Event(models.Model):
         return self.shift_set.all().order_by('shift_type')
 
 class Shift(models.Model):
-    event = models.ForeignKey("Event", null=False)
-    shift_type = models.ForeignKey("ShiftType", null=False)
+    event = models.ForeignKey("Event", null=False, related_name='shifts')
+    shift_type = models.ForeignKey("ShiftType", null=False, related_name='+')
     volunteer = models.ForeignKey(User, null=True, blank=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
