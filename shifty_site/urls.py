@@ -8,9 +8,9 @@ admin.autodiscover()
 
 
 router = routers.DefaultRouter()
-router.register(r'Event', rest.EventViewSet)
-
-
+router.register(r'event', rest.EventViewSet)
+router.register(r'shift', rest.ShiftViewSet)
+router.register(r'shifttype', rest.ShiftTypeViewSet)
 
 urlpatterns = patterns('',
     # Examples:
