@@ -22,13 +22,22 @@ class Shift(models.Model):
     def __unicode__(self):
         return self.shift_type.title
 
-
-    def getIsTwin(self, shift):
-        if self.start == shift.start:
+    def isTwin(self, shift):
+        if (self.shift_type == shift.shift_type) and (self.start == shift.start) and (self.stop == shift.stop):
             return True
         else:
             return False
 
+    def getLengthType(self):
+        if self.duration() > 5:
+            return 'long'
+        else:
+            return 'short'
+
+    # Returns shift duration in hours
+    def duration(self):
+        dt = self.stop - self.start
+        return int(dt.seconds/60/60)
 
 class ShiftType(models.Model):
     title = models.CharField(max_length=30)
