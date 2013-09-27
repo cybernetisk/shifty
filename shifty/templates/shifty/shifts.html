@@ -11,16 +11,15 @@
 	<div class='event'>
 	<h2>{{ event.start|date:"l d F Y"|capfirst }} - {{ event.title }}</h2>
 		{% for shift in event.getOrderedShifts %}
+			{{ forloop.counter }}
 			<column>
-				<div class='{{ shift|lower }}'>
-					<div class='title'>{{shift}}</div>
-					<div class='time'>{{shift.start|date:"H:i"}}-{{shift.stop|date:"H:i"}}</div>
+				<div class='shift {{ shift|lower }} {{ shift.getLengthType }}'>
+					<div class='title'>{{ shift }}</div>
+					<div class='time'>{{ shift.start|date:"H:i" }}-{{ shift.stop|date:"H:i" }}</div>
 				</div>
-			</column>	
-
-
-
+			</column>
 		{% endfor %}
+		
 		<column>
 			<div class='comments'>
 				<div class='title'>Kommentarer</div>
