@@ -3,19 +3,19 @@ from models import Event, Shift, ShiftType
 from rest_framework import serializers
 
 
-class EventSerializer(serializers.HyperlinkedModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('title', 'description', 'start', 'shifts')
 
 
-class ShiftSerializer(serializers.HyperlinkedModelSerializer):
+class ShiftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shift
         fields = ('event', 'shift_type', 'start', 'stop')
 
 
-class ShiftTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ShiftTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShiftType
         fields = ('title', 'description')
