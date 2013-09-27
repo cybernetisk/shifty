@@ -10,8 +10,8 @@ class Event(models.Model):
         return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y").lstrip("0").lower())
 
 class Shift(models.Model):
-    event = models.ForeignKey("Event", null=False)
-    shift_type = models.ForeignKey("ShiftType", null=False)
+    event = models.ForeignKey("Event", null=False, related_name='shifts')
+    shift_type = models.ForeignKey("ShiftType", null=False, related_name='+')
     volunteer = models.ForeignKey(User, null=True, blank=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
