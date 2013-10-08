@@ -4,13 +4,24 @@
     title: Drinkaften
     start: 2013-12-13 18:00
     description: "Cybernetisk Selskab inviterer til drinkaften i Escape!\n\n20 års aldersgrense."
+
 - model: shifty.shiftType
   pk: 1
   fields:
     title: Skjenkemester
+- model: shifty.shiftType
   pk: 2
   fields:
     title: Barfunk
+- model: shifty.shiftType
+  pk: 3
+  fields:
+    title: Vakt
+- model: shifty.shiftType
+  pk: 4
+  fields:
+    title: DJ
+
 - model: shifty.shift
   pk: 1
   fields:
@@ -18,15 +29,59 @@
     start: 2013-12-13 17:30
     stop:  2013-12-14 03:00
     shift_type: 1
+- model: shifty.shift
   pk: 2
   fields:
     event: 1
     start: 2013-12-13 17:30
     stop:  2013-12-13 22:00
     shift_type: 2
+- model: shifty.shift
   pk: 3
   fields:
     event: 1
     start: 2013-12-13 22:00
     stop:  2013-12-14 03:00
     shift_type: 2
+- model: shifty.shift    
+  pk: 4
+  fields:
+    event: 1
+    start: 2013-12-13 17:30
+    stop:  2013-12-14 03:00
+    shift_type: 3
+- model: shifty.shift
+  pk: 5
+  fields:
+    event: 1
+    start: 2013-12-13 17:30
+    stop:  2013-12-13 22:00
+    shift_type: 3
+- model: shifty.shift 
+  pk: 6
+  fields:
+    event: 1
+    start: 2013-12-13 22:00
+    stop:  2013-12-14 03:00
+    shift_type: 3
+- model: shifty.shift 
+  pk: 7
+  fields:
+    event: 1
+    start: 2013-12-13 22:00
+    stop:  2013-12-14 03:00
+    shift_type: 3
+- model: shifty.shift
+  pk: 8
+  fields:
+    event: 1
+    start: 2013-12-13 17:30
+    stop:  2013-12-13 22:00
+    shift_type: 4
+- model: shifty.shift
+  pk: 9
+  fields:
+    event: 1
+    start: 2013-12-13 22:00
+    stop:  2013-12-14 03:00
+    shift_type: 4
