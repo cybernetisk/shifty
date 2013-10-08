@@ -28,7 +28,7 @@ class Shift(models.Model):
         else:
             return False
 
-    def getLengthType(self):
+    def durationType(self):
         if self.duration() > 5:
             return 'long'
         else:

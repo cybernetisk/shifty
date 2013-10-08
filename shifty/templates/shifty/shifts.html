@@ -7,16 +7,22 @@
 		<h1>Skift</h1>
 	</div>
 
-	{% for event in events %}
+
 	<div class='event'>
 	<h2>{{ event.start|date:"l d F Y"|capfirst }} - {{ event.title }}</h2>
-		{% for shift in event.getOrderedShifts %}
-			{{ forloop.counter }}
+		{% for column in columns  %}		
 			<column>
-				<div class='shift {{ shift|lower }} {{ shift.getLengthType }}'>
-					<div class='title'>{{ shift }}</div>
-					<div class='time'>{{ shift.start|date:"H:i" }}-{{ shift.stop|date:"H:i" }}</div>
+				{% for shift in column %}	
+				<div class='shift {{ shift.shift|lower }} {{ shift.durationType }}'>
+					<div class='title'>
+						{{ shift.shift }}
+						{% if shift.twins > 1 %}
+							({{ shift.twins }})
+						{% endif %}
+					</div>
+					<div class='time'>{{ shift.shift.start|date:"H:i" }}-{{ shift.shift.stop|date:"H:i" }}</div>
 				</div>
+				{% endfor %}
 			</column>
 		{% endfor %}
 		
@@ -27,7 +33,6 @@
 			</div>
 		</column>		
 	</div>
-	{% endfor %}
 
 
 
