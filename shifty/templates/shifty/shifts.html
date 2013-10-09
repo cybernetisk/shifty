@@ -1,6 +1,24 @@
 {% extends "shifty/base.html" %}
-
 {% block content %}
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $.ajax({url: "/event/info/1", dataType: 'json'})
+			.done(function(data) {
+    			var html = Handlebars.templates.event({'event':data.event, 'columns':data.columns});
+        		$('#events').html(html);
+			})
+			.fail(function() {
+				alert( "error" );
+			})
+	
+
+	});
+
+</script>
+
+
+
 <link rel="stylesheet" href="/static/css/shifts.css">
 
 	<div class='large-12'>
@@ -8,32 +26,10 @@
 	</div>
 
 
-	<div class='event'>
-	<h2>{{ event.start|date:"l d F Y"|capfirst }} - {{ event.title }}</h2>
-		{% for column in columns  %}		
-			<column>
-				{% for shift in column %}	
-				<div class='shift {{ shift.shift|lower }} {{ shift.durationType }}'>
-					<div class='title'>
-						{{ shift.shift }}
-						{% if shift.twins > 1 %}
-							({{ shift.twins }})
-						{% endif %}
-					</div>
-					<div class='time'>{{ shift.shift.start|date:"H:i" }}-{{ shift.shift.stop|date:"H:i" }}</div>
-				</div>
-				{% endfor %}
-			</column>
-		{% endfor %}
-		
-		<column>
-			<div class='comments'>
-				<div class='title'>Kommentarer</div>
-				{{ event.description|linebreaksbr }}
-			</div>
-		</column>		
+	<div id='events'>
 	</div>
 
 
 
 {% endblock %}
+
