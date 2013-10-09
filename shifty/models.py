@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.template.defaultfilters import date as _date
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -11,7 +12,7 @@ class Event(models.Model):
         return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y").lstrip("0").lower())
 
     def toDict(self):
-        return {'title':self.title, 'description':self.description, 'start':str(self.start)}
+        return {'title':self.title, 'description':self.description, 'start':_date(self.start, "l j. F Y").capitalize()}
 
     def getOrderedShifts(self):
         return self.shifts.all().order_by('shift_type')
@@ -78,7 +79,7 @@ class Shift(models.Model):
         return int(dt.seconds/60/60)
 
     def toDict(self):
-        return {'type':str(self).lower(), 'start':str(self.start), 'stop':str(self.stop)}
+        return {'type':str(self).lower(), 'start':_date(self.start, "H:i"), 'stop':_date(self.stop, "H:i")}
 
 class ShiftType(models.Model):
     title = models.CharField(max_length=30)
