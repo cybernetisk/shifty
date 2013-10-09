@@ -2,16 +2,16 @@
 {% block content %}
 <script type="text/javascript">
     $(document).ready(function() {
-
-        $.ajax({url: "/event/info/1", dataType: 'json'})
+    	{% for event in events %}
+        $.ajax({url: "/event/info/{{event.id}}", dataType: 'json'})
 			.done(function(data) {
     			var html = Handlebars.templates.event({'event':data.event, 'columns':data.columns});
-        		$('#events').html(html);
+        		$('#events').append(html);
 			})
 			.fail(function() {
 				alert( "error" );
 			})
-	
+    	{% endfor %}
 
 	});
 
