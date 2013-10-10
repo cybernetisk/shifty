@@ -3,7 +3,7 @@
   	{{#each columns}}
   		<column>
 			{{#each this}}
-			<div class="shift {{ shift.type }} {{ durationType }}">
+			<div class="shift {{ shift.cssClass }} {{ shift.durationType }}">
 					<div class='title'>
 						{{ shift.type }}
 						{{#if twins }}

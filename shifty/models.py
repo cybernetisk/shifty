@@ -32,10 +32,10 @@ class Event(models.Model):
 
             if(next == "Empty" or not shift.isTwin(next)):
                 if shift.durationType() == 'long':
-                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1), 'durationType':shift.durationType()})
+                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1)})
                     column = 0
                 elif shift.durationType()=='short':
-                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1), 'durationType':shift.durationType()})
+                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1)})
                     column += 1
 
                 if (next != 'Empty' and str(next) != str(shift)):
@@ -79,7 +79,11 @@ class Shift(models.Model):
         return int(dt.seconds/60/60)
 
     def toDict(self):
-        return {'type':str(self).lower(), 'start':_date(self.start, "H:i"), 'stop':_date(self.stop, "H:i")}
+        return {'type':str(self),
+                'durationType':self.durationType(), 
+                'start':_date(self.start, "H:i"), 
+                'stop':_date(self.stop, "H:i"),
+                'cssClass':str(self).lower()}
 
 class ShiftType(models.Model):
     title = models.CharField(max_length=30)
