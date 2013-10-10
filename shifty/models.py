@@ -32,10 +32,10 @@ class Event(models.Model):
 
             if(next == "Empty" or not shift.isTwin(next)):
                 if shift.durationType() == 'long':
-                    columns[index].append({'shift':shift.toDict(), 'twins':twinCount+1, 'durationType':shift.durationType()})
+                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1), 'durationType':shift.durationType()})
                     column = 0
                 elif shift.durationType()=='short':
-                    columns[index].append({'shift':shift.toDict(), 'twins':twinCount+1, 'durationType':shift.durationType()})
+                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1), 'durationType':shift.durationType()})
                     column += 1
 
                 if (next != 'Empty' and str(next) != str(shift)):

@@ -6,6 +6,9 @@
 			<div class="shift {{ shift.type }} {{ durationType }}">
 					<div class='title'>
 						{{ shift.type }}
+						{{#if twins }}
+							({{twins}})
+						{{/if}}
 					</div>
 					<div class='time'>{{ shift.start }}-{{ shift.stop }}</div>
 			</div>

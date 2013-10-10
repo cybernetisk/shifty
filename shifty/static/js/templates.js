@@ -18,51 +18,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   return "<svg class=\"close-button\" width=\"20\" height=\"20\">\n    <g class=\"cross\">\n    <rect x=\"9\" y=\"0\" width=\"2\" height=\"20\" fill=\"white\" />\n    <rect x=\"0\" y=\"9\" width=\"20\" height=\"2\" fill=\"white\" />\n    </g>\n</svg>\n<div class=\"popout-content\">\n</div>\n";
   });
-templates['event'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n  		<column>\n			";
-  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		</column>\n  	";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  var buffer = "", stack1, stack2;
-  buffer += "\n			<div class=\"shift "
-    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " ";
-  if (stack2 = helpers.durationType) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.durationType; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
-    + "\">\n					<div class='title'>\n						"
-    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n					</div>\n					<div class='time'>"
-    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.start)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "-"
-    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.stop)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n			";
-  return buffer;
-  }
-
-  buffer += "<div class='event'>\n	<h2>"
-    + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.start)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " - "
-    + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h2>\n  	";
-  stack2 = helpers.each.call(depth0, depth0.columns, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n  	<column>\n		<div class='comments'>\n			<div class='title'>Kommentarer</div>\n			"
-    + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n		</div>\n	</column>		\n</div>";
-  return buffer;
-  });
 templates['sidebar.shiftlist'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -97,6 +52,64 @@ function program1(depth0,data) {
   stack1 = helpers.each.call(depth0, depth0.shifts, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n<form class=\"shift-form add-shift-box row\" action=\"/\">\n    <input type=\"submit\" style=\"position:absolute;top:0;left:0;width:0;height:0;margin:0;padding:0;visibility:hidden;\" />\n    <input class=\"count text-center\" name=\"count\" value=\"\" type=\"text\" placeholder=\"ant.\" />\n    <input class=\"shifttype\" name=\"shifttype\" value=\"\" type=\"text\" placeholder=\"type\" />\n    <input name=\"start\" value=\"\" type=\"text\" class=\"start text-center\" placeholder=\"fra\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n    <input name=\"stop\" value=\"\" type=\"text\" class=\"start text-center\" placeholder=\"til\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n</form>\n";
+  return buffer;
+  });
+templates['event'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  		<column>\n			";
+  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		</column>\n  	";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n			<div class=\"shift "
+    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " ";
+  if (stack2 = helpers.durationType) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.durationType; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "\">\n					<div class='title'>\n						"
+    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n						";
+  stack2 = helpers['if'].call(depth0, depth0.twins, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n					</div>\n					<div class='time'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.start)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "-"
+    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.stop)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n			</div>\n			";
+  return buffer;
+  }
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n							(";
+  if (stack1 = helpers.twins) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.twins; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + ")\n						";
+  return buffer;
+  }
+
+  buffer += "<div class='event'>\n	<h2>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.start)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " - "
+    + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</h2>\n  	";
+  stack2 = helpers.each.call(depth0, depth0.columns, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n  	<column>\n		<div class='comments'>\n			<div class='title'>Kommentarer</div>\n			"
+    + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n		</div>\n	</column>		\n</div>";
   return buffer;
   });
 templates['sidebar.bar'] = template(function (Handlebars,depth0,helpers,partials,data) {
