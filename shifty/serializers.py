@@ -12,7 +12,7 @@ class EventSerializer(serializers.ModelSerializer):
 class ShiftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shift
-        fields = ('event', 'shift_type', 'start', 'stop')
+        fields = ('event', 'shift_type', 'start', 'stop', 'volunteer', 'comment')
 
 
 class ShiftTypeSerializer(serializers.ModelSerializer):

@@ -55,6 +55,7 @@ class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
     shift_type = models.ForeignKey("ShiftType", null=False, related_name='+')
     volunteer = models.ForeignKey(User, null=True, blank=True)
+    comment = models.TextField(blank=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
     
