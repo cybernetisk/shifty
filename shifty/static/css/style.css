@@ -327,6 +327,15 @@ table.datepicker {
           width: 18.49818%; }
           .popout section .add-shift-box input[type=text].start:last-child, .popout section .add-shift-box input[type=text].stop:last-child {
             margin-right: 0; }
+    .popout section input[type=text] {
+      width: 100%;
+      background: #333333;
+      color: #999999;
+      padding: 5px;
+      font-size: 12px;
+      border: none; }
+      .popout section input[type=text]:focus {
+        outline: none; }
     .popout section textarea {
       width: 100%;
       height: 50px;

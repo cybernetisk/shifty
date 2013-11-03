@@ -17,7 +17,7 @@ shifty.views.Popout = Backbone.View.extend({
 
         var bar = new shifty.views.BarShifts({
             el: this.$el.find(".popout-content"),
-            model: new shifty.models.Event({date: new Date()})
+            model: new shifty.models.Event({start: new Date()})
         });
         bar.render();
         this.views.push(bar);
@@ -44,7 +44,8 @@ shifty.views.BarShifts = Backbone.View.extend({
         "resize .datepicker": "resizeDate",
         "click .date-header": "toggleDatepicker",
         "click #save-shifts": "save",
-        "keyup #event-comment": "comment"
+        "keyup #event-comment": "comment",
+        "keyup #event-title": "title"
     },
 
     initialize: function(){
@@ -68,7 +69,7 @@ shifty.views.BarShifts = Backbone.View.extend({
         });
         shiftList.render();
 
-        var d = this.model.get("date");
+        var d = this.model.get("start");
 
         // Initialize the datepicker
         this.$el.find(".datepicker").datepicker();
@@ -82,7 +83,7 @@ shifty.views.BarShifts = Backbone.View.extend({
     },
 
     selectedDate: function(e, d) {
-        this.model.set({date: d});
+        this.model.set({start: d});
 
         this.$el.find(".selected-date").html(d.getDate() + ". "+months[d.getMonth()]+" "+d.getFullYear());
 
@@ -187,11 +188,14 @@ shifty.views.BarShifts = Backbone.View.extend({
         this.model.set("comment", e.target.value);
     },
 
+    title: function(e) {
+        this.model.set("title", e.target.value);
+    },
     save: function() {
         var shifts =  this.shifts.toJSON();
 
         // Get the year, month and date
-        var date = this.model.get("date");
+        var date = this.model.get("start");
         var y = date.getFullYear(), m = date.getMonth(), d = date.getDate();
 
         for (var i in shifts) {
@@ -212,9 +216,14 @@ shifty.views.BarShifts = Backbone.View.extend({
             }
         }
 
-        event.shifts = shifts;
-
-        console.log(event);
+        var _this = this;
+        var d = this.model.save();
+        d.done(function(a,b,c) {
+            console.log(_this.model.toJSON());
+        }).fail(function(a,b,c) {
+            console.log(_this.model.toJSON());
+            console.log(a.responseText,b,c);
+        });
     }
 });
 

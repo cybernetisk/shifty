@@ -1,6 +1,6 @@
 shifty.models.Shift = Backbone.Model.extend({
     validate: function(attrs, options) {
-        var required = ["count", "shifttype", "start", "stop"];
+        var required = ["count", "shifttype", "start", "stop", "title"];
         var errors = [];
 
         for (var i in attrs) {
@@ -14,7 +14,9 @@ shifty.models.Shift = Backbone.Model.extend({
             errors.stop = "Må være på formatet HH:MM";
 
         if (errors.length > 0) return errors;
-    }
+    },
+
+    urlRoot: "/rest/shift/"
 });
 
 shifty.collections.Shift = Backbone.Collection.extend({
@@ -22,7 +24,6 @@ shifty.collections.Shift = Backbone.Collection.extend({
 });
 
 shifty.models.Event = Backbone.Model.extend({
-    
     initialize: function(attributes) {
         this.shifts = new shifty.collections.Shift(attributes.shifts);
         console.log("se", this);
@@ -52,7 +53,6 @@ shifty.models.Event = Backbone.Model.extend({
         var twins = [];
 
         for (var i = this.shifts.size() - 1; i >= 0; i--) {
-        
             if (rowIndex == 0)
             {
                 columns.push([]);
@@ -86,8 +86,6 @@ shifty.models.Event = Backbone.Model.extend({
                 }
             }
         };
-        
-     
 
         return columns;
     }
