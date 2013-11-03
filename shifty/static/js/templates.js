@@ -80,15 +80,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  return "<section>\n    <h2>Ny barkveld</h2>\n    Opprett nye skift for en barkveld.\n</section>\n<section id=\"sidebar-bar-date\" style=\"height:270px; overflow:hidden;\">\n    <header class=\"row date-header\">\n        <span class=\"large-3\">Dato</span>\n        <span class=\"large-9 selected-date\"></span>\n    </header>\n    <table class=\"datepicker\">\n    </table>\n</section>\n<section class=\"shifts\">\n</section>\n<section>\n    <header>\n        Kommentar\n    </header>\n    <textarea></textarea>\n</section>\n<section>\n    <button id=\"save-night\">Lagre</button>\n</section>\n";
-=======
   return "<section>\n    <h2>Ny barkveld</h2>\n    Opprett nye skift for en barkveld.\n</section>\n<section id=\"sidebar-bar-date\" style=\"height:270px; overflow:hidden;\">\n    <header class=\"row date-header\">\n        <span class=\"large-3\">Dato</span>\n        <span class=\"large-9 selected-date\"></span>\n    </header>\n    <table class=\"datepicker\">\n    </table>\n</section>\n<section class=\"shifts\">\n</section>\n<section>\n    <header>\n        Kommentar\n    </header>\n    <textarea id=\"event-comment\"></textarea>\n</section>\n<section>\n    <button id=\"save-shifts\">Lagre</button>\n</section>\n";
->>>>>>> Stashed changes
-=======
-  return "<section>\n    <h2>Ny barkveld</h2>\n    Opprett nye skift for en barkveld.\n</section>\n<section id=\"sidebar-bar-date\" style=\"height:270px; overflow:hidden;\">\n    <header class=\"row date-header\">\n        <span class=\"large-3\">Dato</span>\n        <span class=\"large-9 selected-date\"></span>\n    </header>\n    <table class=\"datepicker\">\n    </table>\n</section>\n<section class=\"shifts\">\n</section>\n<section>\n    <header>\n        Kommentar\n    </header>\n    <textarea id=\"event-comment\"></textarea>\n</section>\n<section>\n    <button id=\"save-shifts\">Lagre</button>\n</section>\n";
->>>>>>> Stashed changes
   });
 templates['sidebar.shiftlist'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
