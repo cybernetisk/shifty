@@ -1,5 +1,5 @@
-    $(document).ready(function() {    
-        $(".shift").click(function() {
+    $(document).ready(function() {   
+        $(document).on("click", ".shift", function() {
             $("> .take_shift" ,this).foundation('reveal', 'open', {
                 animation: 'fade',
                 animationSpeed: 100,
