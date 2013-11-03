@@ -42,7 +42,9 @@ shifty.views.BarShifts = Backbone.View.extend({
     events: {
         "select .datepicker": "selectedDate",
         "resize .datepicker": "resizeDate",
-        "click .date-header": "toggleDatepicker"
+        "click .date-header": "toggleDatepicker",
+        "click #save-shifts": "save",
+        "keyup #event-comment": "comment"
     },
 
     initialize: function(){
@@ -179,6 +181,40 @@ shifty.views.BarShifts = Backbone.View.extend({
         m.destroy();
 
         $el.remove();
+    },
+
+    comment: function(e) {
+        this.model.set("comment", e.target.value);
+    },
+
+    save: function() {
+        var shifts =  this.shifts.toJSON();
+
+        // Get the year, month and date
+        var date = this.model.get("date");
+        var y = date.getFullYear(), m = date.getMonth(), d = date.getDate();
+
+        for (var i in shifts) {
+            var shift = shifts[i];
+
+            // Convert start and stop to date objects
+            var start = shift.start.match(/(\d{2}):(\d{2})/);
+            var stop = shift.stop.match(/(\d{2}):(\d{2})/);
+
+            var startMin = parseInt(start[1], 10)*60+parseInt(start[2], 10);
+            var stopMin = parseInt(stop[1], 10)*60+parseInt(stop[2], 10);
+
+            shift.start = new Date(y,m,d,start[1],start[2]);
+            if (startMin < stopMin) {
+                shift.stop = new Date(y,m,d,stop[1], stop[2]);
+            } else {
+                shift.stop = new Date(y,m,d+1,stop[1], stop[2]);
+            }
+        }
+
+        event.shifts = shifts;
+
+        console.log(event);
     }
 });
 
