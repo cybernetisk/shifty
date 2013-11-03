@@ -62,4 +62,16 @@ body {
 .long {
   height: 250px; }
 
+table.take_shift {
+  margin-top: 10px; }
+  table.take_shift td {
+    padding: 5px; }
+
+.shift_header {
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px; }
+
 /*# sourceMappingURL=shifts.css.map */

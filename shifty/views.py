@@ -23,7 +23,7 @@ def shifts(request):
 	return render_to_response('shifty/shifts.html', {'events':events})
 
 def getEvents(request, offset, limit):
-	events = Event.objects.order_by('-start')[offset:offset+limit]
+	events = Event.objects.order_by('start')[offset:offset+limit]
 	result = []
 	for e in events:
 		result.append({'event':e.toDict(), 'columns':e.getShiftColumns()})
