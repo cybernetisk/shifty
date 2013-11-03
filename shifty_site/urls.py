@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^$', 'shifty.views.index'),
     url(r'^shifts$', 'shifty.views.shifts'),
     url(r'^event/info/(\d+)$', 'shifty.views.eventInfo'), #returns JSON
+    url(r'^getEvents/(\d+)/(\d+)$', 'shifty.views.getEvents'), # with limit and offset
     url(r'^rest/', include(router.urls)),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )

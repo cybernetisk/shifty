@@ -1,17 +1,36 @@
+<script type="text/javascript">
+    $(document).ready(function() {    
+        $(".shift").click(function() {
+            $("> .take_shift" ,this).foundation('reveal', 'open', {
+                animation: 'fade',
+                animationSpeed: 100,
+                closeOnBackgroundClick: true,
+                dismissModalClass: 'close-reveal-modal'
+            });
+        });
+    });
+</script>
+
 <div class='event'>
 	<h2>{{ event.start }} - {{ event.title }}</h2>
   	{{#each columns}}
   		<column>
 			{{#each this}}
-			<div class="shift {{ shift.cssClass }} {{ shift.durationType }}">
-					<div class='title'>
-						{{ shift.type }}
-						{{#if twins }}
-							({{twins}})
-						{{/if}}
-					</div>
-					<div class='time'>{{ shift.start }}-{{ shift.stop }}</div>
+			<div class="shift {{ shift.cssClass }} {{ shift.durationType }}" id="shift_{{ shift.id }}">
+				<div class='title'>
+					{{ shift.type }}
+					{{#if twins }}
+						({{twins}})
+					{{/if}}
+				</div>
+				<div class='time'>{{ shift.start }}-{{ shift.stop }}</div>
+
+                <div class='reveal-modal take_shift small'>
+                    Ta skift {{ shift.id }}
+                    <a class="close-reveal-modal">&#215;</a>
+                </div>        
 			</div>
+
 			{{/each}}
 		</column>
   	{{/each}}

@@ -1,35 +1,47 @@
 {% extends "shifty/base.html" %}
 {% block content %}
+<link rel="stylesheet" href="/static/css/foundation.css">
+<link rel="stylesheet" href="/static/css/shifts.css">
+<script type="text/javascript" src="/static/js/foundation.min.js"></script>
+<script type="text/javascript" src="/static/js/foundation.reveal.js"></script>
+
+
 <script type="text/javascript">
     $(document).ready(function() {
-    	{% for event in events %}
-        $.ajax({url: "/event/info/{{event.id}}", dataType: 'json'})
-			.done(function(data) {
-    			var html = Handlebars.templates.event({'event':data.event, 'columns':data.columns});
-        		$('#events').append(html);
-			})
-			.fail(function() {
-				alert( "error" );
-			})
-    	{% endfor %}
+        var limit = 5;
+        var offset = 0;
 
-	});
+        $.ajax({url: "/getEvents/0/5", dataType: 'json'})
+            .done(function(data) {
+                for (var i = data.length - 1; i >= 0; i--) {
+                    var html = Handlebars.templates.event({'event':data[i].event, 'columns':data[i].columns});
+                    $('#events').append(html);
+                };
+
+            })
+            .fail(function() {
+                alert( "Error: Could not load events" );
+            })
+
+    });
 
 </script>
 
 
 
-<link rel="stylesheet" href="/static/css/shifts.css">
-
-	<div class='large-12'>
-		<h1>Skift</h1>
-	</div>
+    <div class='large-12'>
+        <h1>Skift</h1>
+    </div>
 
 
-	<div id='events'>
-	</div>
+    <div id='events'>
+    </div>
 
 
+
+  <script>
+    $(document).foundation();
+  </script>
 
 {% endblock %}
 

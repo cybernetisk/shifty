@@ -31,30 +31,34 @@ function program2(depth0,data) {
     + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.cssClass)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " "
     + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.durationType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n					<div class='title'>\n						"
+    + "\" id=\"shift_"
+    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n				<div class='title'>\n					"
     + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.type)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n						";
+    + "\n					";
   stack2 = helpers['if'].call(depth0, depth0.twins, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n					</div>\n					<div class='time'>"
+  buffer += "\n				</div>\n				<div class='time'>"
     + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.start)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "-"
     + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.stop)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n			";
+    + "</div>\n\n                <div class='reveal-modal take_shift small'>\n                    Ta skift "
+    + escapeExpression(((stack1 = ((stack1 = depth0.shift),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n                    <a class=\"close-reveal-modal\">&#215;</a>\n                </div>        \n			</div>\n\n			";
   return buffer;
   }
 function program3(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n							(";
+  buffer += "\n						(";
   if (stack1 = helpers.twins) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.twins; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + ")\n						";
+    + ")\n					";
   return buffer;
   }
 
-  buffer += "<div class='event'>\n	<h2>"
+  buffer += "<script type=\"text/javascript\">\n    $(document).ready(function() {    \n        $(\".shift\").click(function() {\n            $(\"> .take_shift\" ,this).foundation('reveal', 'open', {\n                animation: 'fade',\n                animationSpeed: 100,\n                closeOnBackgroundClick: true,\n                dismissModalClass: 'close-reveal-modal'\n            });\n        });\n    });\n</script>\n\n<div class='event'>\n	<h2>"
     + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.start)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " - "
     + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -65,14 +69,6 @@ function program3(depth0,data) {
     + escapeExpression(((stack1 = ((stack1 = depth0.event),stack1 == null || stack1 === false ? stack1 : stack1.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\n		</div>\n	</column>		\n</div>";
   return buffer;
-  });
-templates['sidebar.bar'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<section>\n    <h2>Ny barkveld</h2>\n    Opprett nye skift for en barkveld.\n</section>\n<section id=\"sidebar-bar-date\" style=\"height:270px; overflow:hidden;\">\n    <header class=\"row date-header\">\n        <span class=\"large-3\">Dato</span>\n        <span class=\"large-9 selected-date\"></span>\n    </header>\n    <table class=\"datepicker\">\n    </table>\n</section>\n<section class=\"shifts\">\n</section>\n<section>\n    <header>\n        Kommentar\n    </header>\n    <textarea></textarea>\n</section>\n<section>\n    <button id=\"save-night\">Lagre</button>\n</section>\n";
   });
 templates['popout'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
@@ -117,5 +113,13 @@ function program1(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n<form class=\"shift-form add-shift-box row\" action=\"/\">\n    <input type=\"submit\" style=\"position:absolute;top:0;left:0;width:0;height:0;margin:0;padding:0;visibility:hidden;\" />\n    <input class=\"count text-center\" name=\"count\" value=\"\" type=\"text\" placeholder=\"ant.\" />\n    <input class=\"shifttype\" name=\"shifttype\" value=\"\" type=\"text\" placeholder=\"type\" />\n    <input name=\"start\" value=\"\" type=\"text\" class=\"start text-center\" placeholder=\"fra\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n    <input name=\"stop\" value=\"\" type=\"text\" class=\"start text-center\" placeholder=\"til\" pattern=\"(0[0-9]|1[0-9]|2[0-3])([:\\.][0-5][0-9])\" />\n</form>\n";
   return buffer;
+  });
+templates['sidebar.bar'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<section>\n    <h2>Ny barkveld</h2>\n    Opprett nye skift for en barkveld.\n</section>\n<section id=\"sidebar-bar-date\" style=\"height:270px; overflow:hidden;\">\n    <header class=\"row date-header\">\n        <span class=\"large-3\">Dato</span>\n        <span class=\"large-9 selected-date\"></span>\n    </header>\n    <table class=\"datepicker\">\n    </table>\n</section>\n<section class=\"shifts\">\n</section>\n<section>\n    <header>\n        Kommentar\n    </header>\n    <textarea></textarea>\n</section>\n<section>\n    <button id=\"save-night\">Lagre</button>\n</section>\n";
   });
 })();
