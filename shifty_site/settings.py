@@ -157,3 +157,5 @@ LOGGING = {
         },
     }
 }
+
+INCLUDE_SOURCE_DIRS = ['shifty/static/handlebars']
