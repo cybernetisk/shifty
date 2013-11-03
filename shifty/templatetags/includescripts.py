@@ -17,7 +17,9 @@ def includescripts(format_string=None):
 
 		def make_hbs_tag(path):
 			_id = os.path.basename(path)[:-4]
-			return '<script type="text/handlebar" src="static/%s" id="%s"></script>' % (path, _id)
+			with open(path) as f:
+			    content = f.read()
+			return '<script class="handlebars-template" id="%s" type="text/handlebars">%s</script>' % (_id, content)
 
 		files = map(make_hbs_tag, files)
 		output += '<!--- things included by from %s --->\n' % source
