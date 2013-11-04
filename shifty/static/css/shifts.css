@@ -62,16 +62,38 @@ body {
 .long {
   height: 250px; }
 
-table.take_shift {
-  margin-top: 10px; }
-  table.take_shift td {
-    padding: 10px; }
-
-.shift_header {
-  color: #fff;
-  font-size: 18px;
-  text-align: center;
-  font-weight: bold;
-  padding: 5px; }
+.take_shift h2 {
+  margin-bottom: 8px; }
+.take_shift hr {
+  color: #ededed;
+  background-color: #ededed;
+  height: 1px;
+  border: 0px; }
+.take_shift .date {
+  background: url("../images/date.png") left center no-repeat;
+  background: url("../images/date.png") left center no-repeat;
+  padding: 4px 20px 4px 30px; }
+.take_shift .time {
+  background: url("../images/time.png") left center no-repeat;
+  background: url("../images/time.png") left center no-repeat;
+  padding: 4px 20px 4px 27px; }
+.take_shift table {
+  margin-top: 30px;
+  margin-left: -10px;
+  border-collapse: separate;
+  border-spacing: 10px; }
+  .take_shift table td {
+    padding: 3px;
+    color: #494949; }
+  .take_shift table .shift_header {
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 10px; }
+  .take_shift table input {
+    font-size: 15px;
+    padding: 5px;
+    border: 1px solid #ededed; }
 
 /*# sourceMappingURL=shifts.css.map */

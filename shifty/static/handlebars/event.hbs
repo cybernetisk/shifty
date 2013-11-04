@@ -13,10 +13,12 @@
 				<div class='time'>{{ shift.start }}-{{ shift.stop }}</div>
 
                 <div class='reveal-modal take_shift small'>
-                    {{ this.event.type }}
-                    <h2>Ta skift</h2>
-                    {{shift.type}} {{ shift.start }}-{{ shift.stop }}
-                    <table class='take_shift'>
+                    <h2>Ta skift: {{shift.type}}</h2>
+                    <hr/>
+                    <span class='date'>{{ ../../event.start }}</span>
+                    <span class='time'>{{ shift.start }}-{{ shift.stop }}</span>
+
+                    <table>
                         <tr>
                             <td class='{{ shift.cssClass }} shift_header'>1</td>
                             <td>
@@ -25,7 +27,18 @@
                             </td>
                             <td>
                                 Kommentar<br>
-                                <input type="text" name="comment">
+                                <input type="text" name="comment" size="27">
+                            </td>
+                        </tr>
+                                               <tr>
+                            <td class='{{ shift.cssClass }} shift_header'>2</td>
+                            <td>
+                                Navn<br>
+                                <input type="text" name="name">
+                            </td>
+                            <td>
+                                Kommentar<br>
+                                <input type="text" name="comment" size="27">
                             </td>
                         </tr>
                     </table>

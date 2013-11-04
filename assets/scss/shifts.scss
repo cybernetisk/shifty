@@ -76,18 +76,59 @@ body{
 	height: 250px;
 }
 
-table.take_shift {
-	margin-top: 10px;
-	td {
-		padding: 10px;
+
+// Style for the 'take shift' modal
+.take_shift{
+	h2 {
+		margin-bottom: 8px;
+	}
+	hr {
+		color: #ededed;
+		background-color: #ededed;
+		height: 1px;
+		border: 0px;
+	}
+	.date {
+		@include background(url("../images/date.png") left center no-repeat);
+		padding: 4px 20px 4px 30px;
+	}
+
+	.time {
+		@include background(url("../images/time.png") left center no-repeat);
+		padding: 4px 20px 4px 27px;
+	}
+
+	table {
+		margin-top: 30px;
+		margin-left: -10px;
+		border-collapse: separate;
+    	border-spacing: 10px;
+		
+		td {
+			padding: 3px;
+			color: #494949;
+		}
+
+		.shift_header {
+			color: #fff;
+			font-size: 18px;
+			text-align: center;
+			font-weight: bold;
+			padding: 3px 10px;
+		}
+
+		input {
+			font-size: 15px;
+			padding: 5px;
+			border: 1px solid #ededed;
+		}
 	}
 }
 
-.shift_header {
-	color: #fff;
-	font-size: 18px;
-	text-align: center;
-	font-weight: bold;
-	padding: 5px;
-}
+
+
+
+
+
+
 
