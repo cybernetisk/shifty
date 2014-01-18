@@ -6,3 +6,6 @@
 2. run `pip install -e .` (maybe with sudo?) in the folder
 3. run `./migrate.sh`
 4. run `python manage.py runserver` to start the development web server
+
+To install fixtures:
+* ```./manage.py loaddata shifts```
