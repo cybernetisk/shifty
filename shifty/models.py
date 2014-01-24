@@ -74,14 +74,6 @@ class Shift(models.Model):
         else:
             return 'short'
 
-    @property
-    def volunteer2(self):
-        return self.volunteer
-
-    @volunteer2.setter
-    def volunteer2(self, value):
-        self.volunteer = value
-
     # Returns shift duration in hours
     def duration(self):
         dt = self.stop - self.start
