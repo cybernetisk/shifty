@@ -11,21 +11,28 @@ def index(request):
 
 
 def eventInfo(request, eventId):
-	event = Event.objects.get(id=eventId)
+    event = Event.objects.get(id=eventId)
 
-	p = {'event':event.toDict(), 'columns':event.getShiftColumns()}
+    p = {'event':event.toDict(), 'columns':event.getShiftColumns()}
 
-	return HttpResponse(simplejson.dumps(p), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(p), mimetype='application/json')
 
 # added by marill 
 def shifts(request):
-	events = Event.objects.all()
-	return render_to_response('shifty/shifts.html', {'events':events})
+    events = Event.objects.all()
+    return render_to_response('shifty/shifts.html', {'events':events})
 
 def getEvents(request, offset, limit):
-	events = Event.objects.order_by('start')[offset:offset+limit]
-	result = []
-	for e in events:
-		result.append({'event':e.toDict(), 'columns':e.getShiftColumns()})
+    events = Event.objects.order_by('start')[offset:offset+limit]
+    result = []
+    for e in events:
+        result.append({'event':e.toDict(), 'columns':e.getShiftColumns()})
 
-	return HttpResponse(simplejson.dumps(result), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(result), mimetype='application/json')
+
+def take_shift(request):
+    shift_id = request.REQUEST['id']
+    shift = Shift.objects.get(pk=shift_id)
+    shift.volunteer = request.user
+    shift.save()
+    return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
