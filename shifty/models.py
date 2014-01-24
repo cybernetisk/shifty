@@ -42,6 +42,9 @@ class Shift(models.Model):
         dt = self.stop - self.start
         return round(dt.seconds / 3600.0, 1)
 
+    def can_remove_user(self):
+        return False
+
     def toDict(self):
         return {'id': self.id,
                 'type':str(self),

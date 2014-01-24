@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from shifty.models import Shift, Event, ShiftType
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core import serializers
 from django.utils import simplejson
@@ -31,8 +32,28 @@ def getEvents(request, offset, limit):
     return HttpResponse(simplejson.dumps(result), mimetype='application/json')
 
 def take_shift(request):
+    username = request.REQUEST['name']
+    comment = request.REQUEST['comment'] if 'comment' in request.REQUEST else None
+
     shift_id = request.REQUEST['id']
     shift = Shift.objects.get(pk=shift_id)
-    shift.volunteer = request.user
-    shift.save()
-    return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
+
+    if username == "":
+        if shift.volunteer != None:
+            shift.volunteer = None
+            if comment is not None:
+                shift.comment = comment
+            shift.save()
+        return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
+
+    user = User.objects.get(username=username)
+    if user is not None:
+        if shift.volunteer != None and user != shift.volunteer:
+            return HttpResponse(simplejson.dumps({'status':'taken'}), mimetype='application/json')
+
+        shift.volunteer = user
+        if comment is not None:
+            shift.comment = comment
+        shift.save()
+        return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
+    return HttpResponse(simplejson.dumps({'status':'failed'}), mimetype='application/json')
