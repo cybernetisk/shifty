@@ -1,3 +1,5 @@
+{{#each events}}
+
 <div class='event'>
 	<h2>{{ event.start }} - {{ event.title }}</h2>
   	{{#each columns}}
@@ -57,3 +59,5 @@
 		</div>
 	</column>		
 </div>
+
+{{/each}}

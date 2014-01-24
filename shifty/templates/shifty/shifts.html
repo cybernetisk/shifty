@@ -14,11 +14,9 @@
 
         $.ajax({url: "/getEvents/0/5", dataType: 'json'})
             .done(function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    var html = Handlebars.templates.event({'event':data[i].event, 'columns':data[i].columns});
-                    $('#events').append(html);
-                };
-
+                // generate HTML with handlebars
+                var html = Handlebars.templates.event({'events': data});
+                $('#events').append(html);
             })
             .fail(function() {
                 alert( "Error: Could not load events" );
