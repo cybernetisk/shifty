@@ -14,43 +14,6 @@ class Event(models.Model):
     def toDict(self):
         return {'title':self.title, 'description':self.description, 'start':_date(self.start, "l j. F Y").capitalize()}
 
-    def getOrderedShifts(self):
-        return self.shifts.all().order_by('shift_type')
-
-    def getShiftColumns(self):
-        columns = [[]]
-        shifts = self.getOrderedShifts()
-
-        column = 0
-        index = 0
-        twinCount = 0
-        
-        for i, shift in enumerate(shifts):      
-            next = "Empty"
-            if(i+1 < len(shifts)):
-                next = shifts[i+1]
-
-            if(next == "Empty" or not shift.isTwin(next)):
-                if shift.durationType() == 'long':
-                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1)})
-                    column = 0
-                elif shift.durationType()=='short':
-                    columns[index].append({'shift':shift.toDict(), 'twins':(0 if twinCount == 0 else twinCount+1)})
-                    column += 1
-
-                if (next != 'Empty' and str(next) != str(shift)):
-                    column = 0
-
-                twinCount = 0
-            else:
-                twinCount += 1
-
-            if(column == 0):
-                columns.append([])
-                index += 1
-
-        return columns
-
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
     shift_type = models.ForeignKey("ShiftType", null=False, related_name='+')
