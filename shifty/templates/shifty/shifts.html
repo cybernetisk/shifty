@@ -11,7 +11,7 @@
     $(document).ready(function() {
         var limit = 5;
         var offset = 0;
-
+        // "/rest/event/?format=json&page=" + offset + "&page_size=" + limit
         $.ajax({url: "/getEvents/0/5", dataType: 'json'})
             .done(function(data) {
                 // generate HTML with handlebars

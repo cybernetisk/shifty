@@ -7,6 +7,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'title', 'description', 'start', 'shifts')
+        depth = 1
 
 
 class ShiftSerializer(serializers.ModelSerializer):

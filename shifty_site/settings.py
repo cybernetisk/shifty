@@ -157,5 +157,9 @@ LOGGING = {
         },
     }
 }
-
 INCLUDE_SOURCE_DIRS = ['shifty/static/handlebars']
+
+REST_FRAMEWORK = dict(
+    PAGINATE_BY=10,
+    MAX_PAGINATE_BY=100,
+    )
