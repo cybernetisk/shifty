@@ -18,6 +18,9 @@ body{
 	h2 {
 		margin-bottom: 5px;
 	}
+	h2:first-letter {
+		text-transform: capitalize;
+	}
 	column {
 		@include span-columns(2);
 		.shift {

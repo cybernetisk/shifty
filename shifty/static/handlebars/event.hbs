@@ -1,7 +1,7 @@
 {{#each data}}
 
 <div class='event'>
-	<h2>{{ formatDate event.start "l j. F Y" }} - {{ event.title }}</h2>
+	<h2>{{ formatDate event.start "dddd D. MMMM YYYY" }} - {{ event.title }}</h2>
   	{{#each columns}}
   		<column>
 			{{#each this}}
@@ -12,37 +12,32 @@
 						({{twinsCount}})
 					{{/if}}
 				</div>
-				<div class='time'>{{ formatDate shift.start "H:i" }}-{{ shift.stop }}</div>
+				<div class='time'>{{ formatDate shift.start "hh:mm" }}-{{ formatDate shift.stop "hh:mm" }}</div>
 
                 <div class='reveal-modal take_shift small'>
                     <h2>Ta skift: {{shift.type}}</h2>
                     <hr/>
-                    <span class='date'>{{ formatDate ../../event.start "l j. F Y" }}</span>
-                    <span class='time'>{{ formatDate shift.start "H:i" }}-{{ formatDate shift.stop "H:i" }}</span>
+                    <span class='date'>{{ formatDate ../../event.start "dddd D. MMMM YYYY" }}</span>
+                    <span class='time'>{{ formatDate shift.start "hh:mm" }}-{{ formatDate shift.stop "hh:mm" }}</span>
 
                     <table>
+                        {{#each twins}}
                         <tr>
-                            <td class='{{ shift.cssClass }} shift_header'>1</td>
+                            <td class='{{ ../shift.cssClass }} shift_header'>{{ twinNum }}</td>
                             <td>
                                 Navn<br>
-                                <input type="text" name="name">
+                                {{#if volunteer }}
+                                <input type="text" name="name" class="name" value="{{ volunteer.username }}">
+                                {{else}}
+                                <input type="text" name="name" class="name" value="">
+                                {{/if}}
                             </td>
                             <td>
                                 Kommentar<br>
-                                <input type="text" name="comment" size="27">
+                                <input type="text" name="comment" class="comment" size="27" value="{{ comment }}">
                             </td>
                         </tr>
-                        <tr>
-                            <td class='{{ shift.cssClass }} shift_header'>2</td>
-                            <td>
-                                Navn<br>
-                                <input type="text" name="name">
-                            </td>
-                            <td>
-                                Kommentar<br>
-                                <input type="text" name="comment" size="27">
-                            </td>
-                        </tr>
+                        {{/each}}
                     </table>
                     
                     <a class="close-reveal-modal">&#215;</a>

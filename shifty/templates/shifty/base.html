@@ -23,6 +23,7 @@
         <script type="text/javascript" src="/static/js/model.event.js"></script>
         <script type="text/javascript" src="/static/js/view.popout.js"></script>
         <script type="text/javascript" src="/static/js/view.adminmenu.js"></script>
+        <script type="text/javascript" src="/static/js/moment.js"></script>
         <script type="text/javascript">
             var v;
             $(document).ready(function() {
@@ -32,6 +33,8 @@
                 a = new shifty.views.AdminMenu();
                 a.render();
             });
+
+            moment.lang('nb');
         </script>
     </head>
     <body>
