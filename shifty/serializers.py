@@ -11,9 +11,11 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class ShiftSerializer(serializers.ModelSerializer):
+    volunteer2 = serializers.Field(source='volunteer2')
+    duration = serializers.Field(source='_duration')
     class Meta:
         model = Shift
-        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment')
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'volunteer2','duration')
 
 
 class ShiftTypeSerializer(serializers.ModelSerializer):
