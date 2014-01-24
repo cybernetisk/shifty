@@ -32,15 +32,11 @@ class SimpleTest(TestCase):
         self.shift = Shift(event=self.event, start=now(), stop=now(), shift_type = self.shift_type)
         self.shift.save()
 
-    def test_01_take_shift(self):
-        # Create an instance of a GET request.
+    def test_take_shift(self):
+        """
+
+        """
         request = self.factory.get('/take_shift?id=%d&name=barfunk&comment=kommentar' % self.shift.id, )
-
-        # Recall that middleware are not suported. You can simulate a
-        # logged-in user by setting request.user manually.
-        request.user = self.user
-
-        # Test my_view() as if it were deployed at /customer/details
         response = take_shift(request)
 
         shift = Shift.objects.get(pk=self.shift.id)
@@ -48,11 +44,10 @@ class SimpleTest(TestCase):
         self.assertEqual(shift.volunteer, self.user)
         self.assertEqual(shift.comment, "kommentar")
 
-    def test_02_try_to_take_occupied_shift(self):
-        # Create an instance of a GET request.
+    def test_try_to_take_occupied_shift(self):
+        
         user = User.objects.create_user(
             username='barfunk2', email='barfunk@cyb.no', password='top_secret')
-
 
         shift = Shift.objects.get(pk=self.shift.id)
         shift.volunteer = self.user
@@ -61,8 +56,6 @@ class SimpleTest(TestCase):
 
         request = self.factory.get('/take_shift?id=%d&name=barfunk2&comment=lol' % self.shift.id, )
 
-        request.user = user
-
         response = take_shift(request)
 
         shift = Shift.objects.get(pk=self.shift.id)
@@ -70,7 +63,7 @@ class SimpleTest(TestCase):
         self.assertNotEqual(shift.volunteer, user)
         self.assertEqual(shift.comment, "noe som ikke endres")
 
-    def test_03_user_can_update_comment_on_own_shift(self):
+    def test_user_can_update_comment_on_own_shift(self):
         shift = Shift.objects.get(pk=self.shift.id)
         shift.volunteer = self.user
         shift.comment = "noe som ikke endres"
@@ -87,7 +80,7 @@ class SimpleTest(TestCase):
         self.assertEqual(shift.volunteer, self.user)
         self.assertEqual(shift.comment, "larsrsgasrgol")
 
-    def test_03_user_can_be_removed(self):
+    def test_user_can_be_removed(self):
         shift = Shift.objects.get(pk=self.shift.id)
         shift.volunteer = self.user
         shift.comment = "larsrsgasrgol"
