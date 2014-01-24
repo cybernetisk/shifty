@@ -87,10 +87,6 @@ class Shift(models.Model):
         dt = self.stop - self.start
         return round(dt.seconds / 3600.0, 1)
 
-    @property
-    def _duration(self):
-        return self.duration()
-
     def toDict(self):
         return {'id': self.id,
                 'type':str(self),

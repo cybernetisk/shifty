@@ -4,11 +4,13 @@ from rest_framework import serializers
 
 
 class ShiftSerializer(serializers.ModelSerializer):
+    duration = serializers.Field(source='duration');
+    durationType = serializers.Field(source='durationType')
+
     volunteer2 = serializers.Field(source='volunteer2')
-    duration = serializers.Field(source='_duration')
     class Meta:
         model = Shift
-        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'volunteer2', 'duration')
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'volunteer2', 'duration', 'durationType')
 
 class EventSerializer(serializers.ModelSerializer):
     shifts = ShiftSerializer(source='shifts')
