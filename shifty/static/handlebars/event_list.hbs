@@ -1,0 +1,25 @@
+{{#each data}}
+
+<div class='event_list'>
+
+    <table>
+        <h2>{{title}}{{formatDate start "dddd D. MMMM YYYY"}}</h2>
+        <h4>{{description}}</h4>
+        {{#each shifts}}
+        <tr>
+                <td class='shift {{toLowerCase shift_type.title}}'>
+                </td>
+                <td>  
+                    {{shift_type.title}}
+                </td>
+                <td>
+                    {{ formatDate event.start "dddd D."}}
+                </td>
+                <td>
+                    {{ formatDate start "hh:mm" }}-{{ formatDate stop "hh:mm" }}-{{duration}} Hours
+                </td>
+        </tr>
+        {{/each}}
+</div>
+
+{{/each}}

@@ -31,6 +31,7 @@
 
                 // generate HTML with handlebars
                 var html = Handlebars.templates.event({'data': result});
+                // var html = Handlebars.templates.event_list({'data': events});
                 $('#events').append(html);
             })
             .fail(function() {
@@ -48,6 +49,13 @@
         //return datetime;
         return moment(datetime).format(format);
     });
+
+    /**
+     * Lower case method for handlebar
+     */
+    Handlebars.registerHelper('toLowerCase', function(value) {
+ 		return value.toLowerCase();
+	});
 
     /**
      * Sort function to sort shifts by its shift type
