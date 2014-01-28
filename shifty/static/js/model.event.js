@@ -70,7 +70,7 @@ shifty.models.Event = Backbone.Model.extend({
             // shift.start = ... _date(self.start, "H:i")
             // shift.stop = ... _date(self.stop, "H:i")
             var shift = this.shifts.at().toJson();
-            var shift.cssClass = shift.get('shift_type').title.toLowerCase();
+            shift.cssClass = shift.get('shift_type').title.toLowerCase();
 
             // the following shift
             var next = (this.shifts.at() < this.shifts.length ? this.shifts[this.shifts.at()+1] : null);
