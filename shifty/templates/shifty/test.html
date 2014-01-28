@@ -1,0 +1,141 @@
+{% extends "shifty/base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/foundation.css">
+<link rel="stylesheet" href="/static/css/shifts.css">
+<script type="text/javascript" src="/static/js/foundation.min.js"></script>
+<script type="text/javascript" src="/static/js/foundation.reveal.js"></script>
+<script type="text/javascript" src="/static/js/events.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // TODO: pagination links and handling
+        var limit = 5;
+        var offset = 1;
+        $.ajax({url: "/rest/event/?format=json&page=" + offset + "&page_size=" + limit, dataType: 'json'})
+            .done(function(data) {
+                // create a data structure to be passed to the handlebar
+                // shifts must be structured in columns
+                // and same shift type in same period should be grouped
+
+                var events = data.results;
+                var result = [];
+
+                $.each(events, function(i, ev)
+                {
+                    new shifty.models.Event(ev);
+                    result.push({
+                        event: ev,
+                        columns: getShiftColumns(ev)
+                    });
+                });
+
+                // generate HTML with handlebars
+                var html = Handlebars.templates.event({'data': result});
+                $('#events').append(html);
+            })
+            .fail(function() {
+                alert( "Error: Could not load events" );
+            });
+
+    });
+
+    /**
+     * Format date for handlebar
+     */
+    Handlebars.registerHelper("formatDate", function(datetime, format)
+    {
+        // TODO
+        //return datetime;
+        return moment(datetime).format(format);
+    });
+
+    /**
+     * Sort function to sort shifts by its shift type
+     */
+    function shiftsByShiftType(left, right)
+    {
+        return right.shift_type - left.shift_type;
+    }
+
+    /**
+     * Check if two shifts is considered to be twins
+     */
+    function shiftIsTwin(left, right)
+    {
+        return (left.shift_type.id == right.shift_type.id
+             && left.start == right.start
+             && left.stop == right.stop);
+    }
+
+    function getShiftColumns(event)
+    {
+        var columns = [];
+        // self -> event
+
+        // sort shifts by its type
+        var shifts = event.shifts.sort(shiftsByShiftType);
+
+        var rowIndex = 0;
+        var colIndex = -1;
+        var twinCount = 0;
+        var twins = [];
+
+        $.each(shifts, function(i, shift)
+        {
+            if (rowIndex == 0)
+            {
+                columns.push([]);
+                colIndex++;
+            }
+
+            // shift.start = ... _date(self.start, "H:i")
+            // shift.stop = ... _date(self.stop, "H:i")
+            shift.cssClass = shift.shift_type.title.toLowerCase();
+
+            // the following shift
+            var next = (i < shifts.length ? shifts[i+1] : null);
+            twins.push(shift);
+
+            // add the shift to the active column if it has no next or next is no twin
+            if (!next || !shiftIsTwin(shift, next))
+            {
+                columns[colIndex].push({
+                    'shift': shift, // used only for common data
+                    'twins': twins,
+                    'twinsCount': twins.length,
+                    'hasTwins': twins.length > 1
+                });
+                twins = [];
+
+                rowIndex = (shift.durationType == 'long' ? 0 : rowIndex + 1);
+                if (next && shift.shift_type.title != next.shift_type.title)
+                {
+                    rowIndex = 0;
+                }
+            }
+        });
+
+        return columns;
+    }
+
+</script>
+
+
+
+    <div class='large-12'>
+        <h1>Skift</h1>
+    </div>
+
+
+    <div id='events'>
+    </div>
+
+
+
+  <script>
+    $(document).foundation();
+  </script>
+
+{% endblock %}
+

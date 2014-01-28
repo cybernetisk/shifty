@@ -23,6 +23,10 @@ def shifts(request):
     events = Event.objects.all()
     return render_to_response('shifty/shifts.html', {'events':events})
 
+def test(request):
+    events = Event.objects.all()
+    return render_to_response('shifty/test.html', {'events':events})
+
 def getEvents(request, offset, limit):
     events = Event.objects.order_by('start')[offset:offset+limit]
     result = []
