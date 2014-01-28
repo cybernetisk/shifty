@@ -262,6 +262,11 @@ table.datepicker {
             .time {
                 color:darken(white, 60%);
             }
+
+            &:focus {
+                background:blue;
+                outline:none;
+            }
         }
 
         .add-shift-box {

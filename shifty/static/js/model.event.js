@@ -1,4 +1,10 @@
 shifty.models.Shift = Backbone.Model.extend({
+    urlRoot: "/rest/shift/",
+
+    initialize: function(attrs) {
+        var self = this;
+    },
+
     validate: function(attrs, options) {
         var required = ["count", "shifttype", "start", "stop", "title"];
         var errors = [];
@@ -16,7 +22,9 @@ shifty.models.Shift = Backbone.Model.extend({
         if (errors.length > 0) return errors;
     },
 
-    urlRoot: "/rest/shift/"
+    setDate: function(date) {
+        // Update start and stop to be static dates, not relative times
+    }
 });
 
 shifty.collections.Shift = Backbone.Collection.extend({

@@ -289,6 +289,9 @@ table.datepicker {
       margin-bottom: 5px; }
       .popout section .shift .time {
         color: #666666; }
+      .popout section .shift:focus {
+        background: blue;
+        outline: none; }
     .popout section .add-shift-box {
       margin-top: 10px;
       padding: 5px;

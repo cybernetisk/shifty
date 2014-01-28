@@ -17,7 +17,9 @@ shifty.views.Popout = Backbone.View.extend({
 
         var bar = new shifty.views.BarShifts({
             el: this.$el.find(".popout-content"),
-            model: new shifty.models.Event({start: new Date()})
+            model: new shifty.models.Event({
+                start: new Date()
+            })
         });
         bar.render();
         this.views.push(bar);
@@ -59,8 +61,7 @@ shifty.views.BarShifts = Backbone.View.extend({
         console.log(context);
 
         // Get and render the template
-        var html = Handlebars.templates['sidebar.bar'](context);
-        this.$el.html(html);
+        this.el.innerHTML = Handlebars.templates['sidebar.bar'](context);
 
         var shiftList = new shifty.views.ShiftList({
             el: this.$el.find(".shifts"),
@@ -76,6 +77,8 @@ shifty.views.BarShifts = Backbone.View.extend({
 
         // Set the selected date
         this.$el.find(".selected-date").html(d.getDate() + ". "+months[d.getMonth()]+" "+d.getFullYear());
+
+        return this.el;
     },
 
     resizeDate: function(e) {
@@ -100,53 +103,6 @@ shifty.views.BarShifts = Backbone.View.extend({
             this.$el.find(".datepicker").css({visibility: "visible", opacity: 1});
             this.state.datepicker = true;
         }
-    },
-
-    insertDefaults: function() {
-        var shifts = [{
-            count: 1,
-            shifttype: "Skjenkemester",
-            start: "17:00",
-            stop: "03:00"
-        }, {
-            count: 2,
-            shifttype: "Barfunk",
-            start: "17:30",
-            stop: "22:00"
-        }, {
-            count: 2,
-            shifttype: "Barfunk",
-            start: "21:30",
-            stop: "03:00"
-        }, {
-            count: 1,
-            shifttype: "Vakt",
-            start: "17:30",
-            stop: "00:00"
-        }, {
-            count: 1,
-            shifttype: "Vakt",
-            start: "20:00",
-            stop: "03:00"
-        }, {
-            count: 1,
-            shifttype: "DJ",
-            start: "17:30",
-            stop: "22:00"
-        }, {
-            count: 1,
-            shifttype: "DJ",
-            start: "21:30",
-            stop: "03:00"
-        }];
-
-        for (var i in shifts) {
-            this.shifts.add(new shifty.models.Shift(shifts[i]));
-        }
-
-        this.render();
-
-        return false;
     },
 
     addShift: function(e) {
@@ -192,58 +148,73 @@ shifty.views.BarShifts = Backbone.View.extend({
         this.model.set("title", e.target.value);
     },
     save: function() {
-        var shifts =  this.shifts.toJSON();
+        var shifts = [];
 
         // Get the year, month and date
         var date = this.model.get("start");
         var y = date.getFullYear(), m = date.getMonth(), d = date.getDate();
 
-        for (var i in shifts) {
-            var shift = shifts[i];
+        for (var i = 0; i < this.shifts.size(); i++) {
+            var shift = this.shifts.at(i);
 
             // Convert start and stop to date objects
-            var start = shift.start.match(/(\d{2}):(\d{2})/);
-            var stop = shift.stop.match(/(\d{2}):(\d{2})/);
+            var start = shift.get("start").match(/(\d{2}):(\d{2})/);
+            var stop = shift.get("stop").match(/(\d{2}):(\d{2})/);
 
             var startMin = parseInt(start[1], 10)*60+parseInt(start[2], 10);
             var stopMin = parseInt(stop[1], 10)*60+parseInt(stop[2], 10);
 
-            shift.start = new Date(y,m,d,start[1],start[2]);
+            shift.set("start", new Date(y,m,d,start[1],start[2]));
             if (startMin < stopMin) {
-                shift.stop = new Date(y,m,d,stop[1], stop[2]);
+                shift.set("stop", new Date(y,m,d,stop[1], stop[2]));
             } else {
-                shift.stop = new Date(y,m,d+1,stop[1], stop[2]);
+                shift.set("stop", new Date(y,m,d+1,stop[1], stop[2]));
+            }
+
+            shift.set("event_id", this.model.get("id"));
+
+            for (var j = 0; j < shift.get("count"); j++) {
+                shifts.push(shift.toJSON());
             }
         }
 
+        console.log(this.model.toJSON(), shifts);
+        /*
         var _this = this;
-        var d = this.model.save();
-        d.done(function(a,b,c) {
+        var defer = this.model.save();
+        defer.done(function(a,b,c) {
             console.log(_this.model.toJSON());
         }).fail(function(a,b,c) {
             console.log(_this.model.toJSON());
             console.log(a.responseText,b,c);
         });
+        */
     }
 });
 
 shifty.views.ShiftList = Backbone.View.extend({
     initialize: function(opts) {
         this.p = opts.parent;
+
+        this.listenTo(this.collection, "add", this.render);
+        this.listenTo(this.collection, "remove", this.render);
     },
 
     events: {
         "click .default-shifts": "addDefault",
-        "submit .add-shift-box": "addShift"
+        "submit .add-shift-box": "addShift",
+        "keydown .shift": "shiftKeydown"
     },
 
     render: function() {
+        console.log(this);
         var context = {};
         context.shifts = this.collection.toJSON();
 
         // Get and render the template
-        var html = Handlebars.templates['sidebar.shiftlist'](context);
-        this.$el.html(html);
+        this.el.innerHTML = Handlebars.templates['sidebar.shiftlist'](context);
+
+        return this.el;
     },
 
     addDefault: function(d) {
@@ -287,11 +258,11 @@ shifty.views.ShiftList = Backbone.View.extend({
         for (var i in shifts) {
             this.collection.add(new shifty.models.Shift(shifts[i]));
         }
-
-        this.render();
     },
 
     addShift: function(e) {
+        e.preventDefault();
+
         var $form = $(e.target);
         var fields = $form.serializeArray();
         var shift = {};
@@ -304,11 +275,22 @@ shifty.views.ShiftList = Backbone.View.extend({
 
         if (m.isValid()) {
             this.collection.add(m);
-            this.render();
         } else {
             console.log(m.validationError);
         }
 
-        return false;
+        this.$(".count").focus();
+    },
+
+    shiftKeydown: function(e) {
+        if (e.keyCode == 8) {
+            e.preventDefault();
+
+            console.log("Delete shift");
+        } else if (e.keyCode == 13) {
+            e.preventDefault();
+
+            console.log("Edit shift");
+        }
     }
 });

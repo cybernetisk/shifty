@@ -5,9 +5,9 @@
     </span>
 </header>
 {{#each shifts}}
-<div class="shift row" data-index="{{@index}}">
+<div class="shift row" data-index="{{@index}}" tabindex="0">
     <span class="no-click large-8">{{count}}x {{shifttype}}</span>
-    <span class="no-click large-4 text-right time">{{start}} - {{stop}}</span>
+    <span class="no-click large-4 text-right time">{{formatTime start}} - {{formatTime stop}}</span>
 </div>
 {{/each}}
 <form class="shift-form add-shift-box row" action="/">
