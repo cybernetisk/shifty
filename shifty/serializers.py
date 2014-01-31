@@ -1,5 +1,5 @@
 #from django.contrib.auth.models import User, Group
-from models import Event, Shift, ShiftType
+from models import Event, Shift, ShiftType, User
 from rest_framework import serializers
 
 
@@ -25,3 +25,8 @@ class ShiftTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShiftType
         fields = ('id', 'title', 'description')
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name')

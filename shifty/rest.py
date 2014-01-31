@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerializer
-from models import Event, Shift, ShiftType
+from rest_framework import viewsets, filters
+from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerializer, UserSerializer
+from models import Event, Shift, ShiftType, User
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -23,6 +23,12 @@ class ShiftTypeViewSet(viewsets.ModelViewSet):
     queryset = ShiftType.objects.all()
     serializer_class = ShiftTypeSerializer
 
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('username', 'first_name', 'last_name')
 
 
 """class ViewSet(viewsets.ModelViewSet):

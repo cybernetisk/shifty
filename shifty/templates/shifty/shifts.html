@@ -34,11 +34,32 @@
                 var html = Handlebars.templates.event({'data': result});
                 // var html = Handlebars.templates.event_list({'data': events});
                 $('#events').append(html);
+
+                // autocomplete users
+                $('input.user_search').typeahead({
+                    name: 'user',
+                    remote: {
+                        url: '/rest/user/?search=%QUERY',
+                        filter: function(data)
+                        {
+                            var d = [];
+                            $(data.results).each(function(i, node)
+                            {
+                                concat = node.first_name && node.last_name ? " " : "";
+                                d.push({
+                                    value: node.username,
+                                    tokens: [node.username, node.first_name, node.last_name],
+                                    name: node.first_name + concat + node.last_name
+                                });
+                            });
+                            return d;
+                        }
+                    }
+                });
             })
             .fail(function() {
                 alert( "Error: Could not load events" );
             });
-
     });
 
     /**
