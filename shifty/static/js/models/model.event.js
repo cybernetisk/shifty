@@ -34,14 +34,12 @@ shifty.collections.Shift = Backbone.Collection.extend({
 shifty.models.Event = Backbone.Model.extend({
     initialize: function(attributes) {
         this.shifts = new shifty.collections.Shift(attributes.shifts);
-        console.log("se", this);
-        this.columns = this.getShiftColumns();
-    },
+    }
 
     /**
      * Sort function to sort shifts by its shift type
      */
-    shiftsByShiftType: function(left, right)
+    /*shiftsByShiftType: function(left, right)
     {
         return right.get('shift_type') - left.get('shift_type');
     },
@@ -96,6 +94,18 @@ shifty.models.Event = Backbone.Model.extend({
         };
 
         return columns;
-    }
+    }*/
 });
 
+shifty.collections.Events = Backbone.Collection.extend({
+    model: shifty.models.Event,
+    page: 1,
+    url: function() {
+        // TODO: use https://github.com/backbone-paginator/backbone.paginator ?
+        // TODO: handle 404 if page not found
+        return '/rest/event/?' + $.param({page: this.page, page_size: 10});
+    },
+    parse: function(data) {
+        return data.results;
+    }
+});

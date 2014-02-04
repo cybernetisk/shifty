@@ -5,38 +5,43 @@
         <meta charset="utf-8">
         <title>Shifty</title>
         <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/css/shifts.css">
+        <link rel="stylesheet" href="/static/css/foundation.css">
         <script type="text/javascript" src="/static/js/vendor/jquery-2.0.3.min.js"></script>
         {% includescripts %}
         <script type="text/javascript" src="/static/js/vendor/handlebars-1.0.0.js"></script>
         <script type="text/javascript" src="/static/js/handlebars.helpers.js"></script>
         <script type="text/javascript">
             var shifty = {views: {}, models: {}, collections: {}};
+            {% if user.is_authenticated %}
+            shifty.user = jQuery.parseJSON("{{ user|escapejs }}");
+            {% else %}
+            shifty.user = null;
+            {% endif %}
 
             Handlebars.templates = {};
             $(".handlebars-template").each(function() {
                 var $this = $(this);
                 Handlebars.templates[$this.attr("id")] = Handlebars.compile($this.html());
             });
+
+            $(document).ready(function() {
+                $(document).foundation();
+            });
         </script>
         <script type="text/javascript" src="/static/js/jquery.datepicker.js"></script>
         <script type="text/javascript" src="/static/js/vendor/underscore-1.5.2.min.js"></script>
         <script type="text/javascript" src="/static/js/vendor/backbone-1.0.0.min.js"></script>
+        <script type="text/javascript" src="/static/js/vendor/foundation.min.js"></script>
+        <script type="text/javascript" src="/static/js/vendor/foundation.reveal.js"></script>
+        <script type="text/javascript" src="/static/js/vendor/typeahead.js"></script>
         <script type="text/javascript" src="/static/js/models/model.event.js"></script>
         <script type="text/javascript" src="/static/js/views/view.popout.js"></script>
         <script type="text/javascript" src="/static/js/views/view.adminmenu.js"></script>
+        <script type="text/javascript" src="/static/js/views/view.events.js"></script>
+        <script type="text/javascript" src="/static/js/views/index.js"></script>
         <script type="text/javascript" src="/static/js/vendor/moment.js"></script>
-        <script type="text/javascript">
-            var v;
-            $(document).ready(function() {
-                v = new shifty.views.Popout();
-                v.render();
-
-                a = new shifty.views.AdminMenu();
-                a.render();
-            });
-
-            moment.lang('nb');
-        </script>
+        <script type="text/javascript" src="/static/js/app.shifty.js"></script>
     </head>
     <body>
     {% block header %}
@@ -50,13 +55,15 @@
                 <span class='yellow'>Y</span>
             </a>
         </div>
-        {% endblock %}    
+    {% endblock %}
     
-    <div class='container'>
+    <div class='container' id="content">
         {% block content %}
         {% endblock %}
     </div>
-    <div id="admin-menu">
-    </div>
+
+        <div id="admin-menu">
+            <!-- filled by Backbone -->
+        </div>
     </body>
 </html>

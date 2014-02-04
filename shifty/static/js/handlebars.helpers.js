@@ -12,3 +12,20 @@ Handlebars.registerHelper('formatTime', function(date) {
 
     return val;
 });
+
+/**
+ * Format date for handlebar
+ */
+Handlebars.registerHelper("formatDate", function(datetime, format)
+{
+    // TODO
+    //return datetime;
+    return moment(datetime).format(format);
+});
+
+/**
+ * Lower case method for handlebar
+ */
+Handlebars.registerHelper('toLowerCase', function(value) {
+    return value.toLowerCase();
+});

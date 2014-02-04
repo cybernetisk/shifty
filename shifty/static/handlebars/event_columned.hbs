@@ -1,5 +1,3 @@
-{{#each data}}
-
 <div class='event'>
 	<h2>{{ formatDate event.start "dddd D. MMMM YYYY" }} - {{ event.title }}</h2>
   	{{#each columns}}
@@ -12,13 +10,13 @@
 						({{twinsCount}})
 					{{/if}}
 				</div>
-				<div class='time'>{{ formatDate shift.start "hh:mm" }}-{{ formatDate shift.stop "hh:mm" }}</div>
+				<div class='time'>{{ formatDate shift.start "HH:mm" }}-{{ formatDate shift.stop "HH:mm" }}</div>
 
                 <div class='reveal-modal take_shift medium'>
                     <h2>Ta skift: {{shift.type}}</h2>
                     <hr/>
                     <span class='date'>{{ formatDate ../../event.start "dddd D. MMMM YYYY" }}</span>
-                    <span class='time'>{{ formatDate shift.start "hh:mm" }}-{{ formatDate shift.stop "hh:mm" }}</span>
+                    <span class='time'>{{ formatDate shift.start "HH:mm" }}-{{ formatDate shift.stop "HH:mm" }}</span>
 
                     <table>
                         {{#each twins}}
@@ -54,5 +52,3 @@
 		</div>
 	</column>		
 </div>
-
-{{/each}}

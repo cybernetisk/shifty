@@ -7,9 +7,6 @@ from django.core import serializers
 from django.utils import simplejson
 from django.forms.models import model_to_dict
 
-def index(request):
-    return render_to_response('shifty/index.html', {'name':'lol'})   
-
 
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
@@ -61,3 +58,6 @@ def take_shift(request):
         shift.save()
         return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
     return HttpResponse(simplejson.dumps({'status':'failed'}), mimetype='application/json')
+
+def backbone_router(request):
+    return render_to_response('shifty/base.html')
