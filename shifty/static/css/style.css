@@ -34,6 +34,24 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+.dropdown {
+  position: relative; }
+  .dropdown p {
+    padding: 5px;
+    margin: 0; }
+  .dropdown ul.dropdown-list {
+    position: absolute;
+    left: 0;
+    top: 28px;
+    width: 100%;
+    display: none;
+    padding: 0;
+    margin: 0; }
+    .dropdown ul.dropdown-list li {
+      list-style: none;
+      padding: 5px;
+      background: #333333; }
+
 .row {
   *zoom: 1;
   max-width: 68em;
@@ -173,6 +191,8 @@ table.datepicker {
     cursor: pointer; }
     table.datepicker td.today {
       color: #cccccc; }
+    table.datepicker td.other {
+      color: #666666; }
     table.datepicker td:hover {
       color: white; }
   table.datepicker tr.days th {
@@ -296,39 +316,43 @@ table.datepicker {
       margin-top: 10px;
       padding: 5px;
       background: #333333; }
-      .popout section .add-shift-box input[type=text] {
+      .popout section .add-shift-box input[type=text], .popout section .add-shift-box div {
         width: 100%;
         background: #121212;
         padding: 5px;
         color: #999999;
         border: 1px solid transparent;
         font-size: 12px; }
-        .popout section .add-shift-box input[type=text]:focus {
+        .popout section .add-shift-box input[type=text]:focus, .popout section .add-shift-box div:focus {
           outline: none; }
-        .popout section .add-shift-box input[type=text]:invalid {
+        .popout section .add-shift-box input[type=text]:invalid, .popout section .add-shift-box div:invalid {
           border-color: rgba(255, 0, 0, 0.5); }
-        .popout section .add-shift-box input[type=text]:focus {
+        .popout section .add-shift-box input[type=text]:focus, .popout section .add-shift-box div:focus {
           border-color: #666666; }
-        .popout section .add-shift-box input[type=text].count {
+        .popout section .add-shift-box input[type=text].count, .popout section .add-shift-box div.count {
           display: block;
           float: left;
           margin-right: 1.87727%;
           width: 11.70637%; }
-          .popout section .add-shift-box input[type=text].count:last-child {
+          .popout section .add-shift-box input[type=text].count:last-child, .popout section .add-shift-box div.count:last-child {
             margin-right: 0; }
-        .popout section .add-shift-box input[type=text].shifttype {
+        .popout section .add-shift-box input[type=text].shifttype, .popout section .add-shift-box div.shifttype {
           display: block;
           float: left;
           margin-right: 1.87727%;
-          width: 45.66546%; }
-          .popout section .add-shift-box input[type=text].shifttype:last-child {
+          width: 45.66546%;
+          margin-top: 2px;
+          height: 28px;
+          padding: 0px;
+          line-height: 18px; }
+          .popout section .add-shift-box input[type=text].shifttype:last-child, .popout section .add-shift-box div.shifttype:last-child {
             margin-right: 0; }
-        .popout section .add-shift-box input[type=text].start, .popout section .add-shift-box input[type=text].stop {
+        .popout section .add-shift-box input[type=text].start, .popout section .add-shift-box input[type=text].stop, .popout section .add-shift-box div.start, .popout section .add-shift-box div.stop {
           display: block;
           float: left;
           margin-right: 1.87727%;
           width: 18.49818%; }
-          .popout section .add-shift-box input[type=text].start:last-child, .popout section .add-shift-box input[type=text].stop:last-child {
+          .popout section .add-shift-box input[type=text].start:last-child, .popout section .add-shift-box input[type=text].stop:last-child, .popout section .add-shift-box div.start:last-child, .popout section .add-shift-box div.stop:last-child {
             margin-right: 0; }
     .popout section input[type=text] {
       width: 100%;

@@ -41,9 +41,10 @@ shifty.views.BarShifts = Backbone.View.extend({
         datepicker: true
     },
 
+    months: ["januar","februar", "mars", "april", "mai", "juni",
+        "juli", "august", "september", "oktober", "november", "desember"],
+
     events: {
-        "select .datepicker": "selectedDate",
-        "resize .datepicker": "resizeDate",
         "click .date-header": "toggleDatepicker",
         "click #save-shifts": "save",
         "keyup #event-comment": "comment",
@@ -52,6 +53,10 @@ shifty.views.BarShifts = Backbone.View.extend({
 
     initialize: function(){
         this.shifts = new shifty.collections.Shift();
+        this.datepicker = new shifty.views.DatePicker();
+
+        this.listenTo(this.datepicker, "resize", this.resizeDate);
+        this.listenTo(this.datepicker, "change", this.selectedDate);
     },
 
     render: function(){
@@ -73,19 +78,22 @@ shifty.views.BarShifts = Backbone.View.extend({
         var d = this.model.get("start");
 
         // Initialize the datepicker
-        this.$el.find(".datepicker").datepicker();
+        this.$el.find(".datepicker").append(this.datepicker.render());
 
         // Set the selected date
-        this.$el.find(".selected-date").html(d.getDate() + ". "+months[d.getMonth()]+" "+d.getFullYear());
+        this.$el.find(".selected-date").html(d.getDate() + ". "+this.months[d.getMonth()]+" "+d.getFullYear());
+
+        this.datepicker.setDate(d);
+        this.resizeDate();
 
         return this.el;
     },
 
-    resizeDate: function(e) {
-        this.$el.find("#sidebar-bar-date").css({height: 73+$(e.target).height()});
+    resizeDate: function() {
+        this.$("#sidebar-bar-date").css({height: 73+this.datepicker.$el.height()});
     },
 
-    selectedDate: function(e, d) {
+    selectedDate: function(d) {
         this.model.set({start: d});
 
         this.$el.find(".selected-date").html(d.getDate() + ". "+months[d.getMonth()]+" "+d.getFullYear());
@@ -105,41 +113,6 @@ shifty.views.BarShifts = Backbone.View.extend({
         }
     },
 
-    addShift: function(e) {
-        var $form = $(e.target);
-        var fields = $form.serializeArray();
-        var shift = {};
-
-        for (var i = 0; i < fields.length; i++) {
-            shift[fields[i].name] = fields[i].value;
-        }
-
-        var m = new shifty.models.Shift(shift);
-
-        if (m.isValid()) {
-            this.shifts.add(m);
-            this.render();
-        } else {
-            console.log(m.validationError);
-        }
-
-        return false;
-    },
-
-    editShift: function(e) {
-        var $el = $(e.target), i = $el.data("index"), m = this.shifts.at(i);
-
-        var $form = this.$el.find("form.shift-form");
-
-        for (var key in m.attributes) {
-            $form.find("input[name="+key+"]").val(m.get(key));
-        }
-
-        m.destroy();
-
-        $el.remove();
-    },
-
     comment: function(e) {
         this.model.set("comment", e.target.value);
     },
@@ -147,6 +120,7 @@ shifty.views.BarShifts = Backbone.View.extend({
     title: function(e) {
         this.model.set("title", e.target.value);
     },
+
     save: function() {
         var shifts = [];
 
@@ -213,6 +187,12 @@ shifty.views.ShiftList = Backbone.View.extend({
 
         // Get and render the template
         this.el.innerHTML = Handlebars.templates['sidebar.shiftlist'](context);
+
+        this.dropdown = new shifty.views.Dropdown({
+            el: this.$(".shifttype")
+        });
+
+        this.dropdown.render();
 
         return this.el;
     },

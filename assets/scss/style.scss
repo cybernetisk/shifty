@@ -52,6 +52,31 @@ table {
     border-spacing: 0;
 }
 
+.dropdown {
+    position:relative;
+
+    p {
+        padding:5px;
+        margin:0;
+    }
+
+    ul.dropdown-list {
+        position:absolute;
+        left:0;
+        top:28px;
+        width:100%;
+        display:none;
+        padding:0;
+        margin:0;
+
+        li {
+            list-style:none;
+            padding:5px;
+            background:lighten(black, 20%);
+        }
+    }
+}
+
 .row {
     @include outer-container;
 
@@ -109,6 +134,10 @@ table.datepicker {
 
         &.today {
             color:darken(white, 20%);
+        }
+
+        &.other {
+            color:darken(white, 60%);
         }
 
         &:hover {
@@ -274,7 +303,7 @@ table.datepicker {
             padding:5px;
             background:lighten(black, 20%);
 
-            input[type=text] {
+            input[type=text], div {
                 width:100%;
                 background:rgba(18,18,18,1);
                 padding:5px;
@@ -300,6 +329,10 @@ table.datepicker {
 
                 &.shifttype {
                     @include span-columns(7 of 15);
+                    margin-top:2px;
+                    height:28px;
+                    padding:0px;
+                    line-height:18px;
                 }
 
                 &.start, &.stop {
