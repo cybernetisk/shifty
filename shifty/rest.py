@@ -25,7 +25,6 @@ class EventViewSet(viewsets.ModelViewSet):
 
             result = response.data
             event_id = result['id']
-
             serializer = ShiftSerializer()
             for _shift in shifts:
                 try:
@@ -34,7 +33,6 @@ class EventViewSet(viewsets.ModelViewSet):
                     result['shifts'].append(json)
                 except Exception as ex:
                     pass
-
             return response
 
         return CreateModelMixin.create(self, request, *args, **kwargs)
