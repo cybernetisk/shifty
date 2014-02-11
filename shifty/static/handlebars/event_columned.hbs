@@ -3,7 +3,7 @@
   	{{#each columns}}
   		<column>
 			{{#each this}}
-			<div class="shift {{ shift.cssClass }} {{ shift.durationType }}" id="shift_{{ shift.id }}">
+			<div class="shift {{ cssClass }} {{ shift.durationType }}" id="shift_{{ shift.id }}">
 				<div class='title'>
 					{{ shift.shift_type.title }}
 					{{#if hasTwins }}
@@ -21,7 +21,7 @@
                     <table>
                         {{#each twins}}
                         <tr>
-                            <td class='{{ ../shift.cssClass }} shift_header'>{{ twinNum }}</td>
+                            <td class='{{ ../cssClass }} shift_header'>{{ twinNum }}</td>
                             <td>
                                 Navn<br>
                                 {{#if volunteer }}

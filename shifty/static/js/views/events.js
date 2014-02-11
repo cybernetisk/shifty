@@ -65,42 +65,24 @@ shifty.views.EventColumned = Backbone.View.extend({
     },
 
     /**
-     * Sort function to sort shifts by its shift type
-     */
-    sortByShiftType: function(left, right)
-    {
-        return right.shift_type.title - left.shift_type.title;
-    },
-
-    /**
-     * Check if two shifts is considered to be twins
-     */
-    shiftIsTwin: function(left, right)
-    {
-        return (left.shift_type.id == right.shift_type.id
-             && left.start == right.start
-             && left.stop == right.stop);
-    },
-
-    /**
      * Structure data to be used in columns
      */
     getShiftColumns: function()
     {
         var columns = [];
-        // self -> event
-
-        // sort shifts by its type
-        var shifts = this.model.get('shifts').sort(this.sortByShiftType);
-
+        //var shifts = this.model.get('shifts').sort(this.sortByShiftType);
+        var shifts = this.model.shifts;
+        
         var rowIndex = 0;
         var colIndex = -1;
         var twinCount = 0;
         var twins = [];
 
         var self = this;
-        $.each(shifts, function(i, shift)
+        var i = -1;
+        shifts.each(function(shift)
         {
+            i++;
             if (rowIndex == 0)
             {
                 columns.push([]);
@@ -109,25 +91,27 @@ shifty.views.EventColumned = Backbone.View.extend({
 
             // shift.start = ... _date(self.start, "H:i")
             // shift.stop = ... _date(self.stop, "H:i")
-            shift.cssClass = shift.shift_type.title.toLowerCase();
+            var data = shift.attributes;
+            var cssClass = data.shift_type.title.toLowerCase();
 
             // the following shift
-            var next = (i < shifts.length ? shifts[i+1] : null);
-            twins.push(shift);
+            var next = (i < shifts.models.length ? shifts.models[i+1] : null);
+            twins.push(data);
 
             // add the shift to the active column if it has no next or next is no twin
-            if (!next || !self.shiftIsTwin(shift, next))
+            if (!next || !shift.isTwin(next))
             {
                 columns[colIndex].push({
-                    'shift': shift, // used only for common data
+                    'shift': data,
+                    'cssClass': cssClass,
                     'twins': twins,
                     'twinsCount': twins.length,
                     'hasTwins': twins.length > 1
                 });
                 twins = [];
 
-                rowIndex = (shift.durationType == 'long' ? 0 : rowIndex + 1);
-                if (next && shift.shift_type.title != next.shift_type.title)
+                rowIndex = (data.durationType == 'long' ? 0 : rowIndex + 1);
+                if (next && data.shift_type.title != next.attributes.shift_type.title)
                 {
                     rowIndex = 0;
                 }

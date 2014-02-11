@@ -2,7 +2,7 @@ shifty.models.Shift = Backbone.Model.extend({
     urlRoot: "/rest/shift/",
 
     initialize: function(attrs) {
-        var self = this;
+        
     },
 
     validate: function(attrs, options) {
@@ -24,77 +24,35 @@ shifty.models.Shift = Backbone.Model.extend({
 
     setDate: function(date) {
         // Update start and stop to be static dates, not relative times
+    },
+
+    /**
+     * Check if shift is twin with another
+     */
+    isTwin: function(other)
+    {
+        return (this.attributes.shift_type.id == other.attributes.shift_type.id
+             && this.attributes.start == other.attributes.start
+             && this.attributes.stop == other.attributes.stop);
     }
 });
 
 shifty.collections.Shift = Backbone.Collection.extend({
-    model: shifty.models.Shift
+    model: shifty.models.Shift,
+    
+    /**
+     * Sort function to sort shifts by its shift type
+     */
+    comparator: function(left, right)
+    {
+        return right.get('shift_type').title - left.get('shift_type').title;
+    }
 });
 
 shifty.models.Event = Backbone.Model.extend({
     initialize: function(attributes) {
         this.shifts = new shifty.collections.Shift(attributes.shifts);
     }
-
-    /**
-     * Sort function to sort shifts by its shift type
-     */
-    /*shiftsByShiftType: function(left, right)
-    {
-        return right.get('shift_type') - left.get('shift_type');
-    },
-
-    getShiftColumns: function()
-    {
-        var columns = [];
-        // self -> event
-
-        // sort shifts by its type
-        this.shifts.comparator = this.shiftsByShiftType;
-        var shifts = this.shifts.sort();
-
-        var rowIndex = 0;
-        var colIndex = -1;
-        var twinCount = 0;
-        var twins = [];
-
-        for (var i = this.shifts.size() - 1; i >= 0; i--) {
-            if (rowIndex == 0)
-            {
-                columns.push([]);
-                colIndex++;
-            }
-
-            // shift.start = ... _date(self.start, "H:i")
-            // shift.stop = ... _date(self.stop, "H:i")
-            var shift = this.shifts.at().toJson();
-            shift.cssClass = shift.get('shift_type').title.toLowerCase();
-
-            // the following shift
-            var next = (this.shifts.at() < this.shifts.length ? this.shifts[this.shifts.at()+1] : null);
-            twins.push(shift);
-
-            // add the shift to the active column if it has no next or next is no twin
-            if (!next || !shiftIsTwin(shift, next))
-            {
-                columns[colIndex].push({
-                    'shift': shift, // used only for common data
-                    'twins': twins,
-                    'twinsCount': twins.length,
-                    'hasTwins': twins.length > 1
-                });
-                twins = [];
-
-                rowIndex = (shift.durationType == 'long' ? 0 : rowIndex + 1);
-                if (next && shift.shift_type.title != next.shift_type.title)
-                {
-                    rowIndex = 0;
-                }
-            }
-        };
-
-        return columns;
-    }*/
 });
 
 shifty.collections.Events = Backbone.Collection.extend({
