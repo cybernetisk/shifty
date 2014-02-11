@@ -63,6 +63,23 @@ body{
 	}
 }
 
+.filter {
+	padding-right: 10px;
+	margin-top: -10px;
+
+	img {
+		&.active{
+			background-color: #ededed;
+		}
+		&:hover{
+			background-color: #ededed;	
+		}
+	}
+	.view_shifts_columns{
+		margin-left: 15px;
+	}
+}
+
 .skjenkemester {
    	background: $blue;
    	border: 1px solid darken($blue, 10%);

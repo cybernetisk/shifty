@@ -48,6 +48,16 @@ body {
   .event_list table tr:hover {
     background-color: #ededed; }
 
+.filter {
+  padding-right: 10px;
+  margin-top: -10px; }
+  .filter img.active {
+    background-color: #ededed; }
+  .filter img:hover {
+    background-color: #ededed; }
+  .filter .view_shifts_columns {
+    margin-left: 15px; }
+
 .skjenkemester {
   background: #5bc0de;
   border: 1px solid #31b0d5; }
