@@ -16,6 +16,10 @@ from shifty.models import Shift, Event, ShiftType
 import datetime
 from django.utils.timezone import utc
 
+
+from rest_framework.test import APIRequestFactory
+
+
 def now():
     return datetime.datetime.utcnow().replace(tzinfo=utc)
 
@@ -96,3 +100,56 @@ class SimpleTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(shift.volunteer, None)
         self.assertEqual(shift.comment, "larsrsgasrgol")
+
+
+
+from django.core.urlresolvers import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+
+class EventAndShiftTest(APITestCase):
+    def test_create_event_with_no_shifts(self):
+        data = {
+                "title": "lol", 
+                "description": "ajsriosjgor", 
+                "start": "2013-10-09T16:00:00Z", 
+                "shifts": []
+            }
+        response = self.client.post('/rest/event/', data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = Event.objects.filter(title='lol', description='ajsriosjgor').all()
+        self.assertEqual(1, len(data))
+
+    def test_create_multiple_shifts_in_one_post(self):
+        self.shift_type = ShiftType(title="test")
+        self.shift_type.save()
+
+        data = \
+            {
+                "title": "l4ol", 
+                "description": "ajsriosjgor", 
+                "start": "2013-10-09T16:00:00Z", 
+                "shifts": [{
+                                "shift_type_id":self.shift_type.id, 
+                                "start": "2013-12-13T20:00:00Z", 
+                                "stop": "2013-12-14T01:00:00Z", 
+                                "comment": "", 
+                            },
+                            {
+                                "shift_type_id":self.shift_type.id, 
+                                "start": "2013-12-13T20:00:00Z", 
+                                "stop": "2013-12-14T01:00:00Z", 
+                                "comment": "", 
+                            }]
+            }
+        response = self.client.post('/rest/event/', data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        data = Event.objects.filter(title='l4ol', description='ajsriosjgor').all()
+        
+        self.assertEqual(1, len(data))
+
+        shifts = Shift.objects.all()
+        self.assertEqual(2, len(shifts))

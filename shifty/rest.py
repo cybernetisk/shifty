@@ -4,11 +4,40 @@ from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerial
 from models import Event, Shift, ShiftType, User
 
 
+from django.core import serializers
+
+from shifty.serializers import ShiftSerializer
+from rest_framework.mixins import CreateModelMixin
+
 class EventViewSet(viewsets.ModelViewSet):
 
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
+    """
+    Create a model instance.
+    """
+    def create(self, request, *args, **kwargs):
+        if isinstance(request.DATA, dict) and len(request.DATA['shifts']) > 0:
+            shifts = request.DATA['shifts']
+            request.DATA['shifts'] = []
+            tmp = CreateModelMixin.create(self, request, *args, **kwargs)
+            
+            result = tmp.__dict__['data']
+
+            event_id = result['id']
+
+            serializer = ShiftSerializer()
+            for _shift in shifts:
+                _s = Shift(event_id=event_id, **_shift)
+                _s.save()
+                _s = Shift.objects.get(pk=_s.id)
+                json = serializer.to_native(_s)
+                result['shifts'].append(json)
+
+            return tmp
+
+        return CreateModelMixin.create(self, request, *args, **kwargs)
 
 
 class ShiftViewSet(viewsets.ModelViewSet):
