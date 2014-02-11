@@ -28,11 +28,14 @@ class EventViewSet(viewsets.ModelViewSet):
 
             serializer = ShiftSerializer()
             for _shift in shifts:
-                _s = Shift(event_id=event_id, **_shift)
-                _s.save()
-                _s = Shift.objects.get(pk=_s.id)
-                json = serializer.to_native(_s)
-                result['shifts'].append(json)
+                try:
+                    _s = Shift(event_id=event_id, **_shift)
+                    _s.save()
+                    _s = Shift.objects.get(pk=_s.id)
+                    json = serializer.to_native(_s)
+                    result['shifts'].append(json)
+                except Exception as ex:
+                    pass
 
             return response
 
