@@ -35,9 +35,9 @@ table {
   border-spacing: 0; }
 
 .dropdown {
-  position: relative; }
+  position: relative;
+  height: 28px; }
   .dropdown p {
-    padding: 5px;
     margin: 0; }
   .dropdown ul.dropdown-list {
     position: absolute;
@@ -51,6 +51,8 @@ table {
       list-style: none;
       padding: 5px;
       background: #333333; }
+      .dropdown ul.dropdown-list li.selected {
+        background-color: #4d4d4d; }
 
 .row {
   *zoom: 1;
@@ -344,7 +346,8 @@ table.datepicker {
           margin-top: 2px;
           height: 28px;
           padding: 0px;
-          line-height: 18px; }
+          line-height: 18px;
+          border: none; }
           .popout section .add-shift-box input[type=text].shifttype:last-child, .popout section .add-shift-box div.shifttype:last-child {
             margin-right: 0; }
         .popout section .add-shift-box input[type=text].start, .popout section .add-shift-box input[type=text].stop, .popout section .add-shift-box div.start, .popout section .add-shift-box div.stop {

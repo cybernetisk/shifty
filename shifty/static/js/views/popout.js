@@ -96,7 +96,7 @@ shifty.views.BarShifts = Backbone.View.extend({
     selectedDate: function(d) {
         this.model.set({start: d});
 
-        this.$el.find(".selected-date").html(d.getDate() + ". "+months[d.getMonth()]+" "+d.getFullYear());
+        this.$el.find(".selected-date").html(d.getDate() + ". "+this.months[d.getMonth()]+" "+d.getFullYear());
 
         this.toggleDatepicker();
     },
@@ -181,18 +181,23 @@ shifty.views.ShiftList = Backbone.View.extend({
     },
 
     render: function() {
-        console.log(this);
         var context = {};
         context.shifts = this.collection.toJSON();
 
         // Get and render the template
         this.el.innerHTML = Handlebars.templates['sidebar.shiftlist'](context);
 
-        this.dropdown = new shifty.views.Dropdown({
-            el: this.$(".shifttype")
-        });
+        if (!this.dropdown) {
+            this.dropdown = new shifty.views.Dropdown({
+                name: "shifttype"
+            });
 
-        this.dropdown.render();
+            this.dropdown.render();
+        } else {
+            this.dropdown.reset();
+        }
+
+        this.$(".shifttype").append(this.dropdown.$el);
 
         return this.el;
     },

@@ -54,9 +54,9 @@ table {
 
 .dropdown {
     position:relative;
+    height:28px;
 
     p {
-        padding:5px;
         margin:0;
     }
 
@@ -73,6 +73,10 @@ table {
             list-style:none;
             padding:5px;
             background:lighten(black, 20%);
+
+            &.selected {
+                background-color:lighten(black, 30%);
+            }
         }
     }
 }
@@ -333,6 +337,7 @@ table.datepicker {
                     height:28px;
                     padding:0px;
                     line-height:18px;
+                    border:none;
                 }
 
                 &.start, &.stop {
