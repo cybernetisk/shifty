@@ -1,6 +1,6 @@
 {{#each events}}
     <div class='event_list'>
-                <h2>{{title}}{{formatDate start "dddd D. MMMM YYYY"}}</h2>
+                <h2>{{title}} - {{formatDate start "dddd D. MMMM YYYY"}}</h2>
             <h4>{{description}}</h4>
         <table>
             {{#each shifts}}
@@ -8,16 +8,20 @@
                     <td class='shift {{toLowerCase shift_type.title}}'>
                     </td>
                     <td class='list_view'>  
-                        {{shift_type.title}}
+                        <b>{{shift_type.title}}</b>
                     </td>
                     <td class='list_view'>
-                        {{formatDate event.start "dddd D."}}
+                        {{formatDate start "hh:mm" }}-{{ formatDate stop "hh:mm" }}
                     </td>
-                    <td class='list_view'>
-                        {{formatDate start "hh:mm" }}-{{ formatDate stop "hh:mm" }}-{{duration}} Hours
+                    <td>
+                        {{duration}} timer
+                    </td>
+                    <td>
+                        Ledig
                     </td>
                 </tr>
             {{/each}}
         </table>
     </div>
+
 {{/each}}

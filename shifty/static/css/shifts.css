@@ -41,6 +41,13 @@ body {
         font-size: 22px;
         padding-bottom: 5px; }
 
+.event_list table {
+  margin-bottom: 50px; }
+  .event_list table td {
+    padding: 15px; }
+  .event_list table tr:hover {
+    background-color: #ededed; }
+
 .skjenkemester {
   background: #5bc0de;
   border: 1px solid #31b0d5; }

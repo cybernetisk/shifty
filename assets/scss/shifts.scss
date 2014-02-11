@@ -48,7 +48,20 @@ body{
 	}
 }
 
+.event_list {
+	table {
+		margin-bottom: 50px;
+		td {
+			padding: 15px;
+		}
+		tr {
+			&:hover{
+				background-color: #ededed;	
+			}
+		}
 
+	}
+}
 
 .skjenkemester {
    	background: $blue;
