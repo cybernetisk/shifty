@@ -21,10 +21,9 @@ class EventViewSet(viewsets.ModelViewSet):
         if isinstance(request.DATA, dict) and len(request.DATA['shifts']) > 0:
             shifts = request.DATA['shifts']
             request.DATA['shifts'] = []
-            tmp = CreateModelMixin.create(self, request, *args, **kwargs)
+            response = CreateModelMixin.create(self, request, *args, **kwargs)
             
-            result = tmp.__dict__['data']
-
+            result = response.data
             event_id = result['id']
 
             serializer = ShiftSerializer()
@@ -35,7 +34,7 @@ class EventViewSet(viewsets.ModelViewSet):
                 json = serializer.to_native(_s)
                 result['shifts'].append(json)
 
-            return tmp
+            return response
 
         return CreateModelMixin.create(self, request, *args, **kwargs)
 
