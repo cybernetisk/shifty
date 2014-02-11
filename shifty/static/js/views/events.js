@@ -3,6 +3,8 @@ shifty.views.Events = Backbone.View.extend({
     id: "events",
 
     events: {
+        'click .view_shifts_columns': 'columnsView',
+        'click .view_shifts_table': 'tableView'
     },
 
     initialize: function(el) {
@@ -16,12 +18,29 @@ shifty.views.Events = Backbone.View.extend({
     },
 
     render: function() {
+        this.$el.html(Handlebars.templates.events());
+        this.sub = this.$(".events_wrap");
+        this.columnsView();
+        return this.el;
+    },
+
+    columnsView: function(e)
+    {
+        if (e) e.preventDefault();
+        this.sub.empty();
         this.collection.each(function(ev) {
             var v = new shifty.views.EventColumned({model: ev});
-            this.$el.append(v.render());
+            this.sub.append(v.render());
         }.bind(this));
+    },
 
-        return this.el;
+    tableView: function(e)
+    {
+        if (e) e.preventDefault();
+        this.sub.empty();
+        this.sub.html(Handlebars.templates.event_list({
+            'events': this.collection.toJSON()
+        }));
     }
 });
 
