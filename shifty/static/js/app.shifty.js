@@ -30,10 +30,7 @@ function ViewHandler(baseView) {
 
 $(document).ready(function() {
     (function() {
-        var v, a;
-        v = new shifty.views.Popout();
-        v.render();
-
+        var a;
         a = new shifty.views.AdminMenu();
         a.render();
     })();

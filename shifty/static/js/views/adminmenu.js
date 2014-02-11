@@ -16,6 +16,9 @@ shifty.views.AdminMenu = Backbone.View.extend({
 
         this.$menuItems = this.$el.find(".menu-items");
         this.$toggleButton = this.$el.find(".toggle-button");
+
+        this.v = new shifty.views.Popout();
+        this.v.render();
     },
 
     toggle: function(e) {
@@ -31,6 +34,6 @@ shifty.views.AdminMenu = Backbone.View.extend({
     },
 
     bar: function(e) {
-        v.show();
+        this.v.show();
     }
 });
