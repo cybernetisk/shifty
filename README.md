@@ -7,5 +7,13 @@
 3. run `./migrate.sh`
 4. run `python manage.py runserver` to start the development web server
 
+### Scss-files
+Need SASS to generate css-files from scss
+* `gem install sass --pre`
+
+To genereate CSS the watcher script must run:
+* `./watcher.sh`
+
+### Fixtures
 To install fixtures:
 * ```./manage.py loaddata shifts```
