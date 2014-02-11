@@ -29,3 +29,13 @@ Handlebars.registerHelper("formatDate", function(datetime, format)
 Handlebars.registerHelper('toLowerCase', function(value) {
     return value.toLowerCase();
 });
+
+Handlebars.registerHelper('calculateBongs', function(start, stop) {
+    var val = 0;
+
+    var ms = moment(stop).diff(moment(start));
+    var hours = moment.duration(ms).hours();
+    val = Math.floor(hours/2);
+
+    return val;
+});

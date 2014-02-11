@@ -101,8 +101,14 @@ body{
 		padding: 4px 20px 4px 27px;
 	}
 
+	.bong {
+		@include background(url("../images/bong.png") left center no-repeat);
+		padding: 6px 25px 4px 38px;
+	}
+
 	table {
 		margin-top: 30px;
+		margin-bottom: 30px;
 		margin-left: -10px;
 		border-collapse: separate;
     	border-spacing: 10px;
@@ -128,10 +134,10 @@ body{
 	}
 
 	.name {
-		width: 120px;
+		width: 220px;
 	}
 	.comment {
-		width: 300px;
+		width: 350px;
 	}
 }
 

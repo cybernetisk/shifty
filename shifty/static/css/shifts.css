@@ -79,8 +79,13 @@ body {
   background: url("../images/time.png") left center no-repeat;
   background: url("../images/time.png") left center no-repeat;
   padding: 4px 20px 4px 27px; }
+.take_shift .bong {
+  background: url("../images/bong.png") left center no-repeat;
+  background: url("../images/bong.png") left center no-repeat;
+  padding: 6px 25px 4px 38px; }
 .take_shift table {
   margin-top: 30px;
+  margin-bottom: 30px;
   margin-left: -10px;
   border-collapse: separate;
   border-spacing: 10px; }
@@ -98,6 +103,6 @@ body {
     padding: 5px;
     border: 1px solid #ededed; }
 .take_shift .name {
-  width: 120px; }
+  width: 220px; }
 .take_shift .comment {
-  width: 300px; }
+  width: 350px; }

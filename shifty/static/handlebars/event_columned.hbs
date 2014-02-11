@@ -13,10 +13,11 @@
 				<div class='time'>{{ formatDate shift.start "HH:mm" }}-{{ formatDate shift.stop "HH:mm" }}</div>
 
                 <div class='reveal-modal take_shift medium'>
-                    <h2>Ta skift: {{shift.type}}</h2>
+                    <h2>Ta skift: {{shift.shift_type.title }}</h2>
                     <hr/>
                     <span class='date'>{{ formatDate ../../event.start "dddd D. MMMM YYYY" }}</span>
                     <span class='time'>{{ formatDate shift.start "HH:mm" }}-{{ formatDate shift.stop "HH:mm" }}</span>
+                    <span class='bong'>{{ calculateBongs shift.start shift.stop }} bonger</span>
 
                     <table>
                         {{#each twins}}
@@ -36,11 +37,8 @@
                             </td>
                         </tr>
                         {{/each}}
-                        <tr>
-                            <td colspan='3'><a href="#" class='button small success'>Lagre endringer</a></td>
-                        </tr>
                     </table>
-                    
+                    <a href="#" class='button small success take_shift_button'>Lagre endringer</a>
                     <a class="close-reveal-modal">&#215;</a>
                 </div>        
 			</div>
