@@ -65,11 +65,13 @@ $(document).ready(function() {
 });
 
 // push local links through router
+// TODO: This should probably be improved --henrste
 $(document).on("click", "a:not([data-bypass])", function(evt) {
     var app = {root: ''};
     var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
     var root = location.protocol + "//" + location.host + app.root;
 
+    if (href.attr == "#") return;
     if (href.prop && href.prop.slice(0, root.length) === root) {
         evt.preventDefault();
         Backbone.history.navigate(href.attr, true);
