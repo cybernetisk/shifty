@@ -22,16 +22,14 @@ class EventViewSet(viewsets.ModelViewSet):
             shifts = request.DATA['shifts']
             request.DATA['shifts'] = []
             response = CreateModelMixin.create(self, request, *args, **kwargs)
-            
+
             result = response.data
             event_id = result['id']
 
             serializer = ShiftSerializer()
             for _shift in shifts:
                 try:
-                    _s = Shift(event_id=event_id, **_shift)
-                    _s.save()
-                    _s = Shift.objects.get(pk=_s.id)
+                    _s = Shift(event_id=event_id, **_shift).save()
                     json = serializer.to_native(_s)
                     result['shifts'].append(json)
                 except Exception as ex:
