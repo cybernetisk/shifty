@@ -146,6 +146,8 @@ class EventAndShiftTest(APITestCase):
         response = self.client.post('/rest/event/', data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(isinstance(response.data, dict))
+        self.assertEqual(2, len(response.data['shifts']))
         
         data = Event.objects.filter(title='l4ol', description='ajsriosjgor').all()
         
@@ -153,6 +155,8 @@ class EventAndShiftTest(APITestCase):
 
         shifts = Shift.objects.all()
         self.assertEqual(2, len(shifts))
+
+
 
     def test_create_event_with_bad_shift(self):
         self.shift_type = ShiftType(title="test")
@@ -178,11 +182,15 @@ class EventAndShiftTest(APITestCase):
             }
         response = self.client.post('/rest/event/', data, format='json')
 
+        # Since one of the shifts had a invalid date we should have one error.
+        self.assertEqual(1, len(response.data['errors']))
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        
         data = Event.objects.filter(title='l4ol', description='ajsriosjgor').all()
-        
+
+        # we should have one data entry
         self.assertEqual(1, len(data))
 
+        # We should still have one shift
         shifts = Shift.objects.all()
         self.assertEqual(1, len(shifts))
