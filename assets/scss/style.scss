@@ -397,3 +397,11 @@ table.datepicker {
         }
     }
 }
+
+
+/**
+ * Avoid gray color on disable input (provided by typeahead)
+ */
+.tt-hint {
+    background-color: transparent;
+}
