@@ -6,9 +6,13 @@
 
 
 $blue: rgba(91,192,222,1);
+$bluetaken: rgba(91,192,222,0.5);
 $green: rgba(92,184,92,1);
+$greentaken: rgba(92,184,92,0.5);
 $yellow: rgba(240,173,78,1);
+$yellowtaken: rgba(240,173,78,0.5);
 $red: rgba(217,83,79,1);
+$redtaken: rgba(217,83,79,0.5);
 
 body{
 	margin: 0px;
@@ -59,7 +63,10 @@ body{
 				background-color: #ededed;	
 			}
 		}
+	}
 
+	.taken {
+		opacity: 0.6;
 	}
 }
 
@@ -84,20 +91,40 @@ body{
    	background: $blue;
    	border: 1px solid darken($blue, 10%);
 }
+.taken .skjenkemester,
+.taken.skjenkemester {
+	background: $bluetaken;
+	border-color: $bluetaken;
+}
 
 .barfunk {
     background: $green;
     border: 1px solid darken($green, 10%);
+}
+.taken .barfunk,
+.taken.barfunk {
+	background: $greentaken;
+	border-color: $greentaken;
 }
 
 .vakt {
     background: $yellow;
     border: 1px solid darken($yellow, 10%);
 }
+.taken .vakt,
+.taken.vakt {
+	background: $yellowtaken;
+	border-color: $yellowtaken;
+}
 
 .dj {
     background: $red;
     border: 1px solid darken($red, 10%);
+}
+.taken .dj,
+.taken.dj {
+	background: $redtaken;
+	border-color: $redtaken;
 }
 
 .short {

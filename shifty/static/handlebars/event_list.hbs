@@ -3,7 +3,7 @@
     <h4>{{description}}</h4>
     <table>
         {{#each shifts}}
-        <tr class='shift' id="shift_{{id}}">
+        <tr class='shift{{#if volunteer}} taken{{/if}}' id="shift_{{id}}">
             <td class='shift {{toLowerCase shift_type.title}}'>
             </td>
             <td class='list_view'>  
@@ -16,7 +16,11 @@
                 {{duration}} timer
             </td>
             <td>
-                Ledig
+                {{#if volunteer}}
+                    {{volunteer.first_name}} {{volunteer.last_name}} ({{volunteer.username}})
+                {{else}}
+                    Ledig
+                {{/if}}
                 <div class="take_shift_wrap"></div>
             </td>
         </tr>

@@ -167,6 +167,7 @@ shifty.views.EventColumned = Backbone.View.extend({
 
         var self = this;
         var i = -1;
+        var available = false;
         this.grouplinks = {};
         shifts.each(function(shift)
         {
@@ -185,6 +186,7 @@ shifty.views.EventColumned = Backbone.View.extend({
             // the following shift
             var next = (i < shifts.models.length ? shifts.models[i+1] : null);
             twins.push(data);
+            if (!data.volunteer) available = true;
 
             // add the shift to the active column if it has no next or next is no twin
             if (!next || !shift.isTwin(next))
@@ -194,10 +196,12 @@ shifty.views.EventColumned = Backbone.View.extend({
                     'cssClass': cssClass,
                     'twins': twins,
                     'twinsCount': twins.length,
-                    'hasTwins': twins.length > 1
+                    'hasTwins': twins.length > 1,
+                    'available': available
                 });
                 self.grouplinks[data.id] = columns[colIndex][columns[colIndex].length-1];
                 twins = [];
+                available = false;
 
                 rowIndex = (data.durationType == 'long' ? 0 : rowIndex + 1);
                 if (next && data.shift_type.title != next.attributes.shift_type.title)
