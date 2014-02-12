@@ -1,0 +1,36 @@
+{{!
+input variables:
+* shift
+* event
+* twins
+* cssClass
+}}
+<div class='reveal-modal take_shift medium'>
+    <h2>Ta skift: {{shift.shift_type.title }}</h2>
+    <hr/>
+    <span class='date'>{{ formatDate event.start "dddd D. MMMM YYYY" }}</span>
+    <span class='time'>{{ formatDate shift.start "HH:mm" }}-{{ formatDate shift.stop "HH:mm" }}</span>
+    <span class='bong'>{{ calculateBongs shift.start shift.stop }} bonger</span>
+
+    <table>
+        {{#each twins}}
+        <tr>
+            <td class='{{ ../cssClass }} shift_header'>{{ twinNum }}</td>
+            <td>
+                Navn<br>
+                {{#if volunteer }}
+                <input type="text" name="name" class="name user_search" value="{{ volunteer.username }}">
+                {{else}}
+                <input type="text" name="name" class="name user_search" value="">
+                {{/if}}
+            </td>
+            <td>
+                Kommentar<br>
+                <input type="text" name="comment" class="comment" size="27" value="{{ comment }}">
+            </td>
+        </tr>
+        {{/each}}
+    </table>
+    <a href="#" class='button small success take_shift_button'>Lagre endringer</a>
+    <a class="close-reveal-modal">&#215;</a>
+</div>        

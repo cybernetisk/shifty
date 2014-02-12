@@ -1,10 +1,9 @@
-{{#each events}}
 <div class='event_list'>
     <h2>{{title}} - {{formatDate start "dddd D. MMMM YYYY"}}</h2>
     <h4>{{description}}</h4>
     <table>
         {{#each shifts}}
-        <tr class='take_shift_row'>
+        <tr class='shift' id="shift_{{id}}">
             <td class='shift {{toLowerCase shift_type.title}}'>
             </td>
             <td class='list_view'>  
@@ -18,38 +17,9 @@
             </td>
             <td>
                 Ledig
-                <div class='reveal-modal take_shift medium'>
-                    <h2>Ta skift: {{this.shift_type.title }}</h2>
-                    <hr/>
-                    <span class='date'>{{ formatDate start "dddd D. MMMM YYYY" }}</span>
-                    <span class='time'>{{ formatDate this.start "HH:mm" }}-{{ formatDate this.stop "HH:mm" }}</span>
-                    <span class='bong'>{{ calculateBongs this.start this.stop }} bonger</span>
-
-                    <table>
-                        {{#each twins}}
-                        <tr>
-                            <td class='{{ ../cssClass }} shift_header'>{{ twinNum }}</td>
-                            <td>
-                                Navn<br>
-                                {{#if volunteer }}
-                                <input type="text" name="name" class="name user_search" value="{{ volunteer.username }}">
-                                {{else}}
-                                <input type="text" name="name" class="name user_search" value="">
-                                {{/if}}
-                            </td>
-                            <td>
-                                Kommentar<br>
-                                <input type="text" name="comment" class="comment" size="27" value="{{ comment }}">
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </table>
-                    <a href="#" class='button small success take_shift_button'>Lagre endringer</a>
-                    <a class="close-reveal-modal">&#215;</a>
-                </div>  
+                <div class="take_shift_wrap"></div>
             </td>
         </tr>
         {{/each}}
     </table>
 </div>
-{{/each}}

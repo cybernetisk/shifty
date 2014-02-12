@@ -27,25 +27,78 @@ shifty.views.Events = Backbone.View.extend({
     columnsView: function(e)
     {
         if (e) e.preventDefault();
-        this.sub.empty();
-        this.collection.each(function(ev) {
-            var v = new shifty.views.EventColumned({model: ev});
-            this.sub.append(v.render());
-        }.bind(this));
+        this.genView(shifty.views.EventColumned);
     },
 
     tableView: function(e)
     {
         if (e) e.preventDefault();
+        this.genView(shifty.views.EventTable);
+    },
+
+    genView: function(viewModel)
+    {
         this.sub.empty();
-        this.sub.html(Handlebars.templates.event_list({
-            'events': this.collection.toJSON()
-        }));
+        this.collection.each(function(ev) {
+            var v = new viewModel({model: ev});
+            v.parentView = this;
+            this.sub.append(v.render());
+        }.bind(this));
+    },
+
+    takeShiftBox: function(wrap, block)
+    {
+        // generate take shift-box and show it
+        wrap.html(Handlebars.templates.event_take_shift(block));
+        wrap.find(".take_shift").foundation('reveal', 'open', {
+            animation: 'fade',
+            animationSpeed: 100,
+            closeOnBackgroundClick: true,
+            dismissModalClass: 'close-reveal-modal'
+        });
     }
 });
 
+shifty.views.EventTable = Backbone.View.extend({
+    parentView: null,
+    events: {
+        'click .shift': 'takeShift'
+    },
+
+    render: function()
+    {
+        return this.$el.html(Handlebars.templates.event_list(this.model.toJSON()));
+    },
+
+    takeShift: function(ev)
+    {
+        // fint the shift element
+        var obj = $(ev.currentTarget);
+        if (!obj.hasClass("shift")) obj = obj.parent(".shift");
+
+        // find data for this block
+        var shift_id = obj.attr('id').substring(6);
+        console.log("takeShift", this);
+
+        var data = this.model.shifts.get(shift_id).attributes;
+        var block = {
+            'event': this.model.attributes,
+            'shift': data,
+            'cssClass': data.shift_type.title.toLowerCase(),
+            'twins': [data],
+            'twinsCount': 1,
+            'hasTwins': false
+        };
+
+        // generate take shift-box
+        block = $.extend(block, {'event': this.model.toJSON()});
+        this.parentView.takeShiftBox(obj.find(".take_shift_wrap"), block);
+    }
+})
+
 shifty.views.EventColumned = Backbone.View.extend({
     events: {
+        'click .shift': 'takeShift'
     },
 
     initialize: function(el) {
@@ -83,6 +136,21 @@ shifty.views.EventColumned = Backbone.View.extend({
         return this.el;
     },
 
+    takeShift: function(ev)
+    {
+        // fint the shift element
+        var obj = $(ev.currentTarget);
+        if (!obj.hasClass("shift")) obj = obj.parent(".shift");
+
+        // find data for this block
+        var shift_id = obj.attr('id').substring(6);
+        var block = this.grouplinks[shift_id];
+
+        // generate take shift-box
+        block = $.extend(block, {'event': this.model.toJSON()});
+        this.parentView.takeShiftBox(obj.find(".take_shift_wrap"), block);
+    },
+
     /**
      * Structure data to be used in columns
      */
@@ -99,6 +167,7 @@ shifty.views.EventColumned = Backbone.View.extend({
 
         var self = this;
         var i = -1;
+        this.grouplinks = {};
         shifts.each(function(shift)
         {
             i++;
@@ -127,6 +196,7 @@ shifty.views.EventColumned = Backbone.View.extend({
                     'twinsCount': twins.length,
                     'hasTwins': twins.length > 1
                 });
+                self.grouplinks[data.id] = columns[colIndex][columns[colIndex].length-1];
                 twins = [];
 
                 rowIndex = (data.durationType == 'long' ? 0 : rowIndex + 1);

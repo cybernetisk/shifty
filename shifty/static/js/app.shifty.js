@@ -78,18 +78,6 @@ $(document).on("click", "a:not([data-bypass])", function(evt) {
     }
 });
 
-// popup-box on events for columns
-$(document).ready(function() {   
-    $(document).on("click", ".shift", function() {
-        $("> .take_shift" ,this).foundation('reveal', 'open', {
-            animation: 'fade',
-            animationSpeed: 100,
-            closeOnBackgroundClick: true,
-            dismissModalClass: 'close-reveal-modal'
-        });
-    });
-});
-
 // popup-box on events for tables
 $(document).ready(function() {   
     $(document).on("click", ".take_shift_row", function() {
