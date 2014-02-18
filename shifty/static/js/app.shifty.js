@@ -46,8 +46,11 @@ $(document).ready(function() {
             },
 
             index: function() {
-                var v = new shifty.views.Index();
-                vh.push(v, true);
+                var c = new shifty.collections.Events();
+                var v = new shifty.views.Index({
+                    collection: c
+                });
+                vh.push(v, c.fetch({ page: 1, page_size: 5 }));
             },
 
             events: function() {

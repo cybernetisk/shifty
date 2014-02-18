@@ -7,7 +7,8 @@ shifty.views.Index = Backbone.View.extend({
     },
 
     render: function() {
-        this.el.innerHTML = Handlebars.templates.index();
+        this.el.innerHTML = Handlebars.templates.index({ upcomingEvents: this.collection.toJSON() });
+        console.log(this.collection.toJSON());
         return this.el;
     }
 });

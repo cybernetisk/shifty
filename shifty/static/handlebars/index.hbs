@@ -1,6 +1,24 @@
+<div class='panel right upcoming'>
+<h3><i>Neste arrangement i Escape</i></h3>
+<table>
+{{#each upcomingEvents }}
+	<tr>
+	<th class='dj'></th>
+	<th>{{ title }}</th>
+	</tr>
+	<tr>
+	<td colspan='2'>{{formatDate start "dddd D. MMMM YYYY"}}</td>
+	</tr>
+{{/each}}
+</table>
+</div>
+
+
+
 <h1>Velkommen til Shifty!</h1>
 <p>Shifty er under utvikling og ikke enda klart for bruk.</p>
 <p>CybWebDev driver aktivt med utvikling!</p>
 
 <!--<p>hei {-{name}-}!</p>-->
 <p><a href='/events'>Arrangementoversikt &raquo;</a></p>
+
