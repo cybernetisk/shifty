@@ -61,7 +61,7 @@ shifty.collections.Events = Backbone.Collection.extend({
     url: function() {
         // TODO: use https://github.com/backbone-paginator/backbone.paginator ?
         // TODO: handle 404 if page not found
-        return '/rest/event/?' + $.param({page: this.page, page_size: 10});
+        return '/rest/event/'; //?' + $.param({page: this.page, page_size: 10});
     },
     parse: function(data) {
         return data.results;

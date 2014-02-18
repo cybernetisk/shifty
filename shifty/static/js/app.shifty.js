@@ -1,5 +1,11 @@
 moment.lang('nb');
 
+var csrftoken = document.cookie.match(/csrftoken=(\w+)/)[1];
+
+$.ajaxSetup({
+    headers: { 'X-CSRFToken': csrftoken }
+});
+
 function ViewHandler(baseView) {
     var current;
 
