@@ -45,13 +45,24 @@ shifty.collections.Shift = Backbone.Collection.extend({
      */
     comparator: function(left, right)
     {
-        return right.get('shift_type').title - left.get('shift_type').title;
+        // Workaround for shifts without shift type
+        try {
+            return right.get('shift_type').title - left.get('shift_type').title;
+        } catch (e) {
+            return 0;
+        }
     }
 });
 
 shifty.models.Event = Backbone.Model.extend({
+    url: "/rest/event/",
+
     initialize: function(attributes) {
-        this.shifts = new shifty.collections.Shift(attributes.shifts);
+        if (attributes && attributes.shifts) {
+            this.shifts = new shifty.collections.Shift(attributes.shifts);
+        } else {
+            this.shifts = new shifty.collections.Shift();
+        }
     }
 });
 

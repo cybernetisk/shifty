@@ -16,6 +16,7 @@ shifty.views.Popout = Backbone.View.extend({
         this.$el.html(html);
 
         var bar = new shifty.views.BarShifts({
+            parent: this,
             el: this.$el.find(".popout-content"),
             model: new shifty.models.Event({
                 start: new Date()
@@ -90,7 +91,13 @@ shifty.views.BarShifts = Backbone.View.extend({
     },
 
     resizeDate: function() {
-        this.$("#sidebar-bar-date").css({height: 73+this.datepicker.$el.height()});
+        if (!this.state.datepicker) {
+            this.$el.find("#sidebar-bar-date").css({height: 60});
+            this.$el.find(".datepicker").css({visibility: "hidden", opacity: 0});
+        } else {
+            this.$el.find("#sidebar-bar-date").css({height: 73+this.$el.find(".datepicker").height()});
+            this.$el.find(".datepicker").css({visibility: "visible", opacity: 1});
+        }
     },
 
     selectedDate: function(d) {
@@ -132,17 +139,24 @@ shifty.views.BarShifts = Backbone.View.extend({
             var shift = this.shifts.at(i);
 
             // Convert start and stop to date objects
-            var start = shift.get("start").match(/(\d{2}):(\d{2})/);
-            var stop = shift.get("stop").match(/(\d{2}):(\d{2})/);
+            var start = shift.get("start");
+            var stop = shift.get("stop");
+            var startMin, stopMin;
+            if (!start.getMonth) {
+                start = start.match(/(\d{2}):(\d{2})/);
+                startMin = parseInt(start[1], 10)*60+parseInt(start[2], 10);
 
-            var startMin = parseInt(start[1], 10)*60+parseInt(start[2], 10);
-            var stopMin = parseInt(stop[1], 10)*60+parseInt(stop[2], 10);
+                shift.set("start", new Date(y,m,d,start[1],start[2]));
+            }
+            if (!stop.getMonth) {
+                stop = stop.match(/(\d{2}):(\d{2})/);
+                stopMin = parseInt(stop[1], 10)*60+parseInt(stop[2], 10);
 
-            shift.set("start", new Date(y,m,d,start[1],start[2]));
-            if (startMin < stopMin) {
-                shift.set("stop", new Date(y,m,d,stop[1], stop[2]));
-            } else {
-                shift.set("stop", new Date(y,m,d+1,stop[1], stop[2]));
+                if (startMin < stopMin) {
+                    shift.set("stop", new Date(y,m,d,stop[1], stop[2]));
+                } else {
+                    shift.set("stop", new Date(y,m,d+1,stop[1], stop[2]));
+                }
             }
 
             shift.set("event_id", this.model.get("id"));
@@ -152,7 +166,24 @@ shifty.views.BarShifts = Backbone.View.extend({
             }
         }
 
-        console.log(this.model.toJSON(), shifts);
+        this.model.set("description", this.$("#event-comment").val());
+
+        this.model.set("shifts", _.map(shifts, function(s) {
+            delete s.count;
+            return s;
+        }));
+
+        this.model.save().done(function() {
+            this.model = new shifty.models.Event({
+                start: new Date()
+            });
+            this.shifts = new shifty.collections.Shift();
+            this.options.parent.hide();
+            this.render();
+        }.bind(this)).fail(function() {
+            console.log(arguments);
+        }.bind(this));
+
         /*
         var _this = this;
         var defer = this.model.save();
@@ -189,7 +220,7 @@ shifty.views.ShiftList = Backbone.View.extend({
 
         if (!this.dropdown) {
             this.dropdown = new shifty.views.Dropdown({
-                name: "shifttype"
+                name: "shift_type_id"
             });
 
             this.dropdown.render();
@@ -205,37 +236,37 @@ shifty.views.ShiftList = Backbone.View.extend({
     addDefault: function(d) {
         var shifts = [{
             count: 1,
-            shifttype: "Skjenkemester",
+            shift_type_id: 1,
             start: "17:00",
             stop: "03:00"
         }, {
             count: 2,
-            shifttype: "Barfunk",
+            shift_type_id: 2,
             start: "17:30",
             stop: "22:00"
         }, {
             count: 2,
-            shifttype: "Barfunk",
+            shift_type_id: 2,
             start: "21:30",
             stop: "03:00"
         }, {
             count: 1,
-            shifttype: "Vakt",
+            shift_type_id: 3,
             start: "17:30",
             stop: "00:00"
         }, {
             count: 1,
-            shifttype: "Vakt",
+            shift_type_id: 3,
             start: "20:00",
             stop: "03:00"
         }, {
             count: 1,
-            shifttype: "DJ",
+            shift_type_id: 4,
             start: "17:30",
             stop: "22:00"
         }, {
             count: 1,
-            shifttype: "DJ",
+            shift_type_id: 4,
             start: "21:30",
             stop: "03:00"
         }];
