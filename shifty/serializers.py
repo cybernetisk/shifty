@@ -15,7 +15,7 @@ class ShiftSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     shifts = ShiftSerializer(source='shifts')
-    
+
     class Meta:
         model = Event
         fields = ('id', 'title', 'description', 'start', 'shifts')
@@ -29,4 +29,5 @@ class ShiftTypeSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name', 'contactinfo')
+        depth = 1
