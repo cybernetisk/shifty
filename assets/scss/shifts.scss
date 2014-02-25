@@ -172,6 +172,9 @@ body{
 
 // Style for the 'take shift' modal
 .take_shift{
+
+	position: fixed;
+
 	h2 {
 		margin-bottom: 8px;
 	}
