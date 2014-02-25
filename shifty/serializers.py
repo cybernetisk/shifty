@@ -10,15 +10,15 @@ class ShiftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shift
         fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType')
-        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType')
         depth = 1
 
 class EventSerializer(serializers.ModelSerializer):
     shifts = ShiftSerializer(source='shifts')
+    available = serializers.Field(source='availableShifts')
 
     class Meta:
         model = Event
-        fields = ('id', 'title', 'description', 'start', 'shifts')
+        fields = ('id', 'title', 'description', 'start', 'shifts', 'available')
         depth = 1
 
 class ShiftTypeSerializer(serializers.ModelSerializer):

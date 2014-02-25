@@ -1,6 +1,6 @@
 <div class='event_list'>
-    <h2>{{formatDate start "dddd D. MMMM YYYY"}} - {{title}}</h2>
-    <h4>{{description}}</h4>
+    <h2>{{formatDate start "dddd D. MMMM YYYY"}} - {{title}} - </h2>
+    <h4>{{description}} - Ledige skift: {{available}}</h4>
     <table>
         {{#each shifts}}
         <tr class='shift{{#if volunteer}} taken{{/if}}' id="shift_{{id}}">

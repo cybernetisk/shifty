@@ -1,5 +1,5 @@
 <div class='event'>
-	<h2>{{ formatDate event.start "dddd D. MMMM YYYY" }} - {{ event.title }}</h2>
+	<h2>{{ formatDate event.start "dddd D. MMMM YYYY" }} - {{ event.title }} - Ledige skift: {{event.available}}</h2>
   	{{#each columns}}
   		<column>
 			{{#each this}}

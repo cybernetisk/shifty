@@ -14,6 +14,9 @@ class Event(models.Model):
     def toDict(self):
         return {'title':self.title, 'description':self.description, 'start':_date(self.start, "l j. F Y").capitalize()}
 
+    def availableShifts(self):
+        return self.shifts.filter(volunteer__isnull = True).count()
+
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
     shift_type = models.ForeignKey("ShiftType", null=False, related_name='+')
