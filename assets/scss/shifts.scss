@@ -27,22 +27,21 @@ body{
 	table {
 		th {
 			text-align: left;
-			padding: 2px 0px 2px 10px;
-			&.full{
-				background: $green;
-    			border: 1px solid darken($green, 10%);
-			}
-			&.free{
-    			background: $red;
-    			border: 1px solid darken($red, 10%);
+			div {
+				height: 20px;
+				width: 20px;
+				&.full{
+					background: $green;
+    				border: 1px solid darken($green, 10%);
+				}
+				&.free{
+    				background: $red;
+    				border: 1px solid darken($red, 10%);
+				}
 			}
 		}
 		td {
 			padding: 5px 0px 20px 0px;
-		}
-
-		.dj {
-			padding-right: 3px;
 		}
 	}
 
