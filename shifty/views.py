@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response
-from shifty.models import Shift, Event, ShiftType
+from shifty.models import Shift, Event, ShiftType, ContactInfo
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core import serializers
@@ -32,6 +32,19 @@ def getEvents(request, offset, limit):
 
     return HttpResponse(simplejson.dumps(result), mimetype='application/json')
 
+def create_shift_user(request):
+    username = request.REQUEST['username']
+    password = request.REQUEST['password']
+    email = request.REQUEST['email']
+    phone_number = request.REQUEST['phone_number']
+
+    user = User.objects.create_user(username, email, password)
+    contact_info = ContactInfo(phone_number=phone_number)
+    contact_info.user = user
+    contact_info.save()
+
+    return {'id':user.id}
+
 def take_shift(request):
     username = request.REQUEST['name']
     comment = request.REQUEST['comment'] if 'comment' in request.REQUEST else None
@@ -47,11 +60,7 @@ def take_shift(request):
             shift.save()
         return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
 
-    try:
-        user = User.objects.get(username=username)
-    except:
-        user = User.objects.create_user(username)
-        #user = user.save()
+    user = User.objects.get(username=username)
 
     if user is not None:
         if shift.volunteer != None and user != shift.volunteer:

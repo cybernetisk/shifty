@@ -10,7 +10,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.client import RequestFactory
-from shifty.views import take_shift
+from shifty.views import take_shift, create_shift_user
 from shifty.models import Shift, Event, ShiftType
 
 import datetime
@@ -48,19 +48,16 @@ class SimpleTest(TestCase):
         self.assertEqual(shift.volunteer, self.user)
         self.assertEqual(shift.comment, "kommentar")
 
-    def test_take_shift_nonexisting_user(self):
-        """
 
-        """
-        request = self.factory.get('/take_shift?id=%d&name=lolbarfunk&comment=kommentar' % self.shift.id, )
-        response = take_shift(request)
+    def test_create_shift_user(self):
+        request = self.factory.get('/create_shift_user?username=barfunk2&email=lol&password=test&phone_number=123455')
+        response = create_shift_user(request)
 
-        shift = Shift.objects.get(pk=self.shift.id)
-        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username="barfunk2")
+        self.assertEqual(user.username, "barfunk2")
+        self.assertEqual(user.contactinfo.phone_number, "123455")
+        self.assertEqual(user.email, "lol")
 
-        new_user = User.objects.get(username='lolbarfunk')
-        self.assertEqual(shift.volunteer, new_user)
-        self.assertEqual(shift.comment, "kommentar")
 
     def test_try_to_take_occupied_shift(self):
         
