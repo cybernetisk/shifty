@@ -48,7 +48,8 @@ $(document).ready(function() {
         shifty.Router = Backbone.Router.extend({
             routes: {
                 '':       'index',
-                'events': 'events'
+                'events': 'events',
+                'event/:id': 'event'
             },
 
             index: function() {
@@ -65,6 +66,14 @@ $(document).ready(function() {
                     collection: c
                 });
                 vh.push(v, c.fetch());
+            },
+
+            event: function(id) {
+                var m = new shifty.models.Event({id: id});
+                var v = new shifty.views.EventColumned({
+                    model: m
+                });
+                vh.push(v, m.fetch());
             }
         });
 

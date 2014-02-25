@@ -55,7 +55,7 @@ shifty.collections.Shift = Backbone.Collection.extend({
 });
 
 shifty.models.Event = Backbone.Model.extend({
-    url: "/rest/event/",
+    urlRoot: "/rest/event/",
 
     initialize: function(attributes) {
         if (attributes && attributes.shifts) {
