@@ -11,7 +11,7 @@ from rest_framework.mixins import CreateModelMixin
 
 class EventViewSet(viewsets.ModelViewSet):
 
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().order_by('start')
     serializer_class = EventSerializer
 
     """
