@@ -85,6 +85,11 @@ body{
 }
 
 .event_list {
+
+	h2:first-letter {
+			text-transform: capitalize;
+		}
+
 	table {
 		margin-bottom: 50px;
 		td {
