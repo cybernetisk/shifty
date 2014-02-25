@@ -48,6 +48,20 @@ class SimpleTest(TestCase):
         self.assertEqual(shift.volunteer, self.user)
         self.assertEqual(shift.comment, "kommentar")
 
+    def test_take_shift_nonexisting_user(self):
+        """
+
+        """
+        request = self.factory.get('/take_shift?id=%d&name=lolbarfunk&comment=kommentar' % self.shift.id, )
+        response = take_shift(request)
+
+        shift = Shift.objects.get(pk=self.shift.id)
+        self.assertEqual(response.status_code, 200)
+
+        new_user = User.objects.get(username='lolbarfunk')
+        self.assertEqual(shift.volunteer, new_user)
+        self.assertEqual(shift.comment, "kommentar")
+
     def test_try_to_take_occupied_shift(self):
         
         user = User.objects.create_user(
@@ -70,7 +84,7 @@ class SimpleTest(TestCase):
     def test_user_can_update_comment_on_own_shift(self):
         shift = Shift.objects.get(pk=self.shift.id)
         shift.volunteer = self.user
-        shift.comment = "noe som ikke endres"
+        shift.comment = "noe som kan endres"
         shift.save()
 
         request = self.factory.get('/take_shift?id=%d&name=barfunk&comment=larsrsgasrgol' % self.shift.id, )
@@ -131,7 +145,7 @@ class EventAndShiftTest(APITestCase):
                 "description": "ajsriosjgor", 
                 "start": "2013-10-09T16:00:00Z", 
                 "shifts": [{
-                                "shift_type_id":self.shift_type.id, 
+                                "shift_type_id":self.shift_type.id,
                                 "start": "2013-12-13T20:00:00Z", 
                                 "stop": "2013-12-14T01:00:00Z", 
                                 "comment": "", 

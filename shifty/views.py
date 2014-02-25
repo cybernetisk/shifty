@@ -47,7 +47,12 @@ def take_shift(request):
             shift.save()
         return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
 
-    user = User.objects.get(username=username)
+    try:
+        user = User.objects.get(username=username)
+    except:
+        user = User.objects.create_user(username)
+        #user = user.save()
+
     if user is not None:
         if shift.volunteer != None and user != shift.volunteer:
             return HttpResponse(simplejson.dumps({'status':'taken'}), mimetype='application/json')
