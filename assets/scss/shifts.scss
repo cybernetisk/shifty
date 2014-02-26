@@ -177,8 +177,6 @@ body{
 // Style for the 'take shift' modal
 .take_shift{
 
-	position: fixed;
-
 	h2 {
 		margin-bottom: 8px;
 	}
@@ -239,9 +237,9 @@ body{
 }
 
 
-
-
-
-
-
-
+.new_user {
+	.success {
+		margin-bottom: 0;
+		margin-top: 20px;
+	}
+}

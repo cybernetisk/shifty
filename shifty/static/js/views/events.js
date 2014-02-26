@@ -48,13 +48,75 @@ shifty.views.Events = Backbone.View.extend({
 
     takeShiftBox: function(wrap, block)
     {
-        // generate take shift-box and show it
-        wrap.html(Handlebars.templates.event_take_shift(block));
-        wrap.find(".take_shift").foundation('reveal', 'open', {
+        //wrap.html(Handlebars.templates.event_take_shift(block));
+        //var modal = el.find(".take_shift");
+        var modal = $(Handlebars.templates.event_take_shift(block));
+        
+        // autocomplete users
+        modal.find('input.user_search').typeahead({
+            name: 'user',
+            remote: {
+                url: '/rest/user/?search=%QUERY',
+                filter: function(data)
+                {
+                    var d = [];
+                    $(data.results).each(function(i, node)
+                    {
+                        concat = node.first_name && node.last_name ? " " : "";
+                        d.push({
+                            value: node.username,
+                            tokens: [node.username, node.first_name, node.last_name],
+                            name: node.first_name + concat + node.last_name
+                        });
+                    });
+                    d.push({
+                        value: 'Opprett ny bruker',
+                        tokens: [],
+                        name: 'create-new-user'
+                    });
+                    return d;
+                }
+            }
+        })
+
+        // creating new users
+        .on('typeahead:selected', function(ev, sug, name)
+        {
+            if (sug.name == 'create-new-user')
+            {
+                $(this).val("");
+                var d = Handlebars.templates.event_new_user();
+                
+                $(d).foundation('reveal', 'open', {
+                    animation: 'fade',
+                    animationSpeed: 100,
+                    closeOnBackgroundClick: true,
+                    dismissModalClass: 'close-reveal-modal'
+                }).on('closed', function()
+                {
+                    modal.foundation('reveal', 'open');
+                });
+
+                // TODO: set focus to username
+            }
+        });
+
+        // show box
+        modal.foundation('reveal', 'open', {
             animation: 'fade',
             animationSpeed: 100,
             closeOnBackgroundClick: true,
-            dismissModalClass: 'close-reveal-modal'
+            dismissModalClass: 'close-reveal-modal',
+            css: {
+                open: {
+                    'top': wrap.parents('.event,.event_list').offset().top
+                }
+            }
+        }).on('opened', function()
+        {
+            $('html, body').animate({
+                scrollTop: modal.offset().top-20
+            });
         });
     }
 });
@@ -92,7 +154,7 @@ shifty.views.EventTable = Backbone.View.extend({
 
         // generate take shift-box
         block = $.extend(block, {'event': this.model.toJSON()});
-        this.parentView.takeShiftBox(obj.find(".take_shift_wrap"), block);
+        this.parentView.takeShiftBox(obj, block);
     }
 })
 
@@ -111,28 +173,6 @@ shifty.views.EventColumned = Backbone.View.extend({
             'columns': this.getShiftColumns()
         });
 
-        // autocomplete users
-        this.$('input.user_search').typeahead({
-            name: 'user',
-            remote: {
-                url: '/rest/user/?search=%QUERY',
-                filter: function(data)
-                {
-                    var d = [];
-                    $(data.results).each(function(i, node)
-                    {
-                        concat = node.first_name && node.last_name ? " " : "";
-                        d.push({
-                            value: node.username,
-                            tokens: [node.username, node.first_name, node.last_name],
-                            name: node.first_name + concat + node.last_name
-                        });
-                    });
-                    return d;
-                }
-            }
-        });
-
         return this.el;
     },
 
@@ -148,7 +188,7 @@ shifty.views.EventColumned = Backbone.View.extend({
 
         // generate take shift-box
         block = $.extend(block, {'event': this.model.toJSON()});
-        this.parentView.takeShiftBox(obj.find(".take_shift_wrap"), block);
+        this.parentView.takeShiftBox(obj, block);
     },
 
     /**
