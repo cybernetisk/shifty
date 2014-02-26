@@ -1,0 +1,36 @@
+span.twitter-typeahead {
+    width: 100%;
+
+    .tt-hint {
+        background-color: transparent;
+
+        padding-left: 5px;
+
+        /*display: block;
+        /*height: 38px;
+        padding: 8px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        border: 1px solid transparent;*/
+    }
+
+    span.tt-dropdown-menu {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        margin-top: -17px;
+        width: 100%;
+    }
+
+    div.tt-suggestion.tt-is-under-cursor {
+        background-color: #368A55;
+        color: #FFF;
+    }
+    div.tt-suggestion > p {
+        margin: 0;
+        padding: 6px 4px;
+        /*line-height: 35px;*/
+    }
+    span.twitter-typeahead {
+       /*width: 100%;*/
+    }
+}

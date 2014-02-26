@@ -400,8 +400,6 @@ table.datepicker {
 
 
 /**
- * Avoid gray color on disable input (provided by typeahead)
+ * Typeahead
  */
-.tt-hint {
-    background-color: transparent;
-}
+@import "typeahead";
