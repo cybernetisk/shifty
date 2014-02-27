@@ -14,3 +14,5 @@
 shifty/static/css/
 *.sublime*
 virtualenv
+
+*css

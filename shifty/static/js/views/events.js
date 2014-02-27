@@ -164,10 +164,11 @@ shifty.views.EventColumned = Backbone.View.extend({
     },
 
     initialize: function(el) {
-        
+
     },
 
     render: function() {
+
         this.el.innerHTML = Handlebars.templates.event_columned({
             'event': this.model.toJSON(),
             'columns': this.getShiftColumns()
@@ -199,7 +200,6 @@ shifty.views.EventColumned = Backbone.View.extend({
         var columns = [];
         //var shifts = this.model.get('shifts').sort(this.sortByShiftType);
         var shifts = this.model.shifts;
-        console.log(shifts);
         
         var rowIndex = 0;
         var colIndex = -1;

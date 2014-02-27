@@ -70,10 +70,15 @@ $(document).ready(function() {
 
             event: function(id) {
                 var m = new shifty.models.Event({id: id});
-                var v = new shifty.views.EventColumned({
-                    model: m
-                });
-                vh.push(v, m.fetch());
+
+                m.fetch().done(function() {
+                    m.shifts = new shifty.collections.Shift(m.attributes.shifts);
+
+                    var v = new shifty.views.Event({
+                        model: m
+                    });
+                    vh.push(v);
+                });                
             }
         });
 

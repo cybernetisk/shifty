@@ -39,7 +39,6 @@ shifty.models.Shift = Backbone.Model.extend({
 
 shifty.collections.Shift = Backbone.Collection.extend({
     model: shifty.models.Shift,
-    
     /**
      * Sort function to sort shifts by its shift type
      */
@@ -60,7 +59,7 @@ shifty.models.Event = Backbone.Model.extend({
     initialize: function(attributes) {
         if (attributes && attributes.shifts) {
             this.shifts = new shifty.collections.Shift(attributes.shifts);
-        } else {
+        } else if(attributes.id == undefined) {
             this.shifts = new shifty.collections.Shift();
         }
     }
