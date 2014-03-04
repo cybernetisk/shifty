@@ -23,44 +23,64 @@ shifty.views.Event = Backbone.View.extend({
     },
 
     next: function() {
-        this.sub.remove();
-
-        var model = new shifty.models.Event({id: this.nextEvent.id});
+        if(this.nextEvent != null){
+            this.sub.remove();
+            var model = new shifty.models.Event({id: this.nextEvent.id});
         
-        var self = this;
-        model.fetch().done(function() {
-            model.shifts = new shifty.collections.Shift(model.attributes.shifts);
-            self.sub = new shifty.views.EventColumned({model: model});
-            self.sub.parentView = new shifty.views.Events();
-            self.$el.append(self.sub.render());
+            var self = this;
+            model.fetch().done(function() {
+                model.shifts = new shifty.collections.Shift(model.attributes.shifts);
+                self.sub = new shifty.views.EventColumned({model: model});
+                self.sub.parentView = new shifty.views.Events();
+                self.$el.append(self.sub.render());
 
-            self.nextEvent = model.attributes.next;
-            self.lastEvent = model.attributes.previous;
-            self.model = model;
+                self.nextEvent = model.attributes.next;
+                self.lastEvent = model.attributes.previous;
+                self.model = model;
 
-            $('#next_event span.title').text(self.nextEvent.title);
-            $('#last_event span.title').text(self.lastEvent.title);
+                if(self.nextEvent != null){
+                    $('#next_event span.title').text(self.nextEvent.title);
+                }else{
+                    $('#next_event span.title').text("");
+                }
+                if(self.lastEvent != null){
+                    $('#last_event span.title').text(self.lastEvent.title);
+                }else{
+                    $('#last_event span.title').text("");
+                }
 
-        });  
+            });
+        }
     },
     last: function() {
-        this.sub.remove();
-        var model = new shifty.models.Event({id: this.lastEvent.id});
-        
-        var self = this;
-        model.fetch().done(function() {
-            model.shifts = new shifty.collections.Shift(model.attributes.shifts);
-            self.sub = new shifty.views.EventColumned({model: model});
-            self.sub.parentView = new shifty.views.Events();
-            self.$el.append(self.sub.render());
+        if(this.lastEvent != null){
+            this.sub.remove();
+            var model = new shifty.models.Event({id: this.lastEvent.id});
+            
+            var self = this;
+            model.fetch().done(function() {
+                model.shifts = new shifty.collections.Shift(model.attributes.shifts);
+                self.sub = new shifty.views.EventColumned({model: model});
+                self.sub.parentView = new shifty.views.Events();
+                self.$el.append(self.sub.render());
 
-            self.nextEvent = model.attributes.next;
-            self.lastEvent = model.attributes.previous;
-            self.model = model;
+                self.nextEvent = model.attributes.next;
+                self.lastEvent = model.attributes.previous;
+                self.model = model;
 
-            $('#next_event span.title').text(self.nextEvent.title);
-            $('#last_event span.title').text(self.lastEvent.title);
+                if(self.nextEvent != null){
+                    $('#next_event span.title').text(self.nextEvent.title);
+                }else{
+                    $('#next_event span.title').text("");
+                }
+                if(self.lastEvent != null){
+                    $('#last_event span.title').text(self.lastEvent.title);
+                }else{
+                    $('#last_event span.title').text("");
+                }
+                
 
-        });  
+            });
+        }  
     }
 });
