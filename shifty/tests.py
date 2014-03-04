@@ -204,7 +204,7 @@ class EventAndShiftTest(APITestCase):
         self.assertEqual(1, len(shifts))
 
     def test_event_next(self):
-        a = Event(title="test", start="2013-12-14T01:00:00Z")
+        a = Event(title="test", start="2013-12-13T01:00:00Z")
         a.save()
         b = Event(title="test", start="2013-12-14T02:00:00Z")
         b.save()
@@ -223,7 +223,7 @@ class EventAndShiftTest(APITestCase):
         """
         Corny case where we have multiple events at the same time.
         """
-        a = Event(title="test", start="2013-12-14T01:00:00Z")
+        a = Event(title="test", start="2013-12-13T01:00:00Z")
         a.save()
         b = Event(title="test", start="2013-12-14T02:00:00Z")
         b.save()
