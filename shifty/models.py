@@ -8,6 +8,20 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     start = models.DateTimeField()
 
+    @property
+    def next(self):
+        res = Event.objects.filter(start__gte=self.start).order_by('start', 'id')[:1]
+        if res.count() == 0:
+            return None
+        return res[0].id
+
+    @property
+    def previous(self):
+        res = Event.objects.filter(start__lte=self.start).order_by('start', '-id')[:1]
+        if res.count() == 0:
+            return None
+        return res[0].id
+
     def __unicode__(self):
         return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y").lstrip("0").lower())
 
