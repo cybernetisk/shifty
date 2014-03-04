@@ -46,7 +46,7 @@ class ShiftViewSet(viewsets.ModelViewSet):
     queryset = Shift.objects.all()
     serializer_class = ShiftSerializer
 
-
+    filter_fields = ('shift_type', )
 
 class ShiftTypeViewSet(viewsets.ModelViewSet):
 
