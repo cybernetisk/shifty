@@ -40,13 +40,17 @@ shifty.views.Event = Backbone.View.extend({
 
                 if(self.nextEvent != null){
                     $('#next_event span.title').text(self.nextEvent.title);
+                    $('#next_event').removeClass('disabled');
                 }else{
                     $('#next_event span.title').text("");
+                    $('#next_event').addClass('disabled');
                 }
                 if(self.lastEvent != null){
                     $('#last_event span.title').text(self.lastEvent.title);
+                    $('#last_event').removeClass('disabled');
                 }else{
                     $('#last_event span.title').text("");
+                    $('#last_event').addClass('disabled');
                 }
 
             });
@@ -70,13 +74,17 @@ shifty.views.Event = Backbone.View.extend({
 
                 if(self.nextEvent != null){
                     $('#next_event span.title').text(self.nextEvent.title);
+                    $('#next_event').removeClass('disabled');
                 }else{
                     $('#next_event span.title').text("");
+                    $('#next_event').addClass('disabled');
                 }
                 if(self.lastEvent != null){
                     $('#last_event span.title').text(self.lastEvent.title);
+                    $('#last_event').removeClass('disabled');
                 }else{
                     $('#last_event span.title').text("");
+                    $('#last_event').addClass('disabled');
                 }
                 
 

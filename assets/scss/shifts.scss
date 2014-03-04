@@ -21,7 +21,12 @@ body{
 a#next_event, a#last_event {
 	text-decoration: none;
 	color: #000;
+	&.disabled {
+		opacity: 0.3;
+	}
 }
+
+
 
 .upcoming {
 
