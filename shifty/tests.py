@@ -48,7 +48,6 @@ class SimpleTest(TestCase):
         self.assertEqual(shift.volunteer, self.user)
         self.assertEqual(shift.comment, "kommentar")
 
-
     def test_create_shift_user(self):
         request = self.factory.get('/create_shift_user?username=barfunk2&email=lol&password=test&phone_number=123455')
         response = create_shift_user(request)
@@ -57,7 +56,6 @@ class SimpleTest(TestCase):
         self.assertEqual(user.username, "barfunk2")
         self.assertEqual(user.contactinfo.phone_number, "123455")
         self.assertEqual(user.email, "lol")
-
 
     def test_try_to_take_occupied_shift(self):
         
@@ -192,7 +190,6 @@ class EventAndShiftTest(APITestCase):
                             }]
             }
         response = self.client.post('/rest/event/', data, format='json')
-
         # Since one of the shifts had a invalid date we should have one error.
         self.assertEqual(1, len(response.data['errors']))
 
@@ -205,3 +202,21 @@ class EventAndShiftTest(APITestCase):
         # We should still have one shift
         shifts = Shift.objects.all()
         self.assertEqual(1, len(shifts))
+
+    def test_event_next(self):
+        a = Event(title="test", start="2013-12-14T01:00:00Z")
+        a.save()
+        b = Event(title="test", start="2013-12-14T02:00:00Z")
+        b.save()
+        c = Event(title="test", start="2013-12-15T02:00:00Z")
+        c.save()
+
+        self.assertEqual(a.next['id'], b.id)
+        self.assertEqual(b.next['id'], c.id)
+        self.assertIsNone(c.next)
+
+        self.assertIsNone(a.previous)
+        self.assertEqual(b.previous['id'], a.id)
+        self.assertEqual(c.previous['id'], b.id)
+
+

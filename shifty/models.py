@@ -10,14 +10,15 @@ class Event(models.Model):
 
     @property
     def next(self):
-        res = Event.objects.filter(start__gte=self.start).order_by('start', 'id')[:1]
+        print Event.objects.filter(start__gt=self.start).exclude(id=self.id)
+        res = Event.objects.filter(start__gt=self.start).order_by('start', 'id').exclude(id=self.id)[:1]
         if res.count() == 0:
             return None
         return {'title':res[0].title, 'id':res[0].id}
 
     @property
     def previous(self):
-        res = Event.objects.filter(start__lte=self.start).order_by('start', '-id')[:1]
+        res = Event.objects.filter(start__lte=self.start).order_by('-start', '-id').exclude(id=self.id)[:1]
         if res.count() == 0:
             return None
         return {'title':res[0].title, 'id':res[0].id}
