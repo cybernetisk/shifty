@@ -220,6 +220,9 @@ class EventAndShiftTest(APITestCase):
         self.assertEqual(c.previous['id'], b.id)
 
     def test_event_corny_case(self):
+        """
+        Corny case where we have multiple events at the same time.
+        """
         a = Event(title="test", start="2013-12-14T01:00:00Z")
         a.save()
         b = Event(title="test", start="2013-12-14T02:00:00Z")
