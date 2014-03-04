@@ -7,12 +7,14 @@ from models import Event, Shift, ShiftType, User
 from django.core import serializers
 
 from shifty.serializers import ShiftSerializer
+from shifty.permissions import isAdminOrReadOnly
 from rest_framework.mixins import CreateModelMixin
 
 class EventViewSet(viewsets.ModelViewSet):
 
     queryset = Event.objects.all().order_by('start')
     serializer_class = EventSerializer
+    permission_classes = (isAdminOrReadOnly,)
 
     """
     Create a model instance.
