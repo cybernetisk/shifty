@@ -51,7 +51,7 @@ shifty.views.Events = Backbone.View.extend({
         //wrap.html(Handlebars.templates.event_take_shift(block));
         //var modal = el.find(".take_shift");
         var modal = $(Handlebars.templates.event_take_shift(block));
-        
+
         // autocomplete users
         modal.find('input.user_search').typeahead({
             name: 'user',
@@ -86,7 +86,7 @@ shifty.views.Events = Backbone.View.extend({
             {
                 $(this).val("");
                 var d = Handlebars.templates.event_new_user();
-                
+
                 $(d).foundation('reveal', 'open', {
                     animation: 'fade',
                     animationSpeed: 100,
@@ -156,7 +156,7 @@ shifty.views.EventTable = Backbone.View.extend({
         block = $.extend(block, {'event': this.model.toJSON()});
         this.parentView.takeShiftBox(obj, block);
     }
-})
+});
 
 shifty.views.EventColumned = Backbone.View.extend({
     events: {
@@ -200,7 +200,7 @@ shifty.views.EventColumned = Backbone.View.extend({
         var columns = [];
         //var shifts = this.model.get('shifts').sort(this.sortByShiftType);
         var shifts = this.model.shifts;
-        
+
         var rowIndex = 0;
         var colIndex = -1;
         var twinCount = 0;
@@ -213,7 +213,7 @@ shifty.views.EventColumned = Backbone.View.extend({
         shifts.each(function(shift)
         {
             i++;
-            if (rowIndex == 0)
+            if (rowIndex === 0)
             {
                 columns.push([]);
                 colIndex++;
