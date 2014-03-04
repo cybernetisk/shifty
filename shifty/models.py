@@ -10,7 +10,6 @@ class Event(models.Model):
 
     @property
     def next(self):
-        print Event.objects.filter(start__gt=self.start).exclude(id=self.id)
         res = Event.objects.filter(start__gt=self.start).order_by('start', 'id').exclude(id=self.id)[:1]
         if res.count() == 0:
             return None
