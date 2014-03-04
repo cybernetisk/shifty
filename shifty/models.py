@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.template.defaultfilters import date as _date
+from django.db.models import Q
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -10,14 +11,18 @@ class Event(models.Model):
 
     @property
     def next(self):
-        res = Event.objects.filter(start__gt=self.start).order_by('start', 'id').exclude(id=self.id)[:1]
+        res = Event.objects.filter(Q(start__gt=self.start) |
+                                   Q(start=self.start, id__gt=self.id)) \
+                           .order_by('start', 'id')[:1]
         if res.count() == 0:
             return None
         return {'title':res[0].title, 'id':res[0].id}
 
     @property
     def previous(self):
-        res = Event.objects.filter(start__lte=self.start).order_by('-start', '-id').exclude(id=self.id)[:1]
+        res = Event.objects.filter(Q(start__lt=self.start) |
+                                   Q(start=self.start, id__lt=self.id)) \
+                           .order_by('-start', '-id')[:1]
         if res.count() == 0:
             return None
         return {'title':res[0].title, 'id':res[0].id}

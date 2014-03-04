@@ -219,4 +219,23 @@ class EventAndShiftTest(APITestCase):
         self.assertEqual(b.previous['id'], a.id)
         self.assertEqual(c.previous['id'], b.id)
 
+    def test_event_corny_case(self):
+        a = Event(title="test", start="2013-12-14T01:00:00Z")
+        a.save()
+        b = Event(title="test", start="2013-12-14T02:00:00Z")
+        b.save()
+        c = Event(title="test", start="2013-12-15T02:00:00Z")
+        c.save()
+        # add a new event at the same time as b.
+        d = Event(title="test", start="2013-12-14T02:00:00Z")
+        d.save()
 
+        self.assertEqual(a.next['id'], b.id)
+        self.assertEqual(b.next['id'], d.id)
+        self.assertEqual(d.next['id'], c.id)
+        self.assertIsNone(c.next)
+
+        self.assertIsNone(a.previous)
+        self.assertEqual(b.previous['id'], a.id)
+        self.assertEqual(d.previous['id'], b.id)
+        self.assertEqual(c.previous['id'], d.id)
