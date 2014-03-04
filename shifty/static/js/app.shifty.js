@@ -57,7 +57,7 @@ $(document).ready(function() {
                 var v = new shifty.views.Index({
                     collection: c
                 });
-                vh.push(v, c.fetch({ page: 1, page_size: 5 }));
+                vh.push(v, c.fetch({ data: { page: 1, page_size: 5 } }));
             },
 
             events: function() {
