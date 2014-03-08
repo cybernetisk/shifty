@@ -16,3 +16,7 @@ shifty/static/css/
 virtualenv
 
 *css
+
+
+# Bower-stuff
+shifty/static/bower_components

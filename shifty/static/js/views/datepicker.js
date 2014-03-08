@@ -34,11 +34,12 @@
         tagName: "table",
         className: "datepicker",
 
-        initialize: function() {
+        initialize: function(options) {
+            options = options || {};
             this.body = document.createElement("tbody");
             this.month = document.createElement("th");
             this.month.setAttribute("colspan", 5);
-            this.date = this.options.date || new Date();
+            this.date = options.date || new Date();
         },
 
         events: {

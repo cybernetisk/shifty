@@ -64,8 +64,6 @@ shifty.views.BarShifts = Backbone.View.extend({
         var context = this.model.toJSON();
         context.shifts = this.shifts.toJSON();
 
-        console.log(context);
-
         // Get and render the template
         this.el.innerHTML = Handlebars.templates['sidebar.bar'](context);
 

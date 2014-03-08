@@ -85,9 +85,10 @@ shifty.views.Events = Backbone.View.extend({
             if (sug.name == 'create-new-user')
             {
                 $(this).val("");
-                var d = Handlebars.templates.event_new_user();
-
-                $(d).foundation('reveal', 'open', {
+                var d = $(Handlebars.templates.event_new_user());
+                
+                d.foundation();
+                d.foundation('reveal', 'open', {
                     animation: 'fade',
                     animationSpeed: 100,
                     closeOnBackgroundClick: true,
@@ -102,11 +103,12 @@ shifty.views.Events = Backbone.View.extend({
         });
 
         // show box
+        modal.foundation();
         modal.foundation('reveal', 'open', {
             animation: 'fade',
-            animationSpeed: 100,
-            closeOnBackgroundClick: true,
-            dismissModalClass: 'close-reveal-modal',
+            animation_speed: 100,
+            close_on_backgroundClick: true,
+            dismiss_modal_class: 'close-reveal-modal',
             css: {
                 open: {
                     'top': wrap.parents('.event,.event_list').offset().top

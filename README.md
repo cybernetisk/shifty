@@ -14,6 +14,15 @@ Need SASS to generate css-files from scss
 To genereate CSS the watcher script must run:
 * `./watcher.sh`
 
+### Dependencies
+#### Bower
+We use Bower (http://bower.io/) to install dependencies. Can be installed by:
+```sudo npm install -g bower```
+
+Then we need to fetch the dependencies:
+1. Go to ```shifty/static``` in shell
+2. Run ```bower install```
+
 ### Fixtures
 To install fixtures:
 * ```./manage.py loaddata shifts```

@@ -1,3 +1,4 @@
+var shifty = {views: {}, models: {}, collections: {}};
 moment.lang('nb');
 
 var csrftoken = document.cookie.match(/csrftoken=(\w+)/);
@@ -38,12 +39,21 @@ function ViewHandler(baseView) {
 }
 
 $(document).ready(function() {
+    // Handlebars-templates
+    Handlebars.templates = {};
+    $(".handlebars-template").each(function() {
+        var $this = $(this);
+        Handlebars.templates[$this.attr("id")] = Handlebars.compile($this.html());
+    });
+
+    // admin menu
     (function() {
         var a;
         a = new shifty.views.AdminMenu();
         a.render();
     })();
 
+    // router
     (function() {
         var shifty = window.shifty;
         var vh = new ViewHandler(document.getElementById("content"));
@@ -88,6 +98,9 @@ $(document).ready(function() {
         new shifty.Router();
         Backbone.history.start({pushState: true, hashState: false});
     })();
+
+    // initialize foundation
+    $(document).foundation();
 });
 
 // push local links through router
