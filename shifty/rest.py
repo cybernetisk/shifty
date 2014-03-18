@@ -31,6 +31,9 @@ class EventViewSet(viewsets.ModelViewSet):
             exceptions = {}
             for i, _shift in enumerate(shifts):
                 try:
+                    if 'shift_type' in _shift:
+                        _shift['shift_type_id'] = _shift['shift_type']['id']
+                        del _shift['shift_type']
                     _s = Shift(event_id=event_id, **_shift).save()
                     json = serializer.to_native(_s)
                     result['shifts'].append(json)
@@ -45,6 +48,7 @@ class ShiftViewSet(viewsets.ModelViewSet):
 
     queryset = Shift.objects.all()
     serializer_class = ShiftSerializer
+    permission_classes = (isAdminOrReadOnly,)
 
     filter_fields = ('shift_type', )
 

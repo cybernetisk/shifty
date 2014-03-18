@@ -140,7 +140,8 @@ class EventAndShiftTest(APITestCase):
                 "description": "ajsriosjgor", 
                 "start": "2013-10-09T16:00:00Z", 
                 "shifts": [{
-                                "shift_type_id":self.shift_type.id,
+                                "shift_type":{'id':self.shift_type.id,
+                                              'name':'lol'},
                                 "start": "2013-12-13T20:00:00Z", 
                                 "stop": "2013-12-14T01:00:00Z", 
                                 "comment": "", 
