@@ -52,9 +52,11 @@ shifty.views.BarShifts = Backbone.View.extend({
         "keyup #event-title": "title"
     },
 
-    initialize: function(){
+    initialize: function(opts){
         this.shifts = new shifty.collections.Shift();
         this.datepicker = new shifty.views.DatePicker();
+
+        this.p = opts.parent;
 
         this.listenTo(this.datepicker, "resize", this.resizeDate);
         this.listenTo(this.datepicker, "change", this.selectedDate);
@@ -176,7 +178,7 @@ shifty.views.BarShifts = Backbone.View.extend({
                 start: new Date()
             });
             this.shifts = new shifty.collections.Shift();
-            this.options.parent.hide();
+            this.p.hide();
             this.render();
         }.bind(this)).fail(function() {
             console.log(arguments);
