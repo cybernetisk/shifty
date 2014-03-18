@@ -3,18 +3,24 @@ from rest_framework import viewsets, filters
 from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerializer, UserSerializer
 from models import Event, Shift, ShiftType, User
 
-
+import django_filters
 from django.core import serializers
 
 from shifty.serializers import ShiftSerializer
 from shifty.permissions import isAdminOrReadOnly
 from rest_framework.mixins import CreateModelMixin
 
-class EventViewSet(viewsets.ModelViewSet):
+class EventFilter(django_filters.FilterSet):
+    min_date = django_filters.DateFilter(name="start", lookup_type='gte')
+    class Meta:
+        model = Event
+        fields = ['min_date']
 
+class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all().order_by('start')
     serializer_class = EventSerializer
     permission_classes = (isAdminOrReadOnly,)
+    filter_class = EventFilter
 
     """
     Create a model instance.

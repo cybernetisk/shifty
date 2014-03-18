@@ -117,6 +117,21 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 class EventAndShiftTest(APITestCase):
+    def test_event_fetch_by_date(self):
+        e = Event(title="lol", start="2014-03-14").save()
+        e2 = Event(title="lol", start="2014-03-15").save()
+        e3 = Event(title="lol", start="2014-03-16").save()
+        response = self.client.get('/rest/event/?min_date=2014-03-13', format='json')
+        self.assertEqual(3, response.data['count'])
+        response = self.client.get('/rest/event/?min_date=2014-03-14', format='json')
+        self.assertEqual(3, response.data['count'])
+        response = self.client.get('/rest/event/?min_date=2014-03-15', format='json')
+        self.assertEqual(2, response.data['count'])
+        response = self.client.get('/rest/event/?min_date=2014-03-16', format='json')
+        self.assertEqual(1, response.data['count'])
+        response = self.client.get('/rest/event/?min_date=2014-03-17', format='json')
+        self.assertEqual(0, response.data['count'])
+
     def test_create_event_with_no_shifts(self):
         data = {
                 "title": "lol", 
