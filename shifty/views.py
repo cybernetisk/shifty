@@ -36,7 +36,7 @@ def create_shift_user(request):
     data = simplejson.loads(request.body)
 
     username = data['username']
-    password = data['password']
+    password = 'hemmelig'  # todo: generate password automagically.
     email = data['email']
     phone_number = data['phone_number']
 
