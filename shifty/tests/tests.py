@@ -12,6 +12,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from shifty.views import take_shift, create_shift_user
 from shifty.models import Shift, Event, ShiftType
+from django.utils import simplejson
 
 import datetime
 from django.utils.timezone import utc
@@ -23,7 +24,7 @@ from rest_framework.test import APIRequestFactory
 def now():
     return datetime.datetime.utcnow().replace(tzinfo=utc)
 
-class SimpleTest(TestCase):
+class SimpleTestCase(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
@@ -40,7 +41,11 @@ class SimpleTest(TestCase):
         """
 
         """
-        request = self.factory.get('/take_shift?id=%d&name=barfunk&comment=kommentar' % self.shift.id, )
+        user = {'id':self.shift.id,
+                'name':'barfunk',
+                'comment':'kommentar'}
+        user = simplejson.dumps(user)
+        request = self.factory.post('/take_shift', user, content_type='json')
         response = take_shift(request)
 
         shift = Shift.objects.get(pk=self.shift.id)
@@ -52,13 +57,16 @@ class SimpleTest(TestCase):
         user = {'username':'barfunk2',
                 'email':'lol',
                 'password':'test',
-                'phone_number':'123455'}
-        request = self.factory.post('/create_shift_user', user, format='json')
+                'firstname': 'gunnar',
+                'lastname':'granskau',
+                'phone':'123455'}
+        user = simplejson.dumps(user)
+        request = self.factory.post('/create_shift_user', user, content_type='json')
         response = create_shift_user(request)
 
         user = User.objects.get(username="barfunk2")
         self.assertEqual(user.username, "barfunk2")
-        self.assertEqual(user.contactinfo.phone_number, "123455")
+        self.assertEqual(user.contactinfo.phone, "123455")
         self.assertEqual(user.email, "lol")
 
     def test_try_to_take_occupied_shift(self):
@@ -74,7 +82,8 @@ class SimpleTest(TestCase):
         user = {'id':self.shift.id,
                 'name':'barfunk2',
                 'comment':'lol'}
-        request = self.factory.post('/take_shift', user, format='json')
+        user = simplejson.dumps(user)
+        request = self.factory.post('/take_shift', user, content_type='json')
 
         response = take_shift(request)
 
@@ -89,7 +98,11 @@ class SimpleTest(TestCase):
         shift.comment = "noe som kan endres"
         shift.save()
 
-        request = self.factory.get('/take_shift?id=%d&name=barfunk&comment=larsrsgasrgol' % self.shift.id, )
+        user = {'id':self.shift.id,
+                'name':'barfunk',
+                'comment':'larsrsgasrgol'}
+        user = simplejson.dumps(user)
+        request = self.factory.post('/take_shift', user, content_type='json')
 
         request.user = self.user
 
@@ -106,7 +119,10 @@ class SimpleTest(TestCase):
         shift.comment = "larsrsgasrgol"
         shift.save()
 
-        request = self.factory.get('/take_shift?id=%d&name=' % self.shift.id, )
+        user = {'id':self.shift.id,
+                'name':''}
+        user = simplejson.dumps(user)
+        request = self.factory.post('/take_shift', user, content_type='json')
 
         request.user = self.user
 

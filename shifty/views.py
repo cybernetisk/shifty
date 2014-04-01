@@ -50,10 +50,11 @@ def create_shift_user(request):
     return {'id':user.id}
 
 def take_shift(request):
-    username = request.REQUEST['name']
-    comment = request.REQUEST['comment'] if 'comment' in request.REQUEST else None
+    data = simplejson.loads(request.body)
 
-    shift_id = request.REQUEST['id']
+    username = data['name']
+    comment = data['comment'] if 'comment' in data else None
+    shift_id = data['id']
     shift = Shift.objects.get(pk=shift_id)
 
     if username == "":
