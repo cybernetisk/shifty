@@ -1,6 +1,7 @@
 #from django.contrib.auth.models import User, Group
 from models import Event, Shift, ShiftType, User
 from rest_framework import serializers
+from rest_framework import filters
 
 
 class ShiftSerializer(serializers.ModelSerializer):

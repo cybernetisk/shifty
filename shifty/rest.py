@@ -9,12 +9,22 @@ from django.core import serializers
 from shifty.serializers import ShiftSerializer
 from shifty.permissions import isAdminOrReadOnly
 from rest_framework.mixins import CreateModelMixin
+import datetime
+
+
+class RelativeDateFilter(django_filters.DateFilter):
+    def filter(self, qs, value):
+        if 'value' == 'today':
+            value = datetime.datetime.today().strftime("%Y-%m-%d")
+        return django_filters.DateFilter.filter(self, qs, value)
+
 
 class EventFilter(django_filters.FilterSet):
-    min_date = django_filters.DateFilter(name="start", lookup_type='gte')
+    min_date = RelativeDateFilter(name="start", lookup_type='gte')
     class Meta:
         model = Event
         fields = ['min_date']
+
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all().order_by('start')
