@@ -33,7 +33,7 @@ def getEvents(request, offset, limit):
     return HttpResponse(simplejson.dumps(result), mimetype='application/json')
 
 def create_shift_user(request):
-    data = simplejson.loads(requests.body)
+    data = simplejson.loads(request.body)
 
     username = data['username']
     password = data['password']
