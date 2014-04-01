@@ -42,7 +42,7 @@ def create_shift_user(request):
     email = data['email']
     phone = data['phone']
 
-    user = User.objects.create_user(username, email, password, firstname=firstname, lastname=lastname)
+    user = User.objects.create_user(username, email, password, first_name=firstname, last_name=lastname)
     contact_info = ContactInfo(phone=phone)
     contact_info.user = user
     contact_info.save()
