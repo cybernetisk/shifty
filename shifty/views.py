@@ -33,10 +33,12 @@ def getEvents(request, offset, limit):
     return HttpResponse(simplejson.dumps(result), mimetype='application/json')
 
 def create_shift_user(request):
-    username = request.REQUEST['username']
-    password = request.REQUEST['password']
-    email = request.REQUEST['email']
-    phone_number = request.REQUEST['phone_number']
+    data = simplejson.loads(requests.body)
+
+    username = data['username']
+    password = data['password']
+    email = data['email']
+    phone_number = data['phone_number']
 
     user = User.objects.create_user(username, email, password)
     contact_info = ContactInfo(phone_number=phone_number)
