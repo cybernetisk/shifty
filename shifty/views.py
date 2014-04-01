@@ -36,12 +36,14 @@ def create_shift_user(request):
     data = simplejson.loads(request.body)
 
     username = data['username']
+    firstname = data['firstname']
+    lastname = data['lastname']
     password = 'hemmelig'  # todo: generate password automagically.
     email = data['email']
-    phone_number = data['phone_number']
+    phone = data['phone']
 
     user = User.objects.create_user(username, email, password)
-    contact_info = ContactInfo(phone_number=phone_number)
+    contact_info = ContactInfo(phone=phone)
     contact_info.user = user
     contact_info.save()
 

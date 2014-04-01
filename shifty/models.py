@@ -28,7 +28,7 @@ class Event(models.Model):
         return {'title':res[0].title, 'id':res[0].id}
 
     def __unicode__(self):
-        return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y").lstrip("0").lower())
+        return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y %H").lstrip("0").lower())
 
     def toDict(self):
         return {'title':self.title, 'description':self.description, 'start':_date(self.start, "l j. F Y").capitalize()}
@@ -43,7 +43,7 @@ class Shift(models.Model):
     comment = models.TextField(blank=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
-    
+
     def __unicode__(self):
         return self.shift_type.title
 
@@ -84,4 +84,4 @@ class ShiftType(models.Model):
 
 class ContactInfo(models.Model):
     user = models.OneToOneField(User)
-    phone_number = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
