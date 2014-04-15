@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from shifty.models import Shift, Event, ShiftType
+from datetime import datetime, timedelta
 
 class EventAndShiftTest(APITestCase):
     def test_event_fetch_by_date(self):
@@ -18,7 +19,17 @@ class EventAndShiftTest(APITestCase):
         self.assertEqual(1, response.data['count'])
         response = self.client.get('/rest/event/?min_date=2014-03-17', format='json')
         self.assertEqual(0, response.data['count'])
-        response = self.client.get('/rest/event/?min_date=today', format='json')
+
+    def test_event_fetch_by_today(self):
+        today = datetime.today() - timedelta(days=1)
+        format = '%Y-%m-%d'
+        print today.strftime(format)
+        e = Event(title="lol", start=today.strftime(format))
+        e.save()
+        print e.id
+        e = Event.objects.get(id=e.id)
+        print e
+        response = self.client.get('/rest/event/?start=today', format='json')
         self.assertEqual(0, response.data['count'])
 
     def test_create_event_with_no_shifts(self):

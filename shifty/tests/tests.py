@@ -20,22 +20,35 @@ from django.utils.timezone import utc
 
 from rest_framework.test import APIRequestFactory
 
-
-def now():
-    return datetime.datetime.utcnow().replace(tzinfo=utc)
-
 class SimpleTestCase(TestCase):
     def setUp(self):
+        self.now = datetime.datetime.utcnow().replace(tzinfo=utc)
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
         self.user = User.objects.create_user(
             username='barfunk', email='barfunk@cyb.no', password='top_secret')
-        self.event = Event(start=now())
+        self.event = Event(start=self.now, title="abc", description="desc")
         self.event.save()
         self.shift_type = ShiftType(title="test")
         self.shift_type.save()
-        self.shift = Shift(event=self.event, start=now(), stop=now(), shift_type = self.shift_type)
+        self.shift = Shift(event=self.event, start=self.now, stop=self.now, shift_type = self.shift_type)
         self.shift.save()
+
+    def test_copy_event(self):
+        x = self.event.copy(4)
+        offset = datetime.timedelta(days=4)
+        expected_time = self.now + offset
+        self.assertIsNotNone(x)
+        self.assertEqual(x.title, "abc")
+        self.assertEqual(x.description, "desc")
+        self.assertEqual(x.start, expected_time)
+
+        self.assertEqual(x.shifts.count(), 1)
+        shift = x.shifts.all()[0]
+        self.assertEqual(shift.start, expected_time)
+        self.assertEqual(shift.stop, expected_time)
+        self.assertIsNone(shift.volunteer)
+        self.assertEqual(shift.shift_type_id, self.shift_type.id)
 
     def test_take_shift(self):
         """

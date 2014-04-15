@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core import serializers
 from django.template.defaultfilters import date as _date
 from django.db.models import Q
+import datetime
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -35,6 +36,25 @@ class Event(models.Model):
 
     def availableShifts(self):
         return self.shifts.filter(volunteer__isnull = True).count()
+
+    def copy(self, offset_days):
+        offset = datetime.timedelta(days=offset_days)
+        event_copy = {'start':None, 'title':None, 'description':None}
+        for k in event_copy.keys():
+            event_copy[k] = getattr(self, k)
+        event_copy['start'] += offset
+        event = Event(**event_copy)
+        event.save()
+        for shift in self.shifts.all():
+            shift_copy = {'shift_type_id':None, 'start':None, 'stop':None, 'comment':None}
+            for k in shift_copy.keys():
+                shift_copy[k] = getattr(shift, k)
+            shift_copy['start'] += offset
+            shift_copy['stop'] += offset
+            shift_copy['event'] = event
+            new_shift = Shift(**shift_copy).save()
+        return event
+
 
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
