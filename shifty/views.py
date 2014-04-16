@@ -10,6 +10,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 import reversion
 from django.db import transaction
+from django.contrib.auth.decorators import permission_required
 
 
 def eventInfo(request, eventId):
@@ -107,6 +108,7 @@ class CopyEventsForm(forms.Form):
         except WeekdayChangedException as ex:
             raise forms.ValidationError(ex.message)"""
 
+@permission_required('event.can_create')
 def copy_events(request):
     ids = map(int, request.REQUEST['ids'].split(","))
     events = Event.objects.filter(id__in=ids).order_by('start').all()
