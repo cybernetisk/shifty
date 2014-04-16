@@ -1,9 +1,8 @@
 #!/bin/bash
-if [ ! -f "shifty.sqlite" ]
-then
-    python manage.py syncdb --noinput
-fi 
+if [ ! -f "shifty.sqlite" ]; then
+	echo "Creating new database"
+    python manage.py syncdb --no-initial-data --noinput
+fi;
 
 python manage.py schemamigration shifty --auto
-python manage.py migrate shifty
 python manage.py migrate
