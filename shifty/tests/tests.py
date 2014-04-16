@@ -35,9 +35,12 @@ class SimpleTestCase(TestCase):
         self.shift.save()
 
     def test_copy_event(self):
-        x = self.event.copy(4)
+        date = datetime.date.today()
         offset = datetime.timedelta(days=4)
+        expected_date = date + offset
         expected_time = self.now + offset
+
+        x = self.event.copy(expected_date)
         self.assertIsNotNone(x)
         self.assertEqual(x.title, "abc")
         self.assertEqual(x.description, "desc")

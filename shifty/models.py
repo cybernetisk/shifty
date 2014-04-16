@@ -37,8 +37,10 @@ class Event(models.Model):
     def availableShifts(self):
         return self.shifts.filter(volunteer__isnull = True).count()
 
-    def copy(self, offset_days):
-        offset = datetime.timedelta(days=offset_days)
+    def copy(self, date):
+        offset = date - self.start.date()
+        offset = datetime.timedelta(days=offset.days)
+
         event_copy = {'start':None, 'title':None, 'description':None}
         for k in event_copy.keys():
             event_copy[k] = getattr(self, k)
