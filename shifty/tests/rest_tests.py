@@ -21,16 +21,20 @@ class EventAndShiftTest(APITestCase):
         self.assertEqual(0, response.data['count'])
 
     def test_event_fetch_by_today(self):
-        today = datetime.today() - timedelta(days=1)
+        today = datetime.today()
+        offset = lambda days: (datetime.today() + timedelta(days=days))
         format = '%Y-%m-%d'
-        print today.strftime(format)
-        e = Event(title="lol", start=today.strftime(format))
-        e.save()
-        print e.id
-        e = Event.objects.get(id=e.id)
-        print e
-        response = self.client.get('/rest/event/?start=today', format='json')
+        e = Event(title="lol", start=offset(-1)).save()
+        response = self.client.get('/rest/event/?min_date=today', format='json')
         self.assertEqual(0, response.data['count'])
+
+        e = Event(title="lol", start=offset(1)).save()
+        response = self.client.get('/rest/event/?min_date=today', format='json')
+        self.assertEqual(1, response.data['count'])
+
+        e = Event(title="lol", start=offset(2)).save()
+        response = self.client.get('/rest/event/?min_date=today', format='json')
+        self.assertEqual(2, response.data['count'])
 
     def test_create_event_with_no_shifts(self):
         data = {

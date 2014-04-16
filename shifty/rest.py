@@ -11,12 +11,15 @@ from shifty.permissions import isAdminOrReadOnly
 from rest_framework.mixins import CreateModelMixin
 import datetime
 
-
-class RelativeDateFilter(django_filters.DateFilter):
+class RelativeDateFilter(django_filters.CharFilter):
     def filter(self, qs, value):
-        if 'value' == 'today':
-            value = datetime.datetime.today().strftime("%Y-%m-%d")
-        return django_filters.DateFilter.filter(self, qs, value)
+        res = None
+        if value == 'today':
+            res = datetime.date.today()
+        else:
+            res = datetime.datetime.strptime(value, "%Y-%m-%d")
+        if res is not None:
+            return django_filters.CharFilter.filter(self, qs, res)
 
 
 class EventFilter(django_filters.FilterSet):
