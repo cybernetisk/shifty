@@ -125,9 +125,7 @@ def copy_events(request):
             if not form.errors:
                 events = form.cleaned_data['events']
                 date = form.cleaned_data['date']
-                with transaction.atomic(), reversion.create_revision():
-                    copies = Event.copy_events(events, date)
-                    reversion.set_comment("Copied events")
+                copies = Event.copy_events(events, date)
                 return HttpResponseRedirect("/admin/shifty/event/")
     else:
         form = CopyEventsForm(initial={'events':ids})

@@ -5,6 +5,7 @@ from django.template.defaultfilters import date as _date
 from django.db.models import Q
 import datetime
 import reversion
+from django.db import transaction
 
 
 class WeekdayChangedException(Exception):
@@ -94,7 +95,9 @@ class Event(models.Model):
         offset = Event.get_min_offset(events, date)
         copies = []
         for event in events:
-            copies.append(event.copy(offset=offset))
+            with transaction.atomic(), reversion.create_revision():
+                copies.append(event.copy(offset=offset))
+                reversion.set_comment("Copied event from %r" % event)
         return copies
 reversion.register(Event)
 
