@@ -99,7 +99,7 @@ class Event(models.Model):
                 copies.append(event.copy(offset=offset))
                 reversion.set_comment("Copied event from %r" % event)
         return copies
-reversion.register(Event)
+reversion.register(Event, follow=["shifts"])
 
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
