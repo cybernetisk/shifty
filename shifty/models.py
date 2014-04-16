@@ -4,6 +4,14 @@ from django.core import serializers
 from django.template.defaultfilters import date as _date
 from django.db.models import Q
 import datetime
+import reversion
+
+
+class WeekdayChangedException(Exception):
+    def __init__(self, events):
+        self.events = events
+        Exception.__init__(self, "Day of week changed!")
+
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -37,9 +45,12 @@ class Event(models.Model):
     def availableShifts(self):
         return self.shifts.filter(volunteer__isnull = True).count()
 
-    def copy(self, date):
-        offset = date - self.start.date()
-        offset = datetime.timedelta(days=offset.days)
+    def get_offset(self, date):
+        return date - self.start.date()
+
+    def copy(self, date=None, offset=None):
+        if date is not None:
+            offset = self.get_offset(date)
 
         event_copy = {'start':None, 'title':None, 'description':None}
         for k in event_copy.keys():
@@ -57,6 +68,35 @@ class Event(models.Model):
             new_shift = Shift(**shift_copy).save()
         return event
 
+    @classmethod
+    def get_min_offset(cls, events, date):
+        offset = None
+        for event in events:
+            tmp_offset = event.get_offset(date)
+            if offset is None or tmp_offset < offset:
+                offset = tmp_offset
+        return offset
+
+    @classmethod
+    def check_same_day(cls, events, date):
+        offset = Event.get_min_offset(events, date)
+        failed = []
+        for event in events:
+            now = event.start.date()
+            after_offset = now + offset
+            if now.weekday() != after_offset.weekday():
+                failed.append(event)
+        if failed:
+            raise WeekdayChangedException(failed)
+
+    @classmethod
+    def copy_events(cls, events, date):
+        offset = Event.get_min_offset(events, date)
+        copies = []
+        for event in events:
+            copies.append(event.copy(offset=offset))
+        return copies
+reversion.register(Event)
 
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
@@ -96,6 +136,7 @@ class Shift(models.Model):
                 'start':_date(self.start, "H:i"), 
                 'stop':_date(self.stop, "H:i"),
                 'cssClass':str(self).lower()}
+reversion.register(Shift)
 
 class ShiftType(models.Model):
     title = models.CharField(max_length=30)
@@ -103,7 +144,9 @@ class ShiftType(models.Model):
 
     def __unicode__(self):
         return self.title
+reversion.register(ShiftType)
 
 class ContactInfo(models.Model):
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=100)
+reversion.register(ContactInfo)

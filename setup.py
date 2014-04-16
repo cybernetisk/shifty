@@ -7,5 +7,6 @@ setup(name='shifty',
                           'djangorestframework',
                           'markdown',
                           'django-filter',
-                          'pyyaml']
+                          'pyyaml',
+                          'django-reversion']
       )
