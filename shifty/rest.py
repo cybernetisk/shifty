@@ -16,10 +16,11 @@ class RelativeDateFilter(django_filters.CharFilter):
         res = None
         if value == 'today':
             res = datetime.date.today()
-        else:
+        elif value:
             res = datetime.datetime.strptime(value, "%Y-%m-%d")
         if res is not None:
             return django_filters.CharFilter.filter(self, qs, res)
+        return qs
 
 
 class EventFilter(django_filters.FilterSet):
