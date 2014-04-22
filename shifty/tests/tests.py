@@ -12,7 +12,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from shifty.views import take_shift, create_shift_user
 from shifty.models import Shift, Event, ShiftType
-from django.utils import simplejson
+import json
 
 import datetime
 from django.utils.timezone import utc
@@ -60,7 +60,7 @@ class SimpleTestCase(TestCase):
         user = {'id':self.shift.id,
                 'name':'barfunk',
                 'comment':'kommentar'}
-        user = simplejson.dumps(user)
+        user = json.dumps(user)
         request = self.factory.post('/take_shift', user, content_type='json')
         response = take_shift(request)
 
@@ -76,7 +76,7 @@ class SimpleTestCase(TestCase):
                 'firstname': 'gunnar',
                 'lastname':'granskau',
                 'phone':'123455'}
-        user = simplejson.dumps(user)
+        user = json.dumps(user)
         request = self.factory.post('/create_shift_user', user, content_type='json')
         response = create_shift_user(request)
 
@@ -98,7 +98,7 @@ class SimpleTestCase(TestCase):
         user = {'id':self.shift.id,
                 'name':'barfunk2',
                 'comment':'lol'}
-        user = simplejson.dumps(user)
+        user = json.dumps(user)
         request = self.factory.post('/take_shift', user, content_type='json')
 
         response = take_shift(request)
@@ -117,7 +117,7 @@ class SimpleTestCase(TestCase):
         user = {'id':self.shift.id,
                 'name':'barfunk',
                 'comment':'larsrsgasrgol'}
-        user = simplejson.dumps(user)
+        user = json.dumps(user)
         request = self.factory.post('/take_shift', user, content_type='json')
 
         request.user = self.user
@@ -137,7 +137,7 @@ class SimpleTestCase(TestCase):
 
         user = {'id':self.shift.id,
                 'name':''}
-        user = simplejson.dumps(user)
+        user = json.dumps(user)
         request = self.factory.post('/take_shift', user, content_type='json')
 
         request.user = self.user

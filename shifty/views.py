@@ -4,7 +4,7 @@ from shifty.models import Shift, Event, ShiftType, ContactInfo, WeekdayChangedEx
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core import serializers
-from django.utils import simplejson
+import json
 from django.forms.models import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -18,7 +18,7 @@ def eventInfo(request, eventId):
 
     p = {'event':event.toDict(), 'columns':event.getShiftColumns()}
 
-    return HttpResponse(simplejson.dumps(p), mimetype='application/json')
+    return HttpResponse(json.dumps(p), mimetype='application/json')
 
 # added by marill 
 def shifts(request):
@@ -35,10 +35,10 @@ def getEvents(request, offset, limit):
     for e in events:
         result.append({'event':e.toDict(), 'columns':e.getShiftColumns()})
 
-    return HttpResponse(simplejson.dumps(result), mimetype='application/json')
+    return HttpResponse(json.dumps(result), mimetype='application/json')
 
 def create_shift_user(request):
-    data = simplejson.loads(request.body)
+    data = json.loads(request.body)
 
     username = data['username']
     firstname = data['firstname']
@@ -56,7 +56,7 @@ def create_shift_user(request):
 
 @reversion.create_revision()
 def take_shift(request):
-    data = simplejson.loads(request.body)
+    data = json.loads(request.body)
 
     username = data['name']
     comment = data['comment'] if 'comment' in data else None
@@ -72,21 +72,21 @@ def take_shift(request):
                     shift.comment = comment
                 reversion.set_comment("Removed user from shift")
                 shift.save()
-            return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
+            return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
 
         user = User.objects.get(username=username)
 
         if user is not None:
             if shift.volunteer != None and user != shift.volunteer:
-                return HttpResponse(simplejson.dumps({'status':'taken'}), mimetype='application/json')
+                return HttpResponse(json.dumps({'status':'taken'}), mimetype='application/json')
 
             shift.volunteer = user
             if comment is not None:
                 shift.comment = comment
             shift.save()
             reversion.set_comment("Took shift")
-            return HttpResponse(simplejson.dumps({'status':'ok'}), mimetype='application/json')
-    return HttpResponse(simplejson.dumps({'status':'failed'}), mimetype='application/json')
+            return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
+    return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
 
 
 
