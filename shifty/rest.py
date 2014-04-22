@@ -54,7 +54,9 @@ class EventViewSet(viewsets.ModelViewSet):
                     if 'shift_type' in _shift:
                         _shift['shift_type_id'] = _shift['shift_type']['id']
                         del _shift['shift_type']
-                    _s = Shift(event_id=event_id, **_shift).save()
+                    _s = Shift(event_id=event_id, **_shift)
+                    _s.clean_fields()
+                    _s.save()
                     json = serializer.to_native(_s)
                     result['shifts'].append(json)
                 except Exception as ex:

@@ -6,18 +6,25 @@ from datetime import datetime, timedelta
 
 class EventAndShiftTest(APITestCase):
     def test_event_fetch_by_date(self):
-        e = Event(title="lol", start="2014-03-14").save()
-        e2 = Event(title="lol", start="2014-03-15").save()
-        e3 = Event(title="lol", start="2014-03-16").save()
-        response = self.client.get('/rest/event/?min_date=2014-03-13', format='json')
+        e = Event(title="lol", start="2014-03-14")
+        e.clean_fields()
+        e.save()
+        e2 = Event(title="lol", start="2014-03-15")
+        e2.clean_fields()
+        e2.save()
+        e3 = Event(title="lol", start="2014-03-16")
+        e3.clean_fields()
+        e3.save()
+
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=2014-03-13')
         self.assertEqual(3, response.data['count'])
-        response = self.client.get('/rest/event/?min_date=2014-03-14', format='json')
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=2014-03-14')
         self.assertEqual(3, response.data['count'])
-        response = self.client.get('/rest/event/?min_date=2014-03-15', format='json')
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=2014-03-15')
         self.assertEqual(2, response.data['count'])
-        response = self.client.get('/rest/event/?min_date=2014-03-16', format='json')
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=2014-03-16')
         self.assertEqual(1, response.data['count'])
-        response = self.client.get('/rest/event/?min_date=2014-03-17', format='json')
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=2014-03-17')
         self.assertEqual(0, response.data['count'])
 
     def test_event_fetch_by_today(self):
@@ -25,15 +32,15 @@ class EventAndShiftTest(APITestCase):
         offset = lambda days: (datetime.today() + timedelta(days=days))
         format = '%Y-%m-%d'
         e = Event(title="lol", start=offset(-1)).save()
-        response = self.client.get('/rest/event/?min_date=today', format='json')
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=today')
         self.assertEqual(0, response.data['count'])
 
         e = Event(title="lol", start=offset(1)).save()
-        response = self.client.get('/rest/event/?min_date=today', format='json')
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=today')
         self.assertEqual(1, response.data['count'])
 
         e = Event(title="lol", start=offset(2)).save()
-        response = self.client.get('/rest/event/?min_date=today', format='json')
+        response = self.client.get('/rest/event/', format='json', QUERY_STRING='min_date=today')
         self.assertEqual(2, response.data['count'])
 
     def test_create_event_with_no_shifts(self):
