@@ -30,6 +30,15 @@ class EventFilter(django_filters.FilterSet):
         fields = ['min_date']
 
 
+
+class ShiftFilter(django_filters.FilterSet):
+    min_date = RelativeDateFilter(name="start", lookup_type='gte')
+    shift_type = django_filters.NumberFilter(name="shift_type")
+    class Meta:
+        model = Event
+        fields = ['min_date', 'shift_type']
+
+
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all().order_by('start')
     serializer_class = EventSerializer
@@ -72,7 +81,8 @@ class ShiftViewSet(viewsets.ModelViewSet):
     serializer_class = ShiftSerializer
     permission_classes = (isAdminOrReadOnly,)
 
-    filter_fields = ('shift_type', )
+    filter_class = ShiftFilter
+
 
 class ShiftTypeViewSet(viewsets.ModelViewSet):
 
