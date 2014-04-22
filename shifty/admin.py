@@ -9,6 +9,10 @@ class ShiftInLine(admin.TabularInline):
     model = Shift
     extra = 0
 
+class EventInLine(admin.TabularInline):
+    model = Event
+    extra = 0
+
 
 def make_copy(modeladmin, request, queryset):
     selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
@@ -27,6 +31,9 @@ class EventAdmin(reversion.VersionAdmin):
 
     actions = [make_copy]
 
+class ShiftAdmin(reversion.VersionAdmin):
+    list_display = ('shift_type', 'event', 'start')
+
 class ContactInline(admin.StackedInline):
     model = ContactInfo
     can_delete = False
@@ -42,4 +49,4 @@ admin.site.register(User, UserAdmin)
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(ShiftType, reversion.VersionAdmin)
-admin.site.register(Shift, reversion.VersionAdmin)
+admin.site.register(Shift, ShiftAdmin)
