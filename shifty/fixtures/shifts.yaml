@@ -1,57 +1,57 @@
 -   fields: {description: "Cybernetisk Selskab inviterer til drinkaften i Escape!\n\
-            \n20 \xE5rs aldersgrense.", start: !!timestamp '2013-12-13 17:00:00+00:00',
+            \n20 \xE5rs aldersgrense.", start: !!timestamp '2014-12-13 17:00:00+00:00',
         title: Drinkaften}
     model: shifty.event
     pk: 1
--   fields: {description: Hei sveis, start: !!timestamp '2013-10-09 16:00:00+00:00',
+-   fields: {description: Hei sveis, start: !!timestamp '2014-10-09 16:00:00+00:00',
         title: Torsdagskveld}
     model: shifty.event
     pk: 2
--   fields: {event: 1, shift_type: 1, start: !!timestamp '2013-12-13 16:30:00+00:00',
+-   fields: {event: 1, shift_type: 1, start: !!timestamp '2014-12-13 16:30:00+00:00',
         stop: !!timestamp '2013-12-14 02:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 1
--   fields: {event: 1, shift_type: 2, start: !!timestamp '2013-12-13 16:30:00+00:00',
+-   fields: {event: 1, shift_type: 2, start: !!timestamp '2014-12-13 16:30:00+00:00',
         stop: !!timestamp '2013-12-13 21:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 2
--   fields: {event: 1, shift_type: 2, start: !!timestamp '2013-12-13 21:00:00+00:00',
+-   fields: {event: 1, shift_type: 2, start: !!timestamp '2014-12-13 21:00:00+00:00',
         stop: !!timestamp '2013-12-14 02:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 3
--   fields: {event: 1, shift_type: 3, start: !!timestamp '2013-12-13 16:30:00+00:00',
+-   fields: {event: 1, shift_type: 3, start: !!timestamp '2014-12-13 16:30:00+00:00',
         stop: !!timestamp '2013-12-14 02:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 4
--   fields: {event: 1, shift_type: 3, start: !!timestamp '2013-12-13 16:30:00+00:00',
+-   fields: {event: 1, shift_type: 3, start: !!timestamp '2014-12-13 16:30:00+00:00',
         stop: !!timestamp '2013-12-13 21:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 5
--   fields: {event: 1, shift_type: 3, start: !!timestamp '2013-12-13 21:00:00+00:00',
+-   fields: {event: 1, shift_type: 3, start: !!timestamp '2014-12-13 21:00:00+00:00',
         stop: !!timestamp '2013-12-14 02:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 6
--   fields: {event: 1, shift_type: 3, start: !!timestamp '2013-12-13 21:00:00+00:00',
+-   fields: {event: 1, shift_type: 3, start: !!timestamp '2014-12-13 21:00:00+00:00',
         stop: !!timestamp '2013-12-14 02:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 7
--   fields: {event: 1, shift_type: 4, start: !!timestamp '2013-12-13 16:30:00+00:00',
+-   fields: {event: 1, shift_type: 4, start: !!timestamp '2014-12-13 16:30:00+00:00',
         stop: !!timestamp '2013-12-13 21:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 8
--   fields: {event: 1, shift_type: 4, start: !!timestamp '2013-12-13 21:00:00+00:00',
+-   fields: {event: 1, shift_type: 4, start: !!timestamp '2014-12-13 21:00:00+00:00',
         stop: !!timestamp '2013-12-14 02:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 9
--   fields: {event: 2, shift_type: 1, start: !!timestamp '2013-10-09 16:00:00+00:00',
+-   fields: {event: 2, shift_type: 1, start: !!timestamp '2014-10-09 16:00:00+00:00',
         stop: !!timestamp '2013-10-10 00:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 10
--   fields: {event: 2, shift_type: 2, start: !!timestamp '2013-10-09 16:00:00+00:00',
+-   fields: {event: 2, shift_type: 2, start: !!timestamp '2014-10-09 16:00:00+00:00',
         stop: !!timestamp '2013-10-09 20:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 11
--   fields: {event: 2, shift_type: 2, start: !!timestamp '2013-10-09 20:00:00+00:00',
+-   fields: {event: 2, shift_type: 2, start: !!timestamp '2014-10-09 20:00:00+00:00',
         stop: !!timestamp '2013-10-10 00:00:00+00:00', volunteer: null}
     model: shifty.shift
     pk: 12

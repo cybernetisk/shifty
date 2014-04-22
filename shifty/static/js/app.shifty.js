@@ -67,10 +67,25 @@ $(document).ready(function() {
 
             index: function() {
                 var c = new shifty.collections.Events();
+                // Added to show free shifts
+                var freeSmShifts = new shifty.collections.Shift();
+                var freeBarShifts = new shifty.collections.Shift();
+                var freeGuardShifts = new shifty.collections.Shift();
+                var freeDjShifts = new shifty.collections.Shift();
                 var v = new shifty.views.Index({
-                    collection: c
+                    collection: c,
+                    freeSm: freeSmShifts,
+                    freeBar: freeBarShifts,
+                    freeGuard: freeGuardShifts,
+                    freeDj: freeDjShifts
                 });
-                vh.push(v, c.fetch({ data: { page: 1, page_size: 5 } }));
+                vh.push(v, 
+                    c.fetch({ data: { page: 1, page_size: 5 }}), 
+                    freeSmShifts.fetch({ data: { shift_type: 1, page: 1, page_size: 1 }}),
+                    freeBarShifts.fetch({ data: { shift_type: 2, page: 1, page_size: 1 }}),
+                    freeGuardShifts.fetch({ data: { shift_type: 3, page: 1, page_size: 1 }}),
+                    freeDjShifts.fetch({ data: { shift_type: 4, page: 1, page_size: 1 }}) 
+                    );
             },
 
             events: function() {

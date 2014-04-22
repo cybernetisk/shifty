@@ -39,3 +39,19 @@ Handlebars.registerHelper('calculateBongs', function(start, stop) {
 
     return val;
 });
+
+Handlebars.registerHelper('calculateWidth', function(n, all) {
+    if(n > 0){
+        val = Math.floor(all-n);
+        val = (all-val)*25;
+
+        return val;   
+    }else{
+        return 0;
+    }
+
+});
+
+
+
+

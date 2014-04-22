@@ -39,6 +39,10 @@ shifty.models.Shift = Backbone.Model.extend({
 
 shifty.collections.Shift = Backbone.Collection.extend({
     model: shifty.models.Shift,
+    url: function() {
+        return '/rest/shift/';
+    },
+
     /**
      * Sort function to sort shifts by its shift type
      */

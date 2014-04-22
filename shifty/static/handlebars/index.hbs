@@ -1,15 +1,57 @@
-<div class='panel right upcoming'>
+<div class='panel right frontpage_box'>
 <h3><i>Neste arrangement i Escape</i></h3>
 <table>
 {{#each upcomingEvents }}
 	<tr>
-	<th><div class='free'> </div></th>
+	<th><div class='bar'> </div></th>
 	<th><a href="/event/{{ id }}">{{ title }}</a></th>
 	</tr>
 	<tr>
 	<td colspan='2'>{{formatDate start "dddd D. MMMM YYYY"}}</td>
 	</tr>
 {{/each}}
+</table>
+</div>
+
+<div class='panel right frontpage_box'>
+<h3><i>Ledige skift ({{ freeAll }})</i></h3>
+<table>
+	<tr>
+		<th class='status'>Skjenkemester</th>
+		<th class='status'>{{ freeSm }}</th>
+		<th style="font-align:right">
+			<div class='sm' style="width:{{ calculateWidth freeSm freeAll }}px">
+				
+			</div>
+		</th>
+	</tr>
+	<tr>
+		<th class='status'>Barfunk</th>
+		<th class='status'>{{ freeBar }}</th>
+		<th style="font-align:right">
+			<div class='bar' style="width:{{ calculateWidth freeBar freeAll }}px">
+				
+			</div>
+		</th>
+	</tr>
+	<tr>
+		<th class='status'>Vakt</th>
+		<th class='status'>{{ freeGuard }}</th>
+		<th style="font-align:right">
+			<div class='vakt' style="width:{{ calculateWidth freeGuard freeAll }}px">
+				
+			</div>
+		</th>
+	</tr>
+	<tr>
+		<th class='status'>DJ</th>
+		<th class='status'>{{ freeDj }}</th>
+		<th style="font-align:right">
+			<div class='dj' style="width:{{ calculateWidth freeDj freeAll }}px">
+				
+			</div>
+		</th>
+	</tr>
 </table>
 </div>
 
@@ -24,4 +66,3 @@
 
 
 <img alt="Pingvin" src="/static/images/penguin.png">
-
