@@ -30,12 +30,11 @@ class EventFilter(django_filters.FilterSet):
         fields = ['min_date']
 
 
-
 class ShiftFilter(django_filters.FilterSet):
     min_date = RelativeDateFilter(name="start", lookup_type='gte')
     shift_type = django_filters.NumberFilter(name="shift_type")
     class Meta:
-        model = Event
+        model = Shift
         fields = ['min_date', 'shift_type']
 
 
