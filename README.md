@@ -1,4 +1,7 @@
 # Shifty
+
+[![Build Status](https://travis-ci.org/cybrairai/shifty.svg)](https://travis-ci.org/cybrairai/shifty)
+
 ## Install instructions
 
 0. clone the repo with `git clone git@github.com:cybrairai/shifty.git
