@@ -53,8 +53,13 @@ shifty.views.Events = Backbone.View.extend({
         var modal = $(Handlebars.templates.event_take_shift(block));
 
         // autocomplete users
-        modal.find('input.user_search').typeahead({
+        var remoteUsers = new Bloodhound({
             name: 'user',
+            datumTokenizer: function(d)
+            {
+                return Bloodhound.tokenizers.whitespace(d.value);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
                 url: '/rest/user/?search=%QUERY',
                 filter: function(data)
@@ -69,12 +74,24 @@ shifty.views.Events = Backbone.View.extend({
                             name: node.first_name + concat + node.last_name
                         });
                     });
-                    d.push({
+                    /*d.push({
                         value: 'Opprett ny bruker',
                         tokens: [],
                         name: 'create-new-user'
-                    });
+                    });*/
                     return d;
+                }
+            }
+        });
+        remoteUsers.initialize();
+        modal.find('input.user_search').typeahead(null, {
+            //displayKey: 'value',
+            source: remoteUsers.ttAdapter(),
+            templates: {
+                suggestion: function(obj)
+                {
+                    //return '<p>'+obj.value+(obj.name && obj.name != 'create-new-user' ? ' ('+obj.name+')' : '')+'</p>';
+                    return '<p>'+obj.value+(obj.name ? ' ('+obj.name+')' : '')+'</p>';
                 }
             }
         })
@@ -82,25 +99,24 @@ shifty.views.Events = Backbone.View.extend({
         // creating new users
         .on('typeahead:selected', function(ev, sug, name)
         {
+            console.log("typeahead:selected", sug);
             if (sug.name == 'create-new-user')
             {
                 $(this).val("");
-                var d = $(Handlebars.templates.event_new_user());
-                
-                d.foundation();
-                d.foundation('reveal', 'open', {
-                    animation: 'fade',
-                    animationSpeed: 100,
-                    closeOnBackgroundClick: true,
-                    dismissModalClass: 'close-reveal-modal'
-                }).on('closed', function()
-                {
-                    modal.foundation('reveal', 'open');
+                var usermodel = new shifty.models.NewUser();
+                var userview = new shifty.views.EventsNewUser({
+                    model: usermodel
                 });
-
-                // TODO: set focus to username
+                userview.parentModal = modal;
+                userview.render();
             }
-        });
+        }).on('change', function(e, datum)
+        {
+            console.log("change", e, datum);
+        }).on('blur', function(obj)
+        {
+            console.log("blur");
+        })
 
         // show box
         modal.foundation();
@@ -120,6 +136,52 @@ shifty.views.Events = Backbone.View.extend({
                 scrollTop: modal.offset().top-20
             });
         });
+
+        setTimeout(function(){ modal.find("input.user_search.tt-input").focus(); }, 200);
+    }
+});
+
+shifty.views.EventsNewUser = Backbone.View.extend({
+    events: {
+        'click .create_user': 'createUser'
+    },
+
+    render: function()
+    {
+        var d = $(Handlebars.templates.event_new_user());
+
+        d.foundation();
+        d.foundation('reveal', 'open', {
+            animation: 'fade',
+            animationSpeed: 100,
+            closeOnBackgroundClick: true,
+            dismissModalClass: 'close-reveal-modal'
+        }).on('closed', function()
+        {
+            this.parentModal.foundation('reveal', 'open');
+            setTimeout(function(){ this.parentModal.find("input.user_search.tt-input").focus(); }.bind(this), 200);
+        }.bind(this));
+
+        this.el = d;
+
+        // TODO: check if username is in use as part of validation
+
+        d.find(".create_user").on('click', this.createUser.bind(this));
+        setTimeout(function(){ d.find("input.field-username").focus(); }, 100);
+    },
+
+    createUser: function(e)
+    {
+        e.preventDefault();
+
+        this.model.set('username', this.el.find("input[name=username]").val());
+        this.model.set('firstname', this.el.find("input[name=firstname]").val());
+        this.model.set('lastname', this.el.find("input[name=lastname]").val());
+        this.model.set('email', this.el.find("input[name=email]").val());
+        this.model.set('phone', this.el.find("input[name=phone]").val());
+
+        this.model.save();
+        console.log("createUser");
     }
 });
 

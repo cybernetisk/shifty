@@ -17,12 +17,16 @@ input variables:
         <tr>
             <td class='{{ ../cssClass }} shift_header'>{{ twinNum }}</td>
             <td>
-                Navn<br>
+                Navn (brukernavn)<br>
                 {{#if volunteer }}
                 <input type="text" name="name" class="name user_search" value="{{ volunteer.username }}">
                 {{else}}
                 <input type="text" name="name" class="name user_search" value="">
                 {{/if}}
+
+                <div class="user_missing">
+                    Brukeren må opprettes først - <a href="#">opprett bruker</a>
+                </div>
             </td>
             <td>
                 Kommentar<br>
@@ -31,6 +35,8 @@ input variables:
         </tr>
         {{/each}}
     </table>
-    <a href="#" class='button small success take_shift_button'>Lagre endringer</a>
+    <div class="text-center">
+        <a href="#" class='button small success take_shift_button'>Lagre</a>
+    </div>
     <a class="close-reveal-modal">&#215;</a>
 </div>        

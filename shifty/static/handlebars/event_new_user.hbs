@@ -16,15 +16,21 @@ input variables:
                         <label for="right-label-1" class="right inline">Brukernavn</label>
                     </div>
                     <div class="small-8 columns">
-                        <input type="text" class="field-username" id="right-label-1" placeholder="Bruk helst UiO-brukernavn" required pattern="[a-z]{4,15}">
+                        <input type="text" name="username" class="field-username" id="right-label-1" placeholder="Bruk helst UiO-brukernavn" required pattern="[a-z0-9]{4,15}">
+                        <small class="error">Brukernavnet må være mellom 4 og 15 tegn med a-z0-9.</small>
                     </div>
                 </div>
                 <div class="row">
                     <div class="small-4 columns">
-                        <label for="right-label-2" class="right inline">Fullt navn</label>
+                        <label for="right-label-2" class="right inline">Navn</label>
                     </div>
-                    <div class="small-8 columns">
-                        <input type="text" class="field-name" id="right-label-2" placeholder="Ola Normann" required>
+                    <div class="small-4 columns">
+                        <input type="text" name="firstname" class="field-name" id="right-label-2" placeholder="Fornavn" required>
+                        <small class="error">Du må fylle inn fornavnet ditt.</small>
+                    </div>
+                    <div class="small-4 columns">
+                        <input type="text" name="lastname" class="field-name" id="right-label-2" placeholder="Etternavn" required>
+                        <small class="error">Du må fylle inn etternavnet ditt.</small>
                     </div>
                 </div>
                 <div class="row">
@@ -32,7 +38,8 @@ input variables:
                         <label for="right-label-3" class="right inline">E-postadresse</label>
                     </div>
                     <div class="small-8 columns">
-                        <input type="email" class="field-email" id="right-label-3" placeholder="Til utvidelse av brukersystem" required>
+                        <input type="email" name="email" class="field-email" id="right-label-3" placeholder="Til utvidelse av brukersystem" required>
+                        <small class="error">En gyldig e-postadresse må spesifiseres.</small>
                     </div>
                 </div>
                 <div class="row">
@@ -40,7 +47,8 @@ input variables:
                         <label for="right-label-4" class="right inline">Telefonnr</label>
                     </div>
                     <div class="small-8 columns">
-                        <input type="text" class="field-phone" id="right-label-4" placeholder="For å kontakte hverandre" pattern="number">
+                        <input type="text" name="phone" class="field-phone" id="right-label-4" placeholder="For å kontakte hverandre" pattern="number">
+                        <small class="error">Telefonnummeret kan kun inneholde tall.</small>
                     </div>
                 </div>
             </div>
@@ -48,7 +56,7 @@ input variables:
 
         <hr/>
         <div class="text-center">
-            <a href="#" class='button small success create_user'>Opprett ny bruker</a>
+            <input type="submit" class='button small success create_user' value="Opprett ny bruker">
         </div>
     </form>
     <a class="close-reveal-modal">&#215;</a>

@@ -256,6 +256,24 @@ a#next_event, a#last_event {
 	.comment {
 		width: 350px;
 	}
+
+	.user_search {
+		margin-bottom: 0;
+	}
+	.user_missing {
+		background: #FFAAAA;
+		padding: 5px;
+		font-size: 10px;
+		display: none;
+
+		a {
+			color: #000
+		}
+	}
+	
+	.take_shift_button {
+		margin-bottom: 0;
+	}
 }
 
 
