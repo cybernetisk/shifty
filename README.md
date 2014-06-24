@@ -1,31 +1,29 @@
 # Shifty
-
 [![Build Status](https://travis-ci.org/cybrairai/shifty.svg)](https://travis-ci.org/cybrairai/shifty)
 
 ## Install instructions
 
-0. clone the repo with `git clone git@github.com:cybrairai/shifty.git
-1. check if you have pip installed, otherwise install pip (ubuntu: `sudo apt-get install python-pip`)
-2. run `pip install -e .` (maybe with sudo?) in the folder
-3. run `./migrate.sh`
-4. run `python manage.py runserver` to start the development web server
+### System preparation
+For Ubuntu:
+* apt-get install python ipython python-pip npm ruby python-yaml
 
-### Scss-files
-Need SASS to generate css-files from scss
-* `gem install sass --pre`
+For Ubuntu 14.04 installing all these from package manager works fine. Installing PyYAML with APT will avoid some error messages when using pip.
 
-To genereate CSS the watcher script must run:
-* `./watcher.sh`
+### Shifty-specific
+1. Grab files from GitHub: `git clone git@github.com:cybrairai/shifty.git`
+2. Go to the folder with the source files
+3. Install Python-dependencies: `sudo pip install -e .`
+4. Install SASS: `sudo gem install sass` (SASS compiles SCSS to CSS)
+5. Install Bower: `sudo npm install -g bower` (Bower is for JS-dependencies)
+6. Continue on the updating-section
 
-### Dependencies
-#### Bower
-We use Bower (http://bower.io/) to install dependencies. Can be installed by:
-```sudo npm install -g bower```
+## Updating
+1. Run migrations (creates database, ++): `./migrate.sh`
+2. Generate new css-files from SCSS: `./watcher.sh` (tip: keep running in it's own shell when developing)
+3. Install fixtures if wanted: `./manage.py loaddata shifts`
+4. Install JS-dependencies: Go to `shifty/static` in shell and run `bower install`
 
-Then we need to fetch the dependencies:
-1. Go to ```shifty/static``` in shell
-2. Run ```bower install```
-
-### Fixtures
-To install fixtures:
-* ```./manage.py loaddata shifts```
+## Running server
+1. Start development web server with: `python manage.py runserver`
+2. Open your browser at http://localhost:8000
+3. The server will restart when it notices changes to Python-code
