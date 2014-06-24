@@ -5,7 +5,7 @@
 
 ### System preparation
 For Ubuntu:
-* apt-get install python ipython python-pip npm ruby python-yaml
+* apt-get install python ipython python-pip node-legacy npm ruby python-yaml
 
 For Ubuntu 14.04 installing all these from package manager works fine. Installing PyYAML with APT will avoid some error messages when using pip.
 
