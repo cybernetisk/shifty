@@ -52,6 +52,9 @@ shifty.views.Events = Backbone.View.extend({
         //var modal = el.find(".take_shift");
         var modal = $(Handlebars.templates.event_take_shift(block));
 
+        // keep a list of known users to check later
+        var known_users = {};
+
         // autocomplete users
         var remoteUsers = new Bloodhound({
             name: 'user',
@@ -65,6 +68,7 @@ shifty.views.Events = Backbone.View.extend({
                 filter: function(data)
                 {
                     var d = [];
+                    known_users = [];
                     $(data.results).each(function(i, node)
                     {
                         concat = node.first_name && node.last_name ? " " : "";
@@ -73,6 +77,7 @@ shifty.views.Events = Backbone.View.extend({
                             tokens: [node.username, node.first_name, node.last_name],
                             name: node.first_name + concat + node.last_name
                         });
+                        known_users[node.username] = node.first_name + " " + node.last_name;
                     });
                     /*d.push({
                         value: 'Opprett ny bruker',
@@ -83,7 +88,14 @@ shifty.views.Events = Backbone.View.extend({
                 }
             }
         });
+
+        var modal_active = true;
+
         remoteUsers.initialize();
+        modal.find('input.user_search').each(function(elm)
+        {
+            $(elm).data('existing', false);
+        });
         modal.find('input.user_search').typeahead(null, {
             //displayKey: 'value',
             source: remoteUsers.ttAdapter(),
@@ -99,23 +111,45 @@ shifty.views.Events = Backbone.View.extend({
         // creating new users
         .on('typeahead:selected', function(ev, sug, name)
         {
+            $(this).data('existing', true);
             console.log("typeahead:selected", sug);
-            if (sug.name == 'create-new-user')
-            {
-                $(this).val("");
-                var usermodel = new shifty.models.NewUser();
+        }).on('change', function(e, datum)
+        {
+            $(this).data('existing', false);
+            console.log("typeahead-change", e, datum);
+        }).on('blur', function(evt)
+        {
+            var realname = $(this).parents(".twin").find(".realname input").first();
+
+            // ignore blanks
+            if ($(this).val() == "") {
+                realname.val("");
+                return;
+            }
+
+            // don't run when modal is being closed
+            if (!modal_active) return;
+
+            // TODO: recheck for user if not exisiting
+            // (it might be the loading failed or was cancelled if user was too fast typing)
+
+            var existing = $(this).data('existing') || $(this).val() in known_users;
+            if (!existing) {
+                realname.val("");
+                var usermodel = new shifty.models.NewUser({
+                    'username': $(this).val()
+                });
                 var userview = new shifty.views.EventsNewUser({
                     model: usermodel
                 });
+                userview.refField = $(this);
                 userview.parentModal = modal;
                 userview.render();
             }
-        }).on('change', function(e, datum)
-        {
-            console.log("change", e, datum);
-        }).on('blur', function(obj)
-        {
-            console.log("blur");
+
+            else {
+                realname.val(known_users[$(this).val()]);
+            }
         })
 
         // show box
@@ -132,12 +166,16 @@ shifty.views.Events = Backbone.View.extend({
             }*/
         }).on('opened', function()
         {
+            modal_active = true;
             /*$('html, body').animate({
                 scrollTop: modal.offset().top-20
             });*/
+        }).on('closed', function()
+        {
+            modal_active = false; // make sure 'blur'-event on typeahead-field doesn't open sub-modal
         });
 
-        setTimeout(function(){ modal.find("input.user_search.tt-input").focus(); }, 200);
+        setTimeout(function(){ modal.find("input.user_search.tt-input").first().focus(); }, 200);
     }
 });
 
@@ -148,7 +186,9 @@ shifty.views.EventsNewUser = Backbone.View.extend({
 
     render: function()
     {
-        var d = $(Handlebars.templates.event_new_user());
+        var d = $(Handlebars.templates.event_new_user({
+            'username': this.model.get('username')
+        }));
 
         d.foundation();
         d.foundation('reveal', 'open', {
@@ -159,7 +199,7 @@ shifty.views.EventsNewUser = Backbone.View.extend({
         }).on('closed', function()
         {
             this.parentModal.foundation('reveal', 'open');
-            setTimeout(function(){ this.parentModal.find("input.user_search.tt-input").focus(); }.bind(this), 200);
+            setTimeout(function(){ this.refField.focus(); }.bind(this), 200);
         }.bind(this));
 
         this.el = d;
@@ -167,21 +207,38 @@ shifty.views.EventsNewUser = Backbone.View.extend({
         // TODO: check if username is in use as part of validation
 
         d.find(".create_user").on('click', this.createUser.bind(this));
-        setTimeout(function(){ d.find("input.field-username").focus(); }, 100);
+        setTimeout(function(){ d.find("input.field-name").first().focus(); }, 100);
     },
 
     createUser: function(e)
     {
         e.preventDefault();
 
-        this.model.set('username', this.el.find("input[name=username]").val());
+        var username = this.el.find("input[name=username]").val();
+        this.model.set('username', username);
         this.model.set('firstname', this.el.find("input[name=firstname]").val());
         this.model.set('lastname', this.el.find("input[name=lastname]").val());
         this.model.set('email', this.el.find("input[name=email]").val());
         this.model.set('phone', this.el.find("input[name=phone]").val());
 
-        this.model.save();
-        console.log("createUser");
+        var self = this;
+        this.model.save([], {
+            success: function(model, response, options)
+            {
+                console.log("success", self);
+                self.refField.val(username);
+                self.refField.data('existing', true);
+                self.el.foundation('reveal', 'close');
+                console.log(self.refField.parents(".twin").find(".comment input").first());
+                setTimeout(function(){ self.refField.parent(".twin").find(".comment input").focus(); }, 200);
+            },
+            error: function()
+            {
+                console.log("error");
+                console.log("model save error");
+            }
+        });
+        console.log("user-obj", this.model);
     }
 });
 

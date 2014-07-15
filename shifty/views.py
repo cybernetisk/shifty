@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 import reversion
 from django.db import transaction
 from django.contrib.auth.decorators import permission_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 def eventInfo(request, eventId):
@@ -43,16 +44,15 @@ def create_shift_user(request):
     username = data['username']
     firstname = data['firstname']
     lastname = data['lastname']
-    password = 'hemmelig'  # todo: generate password automagically.
     email = data['email']
     phone = data['phone']
 
-    user = User.objects.create_user(username, email, password, first_name=firstname, last_name=lastname)
+    user = User.objects.create_user(username, email, first_name=firstname, last_name=lastname)
     contact_info = ContactInfo(phone=phone)
     contact_info.user = user
     contact_info.save()
 
-    return {'id':user.id}
+    return HttpResponse(json.dumps({'id': user.id}), mimetype='application/json')
 
 @reversion.create_revision()
 def take_shift(request):
@@ -135,5 +135,6 @@ def copy_events(request):
         form.fields["events"].queryset = events
     return render(request, 'shifty/copy_events.html', dict(form=form))
 
+@ensure_csrf_cookie
 def backbone_router(request):
     return render_to_response('shifty/base.html')

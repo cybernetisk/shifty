@@ -12,29 +12,29 @@ input variables:
     <span class='time'>{{ formatDate shift.start "HH:mm" }}-{{ formatDate shift.stop "HH:mm" }}</span>
     <span class='bong'>{{ calculateBongs shift.start shift.stop }} bonger</span>
 
-    <table>
+    <div class="twins">
         {{#each twins}}
-        <tr>
-            <td class='{{ ../cssClass }} shift_header'>{{ twinNum }}</td>
-            <td>
-                Navn (brukernavn)<br>
-                {{#if volunteer }}
-                <input type="text" name="name" class="name user_search" value="{{ volunteer.username }}">
-                {{else}}
-                <input type="text" name="name" class="name user_search" value="">
-                {{/if}}
-
-                <div class="user_missing">
-                    Brukeren må opprettes først - <a href="#">opprett bruker</a>
+            <div class="twin">
+                <div class="type {{ ../cssClass }}"></div>
+                <div class="username">
+                    Brukernavn<br>
+                    <input type="text" name="name" class="name user_search" placeholder="Bruk helst UiO-brukernavn" value="{{ volunteer.username }}">
                 </div>
-            </td>
-            <td>
-                Kommentar<br>
-                <input type="text" name="comment" class="comment" size="27" value="{{ comment }}">
-            </td>
-        </tr>
+                <div class="realname">
+                    Navn<br>
+                    <input type="text" value="{{ volunteer.firstname }} {{ volunteer.lastname }}" disabled>
+                    <!--<span>{{ volunteer.firstname }}</span> <span>{{ volunteer.lastname }}</span>-->
+                </div>
+                <div class="comment">
+                    Kommentar<br>
+                    <input type="text" name="comment" class="comment" value="{{ comment }}">
+                </div>
+            </div>
         {{/each}}
-    </table>
+    </div>
+
+    <p class="text-center">Ved ukjent brukernavn vil du få mulighet til å opprette brukeren når brukernavnet er fylt inn.</p>
+
     <div class="text-center">
         <a href="#" class='button small success take_shift_button'>Lagre</a>
     </div>

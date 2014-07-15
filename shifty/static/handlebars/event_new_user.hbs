@@ -1,6 +1,6 @@
 {{!
 input variables:
-* <none>
+* username (optional)
 }}
 <div class='reveal-modal new_user small' data-reveal>
     <h2>Opprett ny bruker</h2>
@@ -16,7 +16,7 @@ input variables:
                         <label for="right-label-1" class="right inline">Brukernavn</label>
                     </div>
                     <div class="small-8 columns">
-                        <input type="text" name="username" class="field-username" id="right-label-1" placeholder="Bruk helst UiO-brukernavn" required pattern="[a-z0-9]{4,15}">
+                        <input type="text" name="username" class="field-username" id="right-label-1" placeholder="Bruk helst UiO-brukernavn" required pattern="[a-z0-9]{4,15}" value="{{username}}">
                         <small class="error">Brukernavnet må være mellom 4 og 15 tegn med a-z0-9.</small>
                     </div>
                 </div>
@@ -38,7 +38,7 @@ input variables:
                         <label for="right-label-3" class="right inline">E-postadresse</label>
                     </div>
                     <div class="small-8 columns">
-                        <input type="email" name="email" class="field-email" id="right-label-3" placeholder="Til utvidelse av brukersystem" required>
+                        <input type="email" name="email" class="field-email" id="right-label-3" placeholder="Til utvidelse av brukersystem">
                         <small class="error">En gyldig e-postadresse må spesifiseres.</small>
                     </div>
                 </div>

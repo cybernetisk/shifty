@@ -223,7 +223,43 @@ a#next_event, a#last_event {
 		padding: 6px 25px 4px 38px;
 	}
 
-	table {
+	.twins {
+		margin: 30px 0;
+
+		.twin {
+			margin: 10px 0;
+			
+			div {
+				vertical-align: top;
+				display: inline-block;
+				margin-right: 1%;
+
+				input {
+					margin-top: 4px;
+				}
+			}
+
+			.type {
+				width: 2%;
+				height: 58px;
+			}
+			.username {
+				width: 20%;
+			}
+			.realname {
+				width: 30%;
+			}
+			.comment {
+				width: 40%;
+				input {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+
+	/*table {
 		margin: 20px 0 20px -10px;
 		border-collapse: separate;
     	border-spacing: 10px;
@@ -254,7 +290,7 @@ a#next_event, a#last_event {
 	}
 	.comment {
 		width: 350px;
-	}
+	}*/
 
 	.user_search {
 		margin-bottom: 0;
