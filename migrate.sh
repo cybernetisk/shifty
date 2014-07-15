@@ -6,3 +6,4 @@ fi;
 
 python manage.py schemamigration shifty --auto
 python manage.py migrate
+python manage.py makeevents > /dev/null

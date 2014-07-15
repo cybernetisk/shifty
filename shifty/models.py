@@ -144,6 +144,7 @@ reversion.register(Shift)
 class ShiftType(models.Model):
     title = models.CharField(max_length=30)
     description = models.TextField(blank=True)
+    responsible = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title

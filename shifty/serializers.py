@@ -34,4 +34,4 @@ class EventSerializer(serializers.ModelSerializer):
 class ShiftTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShiftType
-        fields = ('id', 'title', 'description')
+        fields = ('id', 'title', 'description', 'responsible')
