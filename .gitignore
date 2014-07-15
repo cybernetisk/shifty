@@ -15,8 +15,6 @@ shifty/static/css/
 *.sublime*
 virtualenv
 
-*css
-
 
 # Bower-stuff
 shifty/static/bower_components
