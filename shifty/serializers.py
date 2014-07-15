@@ -3,10 +3,17 @@ from models import Event, Shift, ShiftType, User
 from rest_framework import serializers
 from rest_framework import filters
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'contactinfo')
+        depth = 1
+
 
 class ShiftSerializer(serializers.ModelSerializer):
     duration = serializers.Field(source='duration');
     durationType = serializers.Field(source='durationType')
+    volunteer = UserSerializer()
 
     class Meta:
         model = Shift
@@ -28,9 +35,3 @@ class ShiftTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShiftType
         fields = ('id', 'title', 'description')
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'contactinfo')
-        depth = 1
