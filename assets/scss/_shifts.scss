@@ -1,0 +1,284 @@
+// Bourbon for general helpers
+@import 'bourbon/bourbon';
+
+// Neat for grid
+@import "neat/neat";
+
+
+$blue: rgba(91,192,222,1);
+$bluetaken: rgba(91,192,222,0.5);
+$green: rgba(92,184,92,1);
+$greentaken: rgba(92,184,92,0.5);
+$yellow: rgba(240,173,78,1);
+$yellowtaken: rgba(240,173,78,0.5);
+$red: rgba(217,83,79,1);
+$redtaken: rgba(217,83,79,0.5);
+
+body{
+	margin: 0px;
+}
+
+a#next_event, a#last_event {
+	text-decoration: none;
+	color: #000;
+	&.disabled {
+		opacity: 0.3;
+	}
+}
+
+
+
+.frontpage_box {
+	margin-left: 20px;
+	h3 {
+		margin-bottom: 20px;
+	}
+
+	table {
+		th {
+			text-align: left;
+			div {
+				display: inline-block;
+				height: 20px;
+				width: 20px;
+				&.sm{
+					background: $blue;
+    				border: 1px solid darken($blue, 10%);
+				}
+				&.bar{
+					background: $green;
+    				border: 1px solid darken($green, 10%);
+				}
+				&.vakt{
+					background: $yellow;
+    				border: 1px solid darken($yellow, 10%);
+				}
+				&.dj{
+    				background: $red;
+    				border: 1px solid darken($red, 10%);
+				}
+			}
+			&.status{
+				padding-right:20px;		
+			}
+		}
+		td {
+			padding: 5px 0px 20px 0px;
+		}
+	}
+
+}
+
+
+
+.event {
+	@include span-columns(12);
+	h2 {
+		margin-bottom: 5px;
+	}
+	h2:first-letter {
+		text-transform: capitalize;
+	}
+	column {
+		@include span-columns(2);
+		.shift {
+			color: #fff;
+			padding: 15px;
+			.title{
+				font-weight: bold;
+				font-size: 16px;
+				padding-bottom: 10px;
+			}
+			.time{
+				font-size: 14px;
+			}
+		}
+		.comments {
+			padding: 0px 10px 10px 10px;
+			font-size: 14px;
+
+			.title{
+				font-weight: bold;
+				font-size: 22px;
+				padding-bottom: 5px;
+			}
+		}
+	}
+}
+
+.event_list {
+
+	h2:first-letter {
+			text-transform: capitalize;
+		}
+
+	table {
+		margin-bottom: 50px;
+		td {
+			padding: 15px;
+		}
+		tr {
+			&:hover{
+				background-color: #ededed;	
+			}
+		}
+	}
+
+	.taken {
+		opacity: 0.6;
+	}
+}
+
+.filter {
+	padding-right: 10px;
+	margin-top: -10px;
+
+	img {
+		&.active{
+			background-color: #ededed;
+		}
+		&:hover{
+			background-color: #ededed;	
+		}
+	}
+	.view_shifts_table{
+		margin-left: 15px;
+	}
+}
+
+.skjenkemester {
+   	background: $blue;
+   	border: 1px solid darken($blue, 10%);
+}
+.taken .skjenkemester,
+.taken.skjenkemester {
+	background: $bluetaken;
+	border-color: $bluetaken;
+}
+
+.barfunk {
+    background: $green;
+    border: 1px solid darken($green, 10%);
+}
+.taken .barfunk,
+.taken.barfunk {
+	background: $greentaken;
+	border-color: $greentaken;
+}
+
+.vakt {
+    background: $yellow;
+    border: 1px solid darken($yellow, 10%);
+}
+.taken .vakt,
+.taken.vakt {
+	background: $yellowtaken;
+	border-color: $yellowtaken;
+}
+
+.dj {
+    background: $red;
+    border: 1px solid darken($red, 10%);
+}
+.taken .dj,
+.taken.dj {
+	background: $redtaken;
+	border-color: $redtaken;
+}
+
+.short {
+	height: 115px;
+	margin-bottom: 20px;
+}
+
+.long {
+	height: 250px;
+}
+
+
+// Style for the 'take shift' modal
+.take_shift{
+
+	h2 {
+		margin-bottom: 8px;
+	}
+	hr {
+		color: #ededed;
+		background-color: #ededed;
+		height: 1px;
+		border: 0px;
+	}
+	.date {
+		@include background(url("../images/date.png") left center no-repeat);
+		padding: 4px 20px 4px 30px;
+	}
+
+	.time {
+		@include background(url("../images/time.png") left center no-repeat);
+		padding: 4px 20px 4px 27px;
+	}
+
+	.bong {
+		@include background(url("../images/bong.png") left center no-repeat);
+		padding: 6px 25px 4px 38px;
+	}
+
+	table {
+		margin: 20px 0 20px -10px;
+		border-collapse: separate;
+    	border-spacing: 10px;
+		
+		td {
+			padding: 3px;
+			color: #494949;
+			vertical-align: top;
+		}
+
+		.shift_header {
+			color: #fff;
+			font-size: 18px;
+			text-align: center;
+			font-weight: bold;
+			padding: 3px 10px;
+		}
+
+		input {
+			font-size: 15px;
+			padding: 5px;
+			border: 1px solid #ededed;
+		}
+	}
+
+	.name {
+		width: 220px;
+	}
+	.comment {
+		width: 350px;
+	}
+
+	.user_search {
+		margin-bottom: 0;
+	}
+	.user_missing {
+		background: #FFAAAA;
+		padding: 5px;
+		font-size: 10px;
+		display: none;
+
+		a {
+			color: #000
+		}
+	}
+	
+	.take_shift_button {
+		margin-bottom: 0;
+	}
+}
+
+
+.new_user {
+	.success {
+		margin-bottom: 0;
+		margin-top: 20px;
+	}
+}

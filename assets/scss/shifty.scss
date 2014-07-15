@@ -1,0 +1,12 @@
+/*
+ * Hovedfilen for Shifty
+ *
+ * Denne filen inkluderer nødvendige SCSS-filer
+ */
+
+@import "../../shifty/static/bower_components/foundation/scss/normalize";
+
+@import 'foundation';
+@import 'style';
+@import 'shifts';
+@import 'typeahead';
