@@ -119,22 +119,22 @@ shifty.views.Events = Backbone.View.extend({
         })
 
         // show box
-        modal.foundation();
+        $("body").append(modal);
         modal.foundation('reveal', 'open', {
             animation: 'fade',
             animation_speed: 100,
             close_on_backgroundClick: true,
-            dismiss_modal_class: 'close-reveal-modal',
+            dismiss_modal_class: 'close-reveal-modal'/*,
             css: {
                 open: {
                     'top': wrap.parents('.event,.event_list').offset().top
                 }
-            }
+            }*/
         }).on('opened', function()
         {
-            $('html, body').animate({
+            /*$('html, body').animate({
                 scrollTop: modal.offset().top-20
-            });
+            });*/
         });
 
         setTimeout(function(){ modal.find("input.user_search.tt-input").focus(); }, 200);
