@@ -20,6 +20,16 @@ class ShiftSerializer(serializers.ModelSerializer):
         fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType')
         depth = 1
 
+class ShiftWriteSerializer(serializers.ModelSerializer):
+    duration = serializers.Field(source='duration');
+    durationType = serializers.Field(source='durationType')
+    #volunteer = UserSerializer()
+
+    class Meta:
+        model = Shift
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType')
+        depth = 0
+
 class EventSerializer(serializers.ModelSerializer):
     shifts = ShiftSerializer(source='shifts')
     available = serializers.Field(source='availableShifts')

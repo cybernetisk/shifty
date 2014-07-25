@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, filters
-from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerializer, UserSerializer
+from shifty.serializers import EventSerializer, ShiftSerializer, ShiftWriteSerializer, ShiftTypeSerializer, UserSerializer
 from models import Event, Shift, ShiftType, User
 
 import django_filters
@@ -77,9 +77,13 @@ class EventViewSet(viewsets.ModelViewSet):
 class ShiftViewSet(viewsets.ModelViewSet):
 
     queryset = Shift.objects.all()
-    serializer_class = ShiftSerializer
-    permission_classes = (isAdminOrReadOnly,)
 
+    def get_serializer_class(self):
+        if self.request.method in ['PATCH', 'POST', 'PUT']:
+            return ShiftWriteSerializer
+        return ShiftSerializer
+
+    #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter
 
 

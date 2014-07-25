@@ -14,11 +14,11 @@ input variables:
 
     <div class="twins">
         {{#each twins}}
-            <div class="twin">
+            <div class="twin" data-shift-id="{{ id }}">
                 <div class="type {{ ../cssClass }}"></div>
                 <div class="username">
                     Brukernavn<br>
-                    <input type="text" name="name" class="name user_search" placeholder="Bruk helst UiO-brukernavn" value="{{ volunteer.username }}">
+                    <input type="text" name="name" class="name user_search" placeholder="Bruk helst UiO-brukernavn" value="{{ volunteer.username }}" data-volunteer-id="{{ volunteer.id }}">
                 </div>
                 <div class="realname">
                     Navn<br>
