@@ -39,13 +39,6 @@ function ViewHandler(baseView) {
 }
 
 $(document).ready(function() {
-    // Handlebars-templates
-    Handlebars.templates = {};
-    $(".handlebars-template").each(function() {
-        var $this = $(this);
-        Handlebars.templates[$this.attr("id")] = Handlebars.compile($this.html());
-    });
-
     // admin menu
     (function() {
         var a;

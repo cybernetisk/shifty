@@ -161,8 +161,6 @@ LOGGING = {
     }
 }
 
-INCLUDE_SOURCE_DIRS = ['shifty/static/handlebars']
-
 REST_FRAMEWORK = {
     'PAGINATE_BY':200,
     'PAGINATE_BY_PARAM':'page_size',
