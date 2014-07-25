@@ -86,7 +86,7 @@ $(document).ready(function() {
                 var v = new shifty.views.Events({
                     collection: c
                 });
-                vh.push(v, c.fetch());
+                vh.push(v, c.fetch({data: {min_date: 'today'}}));
             },
 
             event: function(id) {
