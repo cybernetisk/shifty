@@ -9,4 +9,5 @@
 #
 # To install:
 # gem install sass --pre
-sass --sourcemap --watch assets/scss:shifty/static/css
+#sass --sourcemap --watch assets/scss:shifty/static/css
+# (replaced by Grunt)
