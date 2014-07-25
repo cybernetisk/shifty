@@ -5,9 +5,11 @@ from django.contrib.auth.admin import UserAdmin
 from django.http import HttpResponseRedirect
 import reversion
 
+
 class ShiftInLine(admin.TabularInline):
     model = Shift
     extra = 0
+
 
 class EventInLine(admin.TabularInline):
     model = Event
@@ -30,6 +32,12 @@ class EventAdmin(reversion.VersionAdmin):
     list_display = ('title', 'start', )
 
     actions = [make_copy]
+
+    class Media:
+        js = (
+            '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', # jquery
+            '/static/js/admin_hack.js'
+        )
 
 class ShiftAdmin(reversion.VersionAdmin):
     list_display = ('shift_type', 'event', 'start')
