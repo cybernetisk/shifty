@@ -1,4 +1,21 @@
-<div class='panel right frontpage_box'>
+<div class='row'>
+<div class='large-8 columns'>
+	<h1>Velkommen til Shifty!</h1>
+	<p>Shifty er under utvikling og ikke enda klart for bruk.</p>
+	<p>CybWebDev driver aktivt med utvikling!</p>
+
+	<!--<p>hei {-{name}-}!</p>-->
+	<p><a href='/events'>Arrangementoversikt &raquo;</a></p>
+
+
+	<img alt="Pingvin" src="/static/images/penguin.png">
+</div>
+
+
+
+
+
+<div class='large-4 columns panel frontpage_box'>
 <h3><i>Neste arrangement i Escape</i></h3>
 <table>
 {{#each upcomingEvents }}
@@ -12,57 +29,44 @@
 {{/each}}
 </table>
 </div>
+</div>
 
-<div class='panel right frontpage_box'>
-<h3><i>Ledige skift ({{ freeAll }})</i></h3>
-<table>
+<div class='row'>
+<div class='large-12 columns panel frontpage_box'>
+<h3><i>Alle ledige skift ({{ freeAll }})</i></h3>
+<table width='100%' class='free_shifts'>
 	<tr>
 		<th class='status'>Skjenkemester</th>
 		<th class='status'>{{ freeSm }}</th>
-		<th style="font-align:right">
-			<div class='sm' style="width:{{ calculateWidth freeSm freeAll }}px">
-				
-			</div>
+		<th style="font-align:right" width='75%'>
+			<div class='shift_type_1' style="width:{{ calculateWidth freeSm freeAll }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth freeSm freeAll }}%"> </div>
 		</th>
 	</tr>
 	<tr>
 		<th class='status'>Barfunk</th>
 		<th class='status'>{{ freeBar }}</th>
-		<th style="font-align:right">
-			<div class='bar' style="width:{{ calculateWidth freeBar freeAll }}px">
-				
-			</div>
+		<th style="font-align:right" width='75%'>
+			<div class='shift_type_2' style="width:{{ calculateWidth freeBar freeAll }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth freeBar freeAll }}%"> </div>
 		</th>
 	</tr>
 	<tr>
 		<th class='status'>Vakt</th>
 		<th class='status'>{{ freeGuard }}</th>
-		<th style="font-align:right">
-			<div class='vakt' style="width:{{ calculateWidth freeGuard freeAll }}px">
-				
-			</div>
+		<th style="font-align:right" width='75%'>
+			<div class='shift_type_3' style="width:{{ calculateWidth freeGuard freeAll }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth freeGuard freeAll }}%"> </div>
 		</th>
 	</tr>
 	<tr>
 		<th class='status'>DJ</th>
 		<th class='status'>{{ freeDj }}</th>
-		<th style="font-align:right">
-			<div class='dj' style="width:{{ calculateWidth freeDj freeAll }}px">
-				
-			</div>
+		<th style="font-align:right" width='75%'>
+			<div class='shift_type_4' style="width:{{ calculateWidth freeDj freeAll }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth freeDj freeAll }}%"> </div>
 		</th>
 	</tr>
 </table>
 </div>
 
+</div>
 
 
-<h1>Velkommen til Shifty!</h1>
-<p>Shifty er under utvikling og ikke enda klart for bruk.</p>
-<p>CybWebDev driver aktivt med utvikling!</p>
 
-<!--<p>hei {-{name}-}!</p>-->
-<p><a href='/events'>Arrangementoversikt &raquo;</a></p>
-
-
-<img alt="Pingvin" src="/static/images/penguin.png">

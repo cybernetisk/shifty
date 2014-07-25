@@ -42,10 +42,18 @@ Handlebars.registerHelper('calculateBongs', function(start, stop) {
 
 Handlebars.registerHelper('calculateWidth', function(n, all) {
     if(n > 0){
-        val = Math.floor(all-n);
-        val = (all-val)*25;
+        val =  (n/all)*100;
+        return Math.floor(val);   
+    }else{
+        return 0;
+    }
 
-        return val;   
+});
+
+Handlebars.registerHelper('calculateRemainingWidth', function(n, all) {
+    if(n > 0){
+        val =  (n/all)*100;
+        return 95-Math.floor(val);   
     }else{
         return 0;
     }

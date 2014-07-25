@@ -22,9 +22,22 @@ a#next_event, a#last_event {
 
 
 .frontpage_box {
-	margin-left: 20px;
+	margin-top: 20px;
 	h3 {
 		margin-bottom: 20px;
+	}
+
+
+
+
+	table.free_shifts{
+		div {
+			display: inline-block;
+			height: 22px;
+		}
+		.shadow {
+			background-color: lighten(gray, 30%);
+		}	
 	}
 
 	table {
@@ -51,9 +64,11 @@ a#next_event, a#last_event {
     				border: 1px solid darken($red, 10%);
 				}
 			}
+
 			&.status{
 				padding-right:20px;		
 			}
+
 		}
 		td {
 			padding: 5px 0px 20px 0px;
