@@ -267,7 +267,7 @@ shifty.views.EventTable = Backbone.View.extend({
         var block = {
             'event': this.model.attributes,
             'shift': data,
-            'cssClass': data.shift_type.title.toLowerCase(),
+            'cssClass': "shift_type_" + data.shift_type.id,
             'twins': [data],
             'twinsCount': 1,
             'hasTwins': false
@@ -344,7 +344,7 @@ shifty.views.EventColumned = Backbone.View.extend({
             // shift.start = ... _date(self.start, "H:i")
             // shift.stop = ... _date(self.stop, "H:i")
             var data = shift.attributes;
-            var cssClass = data.shift_type.title.toLowerCase();
+            var cssClass = "shift_type_" +  data.shift_type.id;
 
             // the following shift
             var next = (i < shifts.models.length ? shifts.models[i+1] : null);
