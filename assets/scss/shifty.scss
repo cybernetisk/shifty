@@ -6,10 +6,12 @@
 
 @import "../../shifty/static/bower_components/foundation/scss/normalize";
 
-
-
-
+// Bourbon for general helpers
+@import 'bourbon/bourbon';
+// Foundation CSS framework
 @import 'foundation';
+
+// Own SCSS
 @import 'style';
 @import 'shifts';
 @import 'typeahead';
