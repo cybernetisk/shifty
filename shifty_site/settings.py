@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'south',
     'shifty',
     'reversion',
+    'colorful',
 )
 
 # A sample logging configuration. The only tangible logging

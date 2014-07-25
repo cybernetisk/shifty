@@ -1,0 +1,9 @@
+{% for shift_type in shift_types %}
+
+.shift_type_{{ shift_type.id }}
+{
+    background: {{ shift_type.background_color }};
+    border: 1px solid {{ shift_type.border_color }};
+}
+
+{% endfor %}

@@ -8,5 +8,6 @@ setup(name='shifty',
                           'markdown',
                           'django-filter',
                           'pyyaml',
-                          'django-reversion']
+                          'django-reversion',
+                          'django-colorful']
       )

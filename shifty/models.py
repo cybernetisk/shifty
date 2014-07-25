@@ -6,6 +6,7 @@ from django.db.models import Q
 import datetime
 import reversion
 from django.db import transaction
+from colorful.fields import RGBColorField
 
 
 class WeekdayChangedException(Exception):
@@ -141,10 +142,33 @@ class Shift(models.Model):
                 'cssClass':str(self).lower()}
 reversion.register(Shift)
 
+def parse_html_color(color):
+    print "Inside function"
+    return int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)
+
+def html_color(r, g, b):
+    if r < 0:
+        r = 0
+    if g < 0:
+        g = 0
+    if b < 0:
+        b = 0
+    return "#%02x%02x%02x" % (r, g, b)
+
 class ShiftType(models.Model):
     title = models.CharField(max_length=30)
     description = models.TextField(blank=True)
     responsible = models.BooleanField(default=False)
+    color = RGBColorField()
+
+    @property
+    def background_color(self):
+        return self.color
+
+    @property
+    def border_color(self):
+        r, g, b = parse_html_color(str(self.color))
+        return html_color(r - 20, g - 20, b - 20)
 
     def __unicode__(self):
         return self.title

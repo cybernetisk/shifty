@@ -138,3 +138,8 @@ def copy_events(request):
 @ensure_csrf_cookie
 def backbone_router(request):
     return render_to_response('shifty/base.html')
+
+
+def shift_types_colors(request):
+    shift_types = ShiftType.objects.all()
+    return render(request, 'shifty/shift_type.css', dict(shift_types=shift_types), content_type="text/css")
