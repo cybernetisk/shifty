@@ -2,9 +2,9 @@ shifty.models.Event = Backbone.Model.extend({
     urlRoot: "/rest/event/",
     initialize: function(attributes) {
         if (attributes && attributes.shifts) {
-            this.shifts = new shifty.collections.Shift(attributes.shifts);
+            this.shifts = new shifty.collections.Shifts(attributes.shifts);
         } else if(attributes.id == undefined) {
-            this.shifts = new shifty.collections.Shift();
+            this.shifts = new shifty.collections.Shifts();
         }
     },
 

@@ -53,7 +53,7 @@ shifty.views.BarShifts = Backbone.View.extend({
     },
 
     initialize: function(opts){
-        this.shifts = new shifty.collections.Shift();
+        this.shifts = new shifty.collections.Shifts();
         this.datepicker = new shifty.views.DatePicker();
 
         this.p = opts.parent;
@@ -177,7 +177,7 @@ shifty.views.BarShifts = Backbone.View.extend({
             this.model = new shifty.models.Event({
                 start: new Date()
             });
-            this.shifts = new shifty.collections.Shift();
+            this.shifts = new shifty.collections.Shifts();
             this.p.hide();
             this.render();
         }.bind(this)).fail(function() {
@@ -272,7 +272,7 @@ shifty.views.ShiftList = Backbone.View.extend({
         }];
 
         for (var i in shifts) {
-            this.collection.add(new shifty.models.Shift(shifts[i]));
+            this.collection.add(new shifty.models.Shifts(shifts[i]));
         }
     },
 
@@ -287,7 +287,7 @@ shifty.views.ShiftList = Backbone.View.extend({
             shift[fields[i].name] = fields[i].value;
         }
 
-        var m = new shifty.models.Shift(shift);
+        var m = new shifty.models.Shifts(shift);
 
         if (m.isValid()) {
             this.collection.add(m);

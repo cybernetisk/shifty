@@ -61,10 +61,10 @@ $(document).ready(function() {
             index: function() {
                 var c = new shifty.collections.Events();
                 // Added to show free shifts
-                var freeSmShifts = new shifty.collections.Shift();
-                var freeBarShifts = new shifty.collections.Shift();
-                var freeGuardShifts = new shifty.collections.Shift();
-                var freeDjShifts = new shifty.collections.Shift();
+                var freeSmShifts = new shifty.collections.Shifts();
+                var freeBarShifts = new shifty.collections.Shifts();
+                var freeGuardShifts = new shifty.collections.Shifts();
+                var freeDjShifts = new shifty.collections.Shifts();
                 var v = new shifty.views.Index({
                     collection: c,
                     freeSm: freeSmShifts,
@@ -93,7 +93,7 @@ $(document).ready(function() {
                 var m = new shifty.models.Event({id: id});
 
                 m.fetch().done(function() {
-                    m.shifts = new shifty.collections.Shift(m.attributes.shifts);
+                    m.shifts = new shifty.collections.Shifts(m.attributes.shifts);
 
                     var v = new shifty.views.Event({
                         model: m

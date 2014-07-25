@@ -29,7 +29,7 @@ shifty.views.Event = Backbone.View.extend({
 
             var self = this;
             model.fetch().done(function() {
-                model.shifts = new shifty.collections.Shift(model.attributes.shifts);
+                model.shifts = new shifty.collections.Shifts(model.attributes.shifts);
                 self.sub = new shifty.views.EventColumned({model: model});
                 self.sub.parentView = new shifty.views.Events();
                 self.$el.append(self.sub.render());
@@ -63,7 +63,7 @@ shifty.views.Event = Backbone.View.extend({
 
             var self = this;
             model.fetch().done(function() {
-                model.shifts = new shifty.collections.Shift(model.attributes.shifts);
+                model.shifts = new shifty.collections.Shifts(model.attributes.shifts);
                 self.sub = new shifty.views.EventColumned({model: model});
                 self.sub.parentView = new shifty.views.Events();
                 self.$el.append(self.sub.render());

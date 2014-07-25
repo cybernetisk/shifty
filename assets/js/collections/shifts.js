@@ -1,4 +1,4 @@
-shifty.collections.Shift = Backbone.Collection.extend({
+shifty.collections.Shifts = Backbone.Collection.extend({
     model: shifty.models.Shift,
     url: function() {
         return '/rest/shift/';
