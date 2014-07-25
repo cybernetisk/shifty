@@ -4,7 +4,7 @@ module.exports = function(grunt)
 	// we store an array here because it is used by both 'concat' and 'watch'
 	var js_files = [
 		// libraries we use
-		"./assets/bower_components/jquery/dist/jquery.js",
+		"./assets/bower_components/jquery/dist/jquery.min.js",
 		"./assets/bower_components/handlebars/handlebars.js",
 		"./assets/bower_components/underscore/underscore.js",
 		"./assets/bower_components/backbone/backbone.js",
@@ -35,7 +35,8 @@ module.exports = function(grunt)
 		// 'concat' merges javascript-files to one file
 		concat: {
 			options: {
-				separator: ";\n"
+				separator: ";\n",
+				sourceMap: true
 			},
 			dist: {
 				src: js_files,
