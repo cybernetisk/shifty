@@ -3,9 +3,9 @@ from shifty.models import *
 import datetime
 
 
-def create_event(day, hour):
+def create_event(day, navn, hour):
     start = day.replace(hour=hour, minute=0, second=0)
-    e = Event(title="Mandag", start=start)
+    e = Event(title=navn, start=start)
     e.save()
     return e
 
@@ -60,8 +60,8 @@ def make_shifts(event):
 def create_events():
     k = datetime.datetime.now()
     start = k - datetime.timedelta(days=k.isoweekday() - 1)
-    for i in range(5):
-        e = create_event(start, 18)
+    for dag in ['mandag','tirsdag','onsdag','torsdag','fredag']:
+        e = create_event(start, dag, 18)
         make_shifts(e)
         start += datetime.timedelta(days=1)
 
