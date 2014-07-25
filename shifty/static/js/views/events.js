@@ -292,7 +292,8 @@ shifty.views.EventColumned = Backbone.View.extend({
 
         this.el.innerHTML = Handlebars.templates.event_columned({
             'event': this.model.toJSON(),
-            'columns': this.getShiftColumns()
+            'columns': this.getShiftColumns(),
+            'responsible': this.model.getResponsible()
         });
 
         return this.el;

@@ -96,6 +96,18 @@ a#next_event, a#last_event {
 		.comments {
 			padding: 0px 10px 10px 10px;
 			font-size: 14px;
+			height: 150px;
+
+			.title{
+				font-weight: bold;
+				font-size: 22px;
+				padding-bottom: 5px;
+			}
+		}
+		.contact {
+			padding: 0px 10px 10px 10px;
+			font-size: 14px;
+			line-height: 20px;
 
 			.title{
 				font-weight: bold;

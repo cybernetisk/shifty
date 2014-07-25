@@ -65,7 +65,23 @@ shifty.models.Event = Backbone.Model.extend({
         } else if(attributes.id == undefined) {
             this.shifts = new shifty.collections.Shift();
         }
+    },
+
+    getResponsible: function()
+    {
+        var sm = this.shifts.find(function(item) {
+            return item.attributes.shift_type.id == 1;
+        });
+        console.log(sm);
+
+        if(sm.attributes.volunteer !== null){
+            return {email: sm.attributes.volunteer.email, firstname: sm.attributes.volunteer.first_name, 
+                lastname: sm.attributes.volunteer.last_name, phone: "41907306"};
+        }else{
+            return null;
+        }
     }
+
 });
 
 shifty.collections.Events = Backbone.Collection.extend({

@@ -21,5 +21,13 @@
 			<div class='title'>Kommentarer</div>
 			{{ event.description }}
 		</div>
+		{{#if responsible}}
+		<div class='contact'>
+			<div class='title'>Ansvarlig</div>
+			Navn: {{responsible.firstname}} {{responsible.lastname}}<br>
+			Epost: {{responsible.email}}<br>
+			Mobil: {{responsible.phone}}
+		</div>
+		{{/if}}
 	</column>		
 </div>

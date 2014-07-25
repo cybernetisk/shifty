@@ -52,6 +52,12 @@ Handlebars.registerHelper('calculateWidth', function(n, all) {
 
 });
 
+Handlebars.registerHelper("getResponsible", function(datetime, format)
+{
+    // TODO
+    //return datetime;
+    return moment(datetime).format(format);
+});
 
 
 
