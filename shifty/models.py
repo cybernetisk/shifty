@@ -130,6 +130,12 @@ class Shift(models.Model):
         dt = self.stop - self.start
         return round(dt.seconds / 3600.0, 1)
 
+
+    def save(self, *args, **kwargs):
+        if self.stop < self.start:
+            self.stop += datetime.timedelta(days=1)
+        return models.Model.save(self, *args, **kwargs)
+
     def can_remove_user(self):
         return False
 
@@ -139,8 +145,9 @@ class Shift(models.Model):
                 'durationType':self.durationType(), 
                 'start':_date(self.start, "H:i"), 
                 'stop':_date(self.stop, "H:i"),
-                'cssClass':str(self).lower()}
+                'cssClass':'shift_type_' + self.id}
 reversion.register(Shift)
+
 
 def parse_html_color(color):
     print "Inside function"
