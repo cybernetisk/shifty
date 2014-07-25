@@ -5,10 +5,16 @@ from django.contrib.auth.admin import UserAdmin
 from django.http import HttpResponseRedirect
 import reversion
 
+from django import forms
+
+from django.db import models
 
 class ShiftInLine(admin.TabularInline):
     model = Shift
     extra = 0
+    formfield_overrides = {
+        models.TextField: {'widget': forms.Textarea(attrs={'rows':3, 'cols':40})},
+    }
 
 
 class EventInLine(admin.TabularInline):
