@@ -74,9 +74,14 @@ shifty.models.Event = Backbone.Model.extend({
         });
         console.log(sm);
 
-        if(sm.attributes.volunteer !== null){
-            return {email: sm.attributes.volunteer.email, firstname: sm.attributes.volunteer.first_name, 
-                lastname: sm.attributes.volunteer.last_name, phone: "41907306"};
+        if(sm != null && sm.attributes.volunteer != null) {
+            info = {email: sm.attributes.volunteer.email, firstname: sm.attributes.volunteer.first_name, 
+                lastname: sm.attributes.volunteer.last_name, 
+                username: sm.attributes.volunteer.username};
+            if(sm.attributes.volunteer.contactinfo != null) {
+                info.phone = sm.attributes.volunteer.contactinfo.phone;
+            }
+            return info;
         }else{
             return null;
         }
