@@ -1,4 +1,3 @@
-
 $blue: rgba(91,192,222,1);
 $green: rgba(92,184,92,1);
 $yellow: rgba(240,173,78,1);
@@ -100,11 +99,11 @@ table {
   margin-right: auto;
 }
 
-.container:before, .container:after {
+.element:before, .element:after {
   content: " ";
   display: table;
 }
-.container:after {
+.element:after {
   clear: both;
 }
 

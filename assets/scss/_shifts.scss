@@ -1,10 +1,3 @@
-// Bourbon for general helpers
-@import 'bourbon/bourbon';
-
-// Neat for grid
-@import "neat/neat";
-
-
 $blue: rgba(91,192,222,1);
 $bluetaken: rgba(91,192,222,0.5);
 $green: rgba(92,184,92,1);
@@ -72,7 +65,10 @@ a#next_event, a#last_event {
 
 
 .event {
-	@include span-columns(12);
+	@include grid-column(12, $collapse:true);
+	column:first-of-type {
+		padding-left: 0px;
+	}
 	h2 {
 		margin-bottom: 5px;
 	}
@@ -80,7 +76,7 @@ a#next_event, a#last_event {
 		text-transform: capitalize;
 	}
 	column {
-		@include span-columns(2);
+		@include grid-column(2);
 		.shift {
 			color: #fff;
 			padding: 15px;
