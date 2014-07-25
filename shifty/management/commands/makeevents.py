@@ -59,7 +59,7 @@ def make_shifts(event):
 
 def create_events():
     k = datetime.datetime.now()
-    start = k - datetime.timedelta(days=k.isoweekday() - 1)
+    start = k - datetime.timedelta(days=k.isoweekday()-10)
     for dag in ['mandag','tirsdag','onsdag','torsdag','fredag']:
         e = create_event(start, dag, 18)
         make_shifts(e)
