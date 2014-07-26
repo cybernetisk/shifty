@@ -23,7 +23,8 @@ shifty.views.EventsNewUser = Backbone.View.extend({
             dismissModalClass: 'close-reveal-modal'
         });
 
-        setTimeout(function(){ d.find("input.field-name").first().focus(); }, 100);
+        var el = this.$el;
+        setTimeout(function(){ el.find("input.field-name").first().focus(); }, 100);
     },
 
     createUser: function(e)
