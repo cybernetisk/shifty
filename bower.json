@@ -6,7 +6,8 @@
     "backbone": "~1.1.*",
     "handlebars": "~1.3.0",
     "typeahead.js": "~0.10.*",
-    "moment": "~2.*"
+    "moment": "~2.*",
+    "foundation-icon-fonts": "*"
   },
   "resolutions": {
     "jquery": "~2.*"
