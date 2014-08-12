@@ -12,7 +12,7 @@ module.exports = function(grunt)
 		"./assets/bower_components/foundation/js/foundation/foundation.reveal.js",
 		"./assets/bower_components/foundation/js/foundation/foundation.abide.js",
 		"./assets/bower_components/typeahead.js/dist/typeahead.bundle.js",
-		"./assets/bower_components/moment/min/moment-with-langs.js",
+		"./assets/bower_components/moment/min/moment-with-locales.js",
 
 		// our own files
 		"./assets/js/handlebars.helpers.js",
