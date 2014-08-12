@@ -6,6 +6,5 @@ fi;
 
 python manage.py schemamigration shifty --auto
 python manage.py migrate
-python manage.py makeevents > /dev/null
 python manage.py loaddata initial_data.json
-
+python manage.py makeevents 2> /dev/null
