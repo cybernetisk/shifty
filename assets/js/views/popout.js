@@ -142,14 +142,22 @@ shifty.views.BarShifts = Backbone.View.extend({
             var start = shift.get("start");
             var stop = shift.get("stop");
             var startMin, stopMin;
-            if (!start.getMonth) {
-                start = start.match(/(\d{2}):(\d{2})/);
-                startMin = parseInt(start[1], 10)*60+parseInt(start[2], 10);
 
-                shift.set("start", new Date(y,m,d,start[1],start[2]));
+            if (!start.getMonth) {
+                start = start.match(/(\d{2})(:(\d{2}))?/);
+
+                if(!start[3])
+                  start[3] = "00";
+
+                startMin = parseInt(start[1], 10)*60+parseInt(start[3], 10);
+                shift.set("start", new Date(y,m,d,start[1],start[3]));
             }
             if (!stop.getMonth) {
-                stop = stop.match(/(\d{2}):(\d{2})/);
+                stop = stop.match(/(\d{2})(:(\d{2}))?/);
+
+                if(!start[3])
+                  start[3] = "00";
+
                 stopMin = parseInt(stop[1], 10)*60+parseInt(stop[2], 10);
 
                 if (startMin < stopMin) {
