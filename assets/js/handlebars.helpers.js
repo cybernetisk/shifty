@@ -40,22 +40,22 @@ Handlebars.registerHelper('calculateBongs', function(start, stop) {
     return val;
 });
 
-Handlebars.registerHelper('calculateWidth', function(n, all) {
-    if(n > 0){
+Handlebars.registerHelper('calculateRemainingWidth', function(n, all) {
+    if(n != all){
         val =  (n/all)*100;
         return Math.floor(val);   
     }else{
-        return 0;
+        return 99.5;
     }
 
 });
 
-Handlebars.registerHelper('calculateRemainingWidth', function(n, all) {
-    if(n > 0){
+Handlebars.registerHelper('calculateWidth', function(n, all) {
+    if(n != all){
         val =  (n/all)*100;
-        return 95-Math.floor(val);   
+        return 100-Math.floor(val);   
     }else{
-        return 0;
+        return 0.5;
     }
 
 });

@@ -3,26 +3,21 @@ shifty.views.Index = Backbone.View.extend({
     },
 
     initialize: function(options) {
-        this.freeSm = options.freeSm;
-  		this.freeBar = options.freeBar;
-  		this.freeGuard = options.freeGuard;
-  		this.freeDj = options.freeDj;
+        this.count = options.shift_counts.responseJSON;
     },
 
     render: function() {
-    	freeSm = this.freeSm.toJSON()[0].count;
-        freeBar = this.freeBar.toJSON()[0].count;
-        freeGuard = this.freeGuard.toJSON()[0].count;
-        freeDj = this.freeDj.toJSON()[0].count;
+    	freeSm = this.count.sm.free;
+        freeBar = this.count.bar.free;
+        freeGuard = this.count.guard.free;
+        freeDj = this.count.dj.free;
 
         this.el.innerHTML = Handlebars.templates.index({ 
         						upcomingEvents: this.collection.toJSON(), 
-        						freeSm: freeSm,
-        						freeBar: freeBar,
-        						freeGuard: freeGuard,
-        						freeDj: freeDj,
-        						freeAll: freeSm + freeBar + freeGuard + freeDj
-
+        						smCount: this.count.sm,
+        						barCount: this.count.bar,
+        						guardCount: this.count.guard,
+        						djCount: this.count.dj
         					});
         return this.el;
     }

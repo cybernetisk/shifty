@@ -60,25 +60,23 @@ $(document).ready(function() {
 
             index: function() {
                 var c = new shifty.collections.Events();
-                // Added to show free shifts
-                var freeSmShifts = new shifty.collections.Shifts();
-                var freeBarShifts = new shifty.collections.Shifts();
-                var freeGuardShifts = new shifty.collections.Shifts();
-                var freeDjShifts = new shifty.collections.Shifts();
+                var count;
+
+                $.ajaxSetup( { "async": false } );
+                var count = $.getJSON( "count_shifts", function(data) {
+                        count = data;
+                        console.log("ja", data.bar);
+                });
+
                 var v = new shifty.views.Index({
                     collection: c,
-                    freeSm: freeSmShifts,
-                    freeBar: freeBarShifts,
-                    freeGuard: freeGuardShifts,
-                    freeDj: freeDjShifts
+                    shift_counts: count
                 });
+
+
                 vh.push(v, 
-                    c.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }}), 
-                    freeSmShifts.fetch({ data: { shift_type: 1, page: 1, page_size: 1, min_date: 'today' }}),
-                    freeBarShifts.fetch({ data: { shift_type: 2, page: 1, page_size: 1, min_date: 'today' }}),
-                    freeGuardShifts.fetch({ data: { shift_type: 3, page: 1, page_size: 1, min_date: 'today' }}),
-                    freeDjShifts.fetch({ data: { shift_type: 4, page: 1, page_size: 1, min_date: 'today' }}) 
-                    );
+                    c.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }})
+                );
             },
 
             events: function() {
