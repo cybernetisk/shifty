@@ -172,3 +172,11 @@ REST_FRAMEWORK = {
     'MAX_PAGINATE_BY':200,
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
     }
+
+JAVASCRIPT_DIRS = (
+        os.path.join(BASE_DIR, "assets/js"),
+        )
+
+HANDLEBARS_DIRS = (
+        os.path.join(BASE_DIR, "assets/handlebars"),
+        )

@@ -8,8 +8,5 @@
     "typeahead.js": "~0.10.*",
     "moment": "~2.*",
     "foundation-icon-fonts": "*"
-  },
-  "resolutions": {
-    "jquery": "~2.*"
   }
 }

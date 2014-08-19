@@ -10,6 +10,25 @@ if(csrftoken != null)
     });
 }
 
+templates = {};
+
+function template(id) {
+    if (templates[id]) return templates(id);
+
+    // Find the template element
+    var tmp = document.querySelector('script.handlebars-template[data-id='+id+']');
+    if (!tmp) {
+        console.error("Unknown template id:", id);
+        return;
+    }
+
+    // Compile and cache the template
+    templates[id] = Handlebars.compile(tmp.textContent);
+
+    // Return the compiled template
+    return templates[id];
+}
+
 function ViewHandler(baseView) {
     var current;
 
