@@ -62,7 +62,8 @@ module.exports = function(grunt)
 		sass: {
 			dev: {
 				options: {
-					style: 'expanded'
+					style: 'expanded',
+					sourcemap: true
 				},
 				files: {
 					"shifty/static/css/shifty.css": "assets/scss/shifty.scss"
