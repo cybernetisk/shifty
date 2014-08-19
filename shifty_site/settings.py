@@ -174,7 +174,9 @@ REST_FRAMEWORK = {
     }
 
 JAVASCRIPT_DIRS = (
-        os.path.join(BASE_DIR, "assets/js"),
+        os.path.join(BASE_DIR, "assets/js/models"),
+        os.path.join(BASE_DIR, "assets/js/views"),
+        os.path.join(BASE_DIR, "assets/js/collections"),
         )
 
 HANDLEBARS_DIRS = (
