@@ -9,5 +9,6 @@ setup(name='shifty',
                           'django-filter',
                           'pyyaml',
                           'django-reversion',
-                          'django-colorful']
+                          'django-colorful',
+                          'django-compressor']
       )

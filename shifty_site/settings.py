@@ -69,6 +69,7 @@ STATIC_ROOT = ''
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
@@ -133,6 +134,7 @@ INSTALLED_APPS = (
     'shifty',
     'reversion',
     'colorful',
+    'compressor',
 )
 
 # A sample logging configuration. The only tangible logging
