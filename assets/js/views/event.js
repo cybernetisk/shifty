@@ -14,7 +14,7 @@ shifty.views.Event = Backbone.View.extend({
         this.sub = new shifty.views.EventColumned({model: this.model});
         this.sub.parentView = new shifty.views.Events();
 
-        mainView = Handlebars.templates.event_page({next: this.nextEvent, last: this.lastEvent});
+        mainView = shifty.template("event_page")({next: this.nextEvent, last: this.lastEvent});
 
         this.$el.html($(mainView));
         this.$el.append(this.sub.render());

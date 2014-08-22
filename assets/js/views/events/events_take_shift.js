@@ -64,7 +64,7 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
 
     render: function()
     {
-        this.setElement($(Handlebars.templates.event_take_shift(this.twinsData)));
+        this.setElement($(shifty.template("event_take_shift")(this.twinsData)));
         var self = this;
 
         // keep a list of known users to check later

@@ -11,7 +11,7 @@ shifty.views.AdminMenu = Backbone.View.extend({
     },
 
     render: function() {
-        var html = Handlebars.templates.adminmenu({});
+        var html = shifty.template("adminmenu")({});
         this.$el.html(html);
 
         this.$menuItems = this.$el.find(".menu-items");

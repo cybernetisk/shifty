@@ -6,7 +6,7 @@ shifty.views.EventTable = Backbone.View.extend({
 
     render: function()
     {
-        return this.$el.html(Handlebars.templates.event_list(this.model.toJSON()));
+        return this.$el.html(shifty.template("event_list")(this.model.toJSON()));
     },
 
     takeShift: function(ev)

@@ -12,7 +12,7 @@ shifty.views.Popout = Backbone.View.extend({
     },
 
     render: function() {
-        var html = Handlebars.templates.popout({});
+        var html = shifty.template("popout")({});
         this.$el.html(html);
 
         var bar = new shifty.views.BarShifts({
@@ -67,7 +67,7 @@ shifty.views.BarShifts = Backbone.View.extend({
         context.shifts = this.shifts.toJSON();
 
         // Get and render the template
-        this.el.innerHTML = Handlebars.templates['sidebar.bar'](context);
+        this.el.innerHTML = shifty.template('sidebar.bar')(context);
 
         var shiftList = new shifty.views.ShiftList({
             el: this.$el.find(".shifts"),
@@ -224,7 +224,7 @@ shifty.views.ShiftList = Backbone.View.extend({
         context.shifts = this.collection.toJSON();
 
         // Get and render the template
-        this.el.innerHTML = Handlebars.templates['sidebar.shiftlist'](context);
+        this.el.innerHTML = shifty.template('sidebar.shiftlist')(context);
 
         if (!this.dropdown) {
             this.dropdown = new shifty.views.Dropdown({

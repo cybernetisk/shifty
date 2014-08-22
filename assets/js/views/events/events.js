@@ -18,7 +18,7 @@ shifty.views.Events = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html(Handlebars.templates.events());
+        this.$el.html(shifty.template("events")());
         this.sub = this.$(".events_wrap");
         this.columnsView();
         return this.el;

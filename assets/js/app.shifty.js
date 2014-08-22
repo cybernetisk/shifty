@@ -10,23 +10,23 @@ if(csrftoken != null)
     });
 }
 
-templates = {};
+shifty.template_cache = {};
 
-function template(id) {
-    if (templates[id]) return templates(id);
-
+shifty.template = function(id) {
     // Find the template element
-    var tmp = document.querySelector('script.handlebars-template[data-id='+id+']');
-    if (!tmp) {
-        console.error("Unknown template id:", id);
-        return;
+    if (!shifty.template_cache[id]) {
+        var tmp = document.querySelector('script.handlebars-template[data-id="'+id+'"]');
+        if (!tmp) {
+            console.error("Unknown template id:", id);
+            return;
+        }
+
+        // Compile and cache the template
+        shifty.template_cache[id] = Handlebars.compile(tmp.textContent);
     }
 
-    // Compile and cache the template
-    templates[id] = Handlebars.compile(tmp.textContent);
-
     // Return the compiled template
-    return templates[id];
+    return shifty.template_cache[id];
 }
 
 function ViewHandler(baseView) {

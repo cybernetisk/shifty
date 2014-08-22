@@ -4,7 +4,7 @@ shifty.views.Dropdown = Backbone.View.extend({
     initialize: function(options) {
         options = options || {};
         this.name = options.name || "";
-        this.template = Handlebars.templates["dropdown.shifttype"];
+        this.template = shifty.template("dropdown.shifttype");
     },
 
     events: {

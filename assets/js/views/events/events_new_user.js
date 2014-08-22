@@ -11,7 +11,7 @@ shifty.views.EventsNewUser = Backbone.View.extend({
 
     render: function()
     {
-        this.setElement($(Handlebars.templates.event_new_user({
+        this.setElement($(shifty.template("event_new_user")({
             'username': this.model.get('username')
         })));
 
