@@ -86,7 +86,7 @@ a#next_event, a#last_event {
 
 
 .event {
-	@include grid-column(12, $collapse:true);
+	@include span-columns(12, 'block-collapse');
 	column:first-of-type {
 		padding-left: 0px;
 	}
@@ -97,7 +97,7 @@ a#next_event, a#last_event {
 		text-transform: capitalize;
 	}
 	column {
-		@include grid-column(2);
+		@include span-columns(2, 'block-collapse');
 		.shift {
 			color: #fff;
 			padding: 15px;
