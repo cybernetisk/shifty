@@ -1,5 +1,5 @@
 shifty.views.Popout = Backbone.View.extend({
-    el: $('<div id="popout" class="popout"></div>'),
+    el: $('<div id="popout" class="popout open"></div>'),
 
     events: {
         "click .close-button": "hide"
@@ -295,7 +295,7 @@ shifty.views.ShiftList = Backbone.View.extend({
             shift[fields[i].name] = fields[i].value;
         }
 
-        var m = new shifty.models.Shifts(shift);
+        var m = new shifty.models.Shift(shift);
 
         if (m.isValid()) {
             this.collection.add(m);

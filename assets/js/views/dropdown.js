@@ -11,7 +11,8 @@ shifty.views.Dropdown = Backbone.View.extend({
         "keydown": "keydown",
         "focus": "showDropdown",
         "blur": "hideDropdown",
-        "click li": "clickSelect"
+        "click li": "clickSelect",
+        "click p": "showDropdown",
     },
 
     state: {
@@ -27,15 +28,16 @@ shifty.views.Dropdown = Backbone.View.extend({
     ],
 
     render: function() {
-        this.el.setAttribute("tabindex", 0);
-
+        // Render the dropdown tempalte
         this.el.innerHTML = this.template({
             shifttypes: this.shifttypes,
             name: this.name
         });
 
-        this.display = this.$("p")[0];
-        this.input = this.$("input")[0];
+        // Cache some other parts
+        this.display = this.el.querySelector("p");
+        this.input   = this.el.querySelector("input");
+        this.list    = this.el.querySelector("ul");
         this.el.setAttribute("tabindex", 0);
 
         return this.el;
@@ -60,15 +62,17 @@ shifty.views.Dropdown = Backbone.View.extend({
 
     down: function() {
         if (!this.state.el) {
-            this.state.el = this.$(".dropdown-list li")[0];
+            // No element is selected, select first
+            this.state.el = this.list.querySelector("li");
             this.state.selected = this.state.el.getAttribute("data-id");
         } else {
+            // Select the next element to the current one
             var prev = this.state.el;
             var next = prev.nextElementSibling;
 
-            prev.classList.remove("selected");
 
             if (next) {
+                prev.classList.remove("selected");
                 this.state.el = next;
                 this.state.selected = parseInt(this.state.el.getAttribute("data-id"), 10);
             }
@@ -81,7 +85,7 @@ shifty.views.Dropdown = Backbone.View.extend({
 
     up: function() {
         if (!this.state.el) {
-            this.state.el = this.$(".dropdown-list li")[0];
+            this.state.el = this.list.querySelector("li");
             this.state.selected = this.state.el.getAttribute("data-id");
         } else {
             var prev = this.state.el;
@@ -101,20 +105,20 @@ shifty.views.Dropdown = Backbone.View.extend({
     },
 
     clickSelect: function(e) {
-        this.$("li.selected").removeClass("selected");
-        this.state.el = e.target;
-        this.state.el.classList.add("selected");
-        this.state.selected = this.state.el.getAttribute("data-id");
+        var cur;
+        // Remove any previously selected element
+        cur = this.el.querySelector("li.selected");
+        if (cur)
+            cur.classList.remove("selected");
 
-        this.input.value = this.state.selected;
+        this.input.value = e.target.getAttribute('data-id');
 
         this.select();
     },
 
     select: function() {
-        this.hideDropdown();
-        this.display.textContent = this.shifttypes[this.state.selected].name;
-        this.$el.next("input").focus();
+        this.display.textContent = this.shifttypes[this.input.value].name;
+        this.$el.parent().next("input").focus();
     },
 
     reset: function() {
@@ -128,10 +132,10 @@ shifty.views.Dropdown = Backbone.View.extend({
     },
 
     showDropdown: function(e) {
-        this.$(".dropdown-list").css({display: "block"});
+        this.list.classList.add("open");
     },
 
     hideDropdown: function(e) {
-        this.$(".dropdown-list").css({display: "none"});
-    }
+        this.list.classList.remove("open");
+    },
 });

@@ -48,7 +48,8 @@ table {
 
 .dropdown {
     position:relative;
-    height:28px;
+    height:37px;
+    user-select: none;
 
     p {
         margin:0;
@@ -57,7 +58,7 @@ table {
     ul.dropdown-list {
         position:absolute;
         left:0;
-        top:28px;
+        top:37px;
         width:100%;
         display:none;
         padding:0;
@@ -71,6 +72,10 @@ table {
             &.selected {
                 background-color:lighten(black, 30%);
             }
+        }
+
+        &.open {
+            display:block;
         }
     }
 }
@@ -319,6 +324,10 @@ table.datepicker {
                 color:darken(white, 40%);
                 border:1px solid transparent;
                 font-size:12px;
+                margin-bottom:0px;
+                // TODO: Prefixes
+                box-shadow:none;
+                transition:none;
 
                 &:focus {
                     outline:none;
@@ -338,10 +347,9 @@ table.datepicker {
 
                 &.shifttype {
                     @include span-columns(7 of 15);
-                    margin-top:2px;
-                    height:28px;
+                    height:37px;
                     padding:0px;
-                    line-height:18px;
+                    line-height:26px;
                     border:none;
                 }
 
