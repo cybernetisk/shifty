@@ -1,5 +1,5 @@
 shifty.views.Popout = Backbone.View.extend({
-    el: $('<div id="popout" class="popout open"></div>'),
+    el: $('<div id="popout" class="popout"></div>'),
 
     events: {
         "click .close-button": "hide"
