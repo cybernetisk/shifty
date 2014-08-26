@@ -3,7 +3,8 @@ shifty.views.Index = Backbone.View.extend({
     },
 
     initialize: function(options) {
-        this.count = options.shift_counts.responseJSON;
+        this.count = options.shift_counts;
+        this.urgent = options.urgent;
     },
 
     render: function() {
@@ -12,8 +13,11 @@ shifty.views.Index = Backbone.View.extend({
         freeGuard = this.count.guard.free;
         freeDj = this.count.dj.free;
 
+        console.log(this.urgent.toJSON());
+
         this.el.innerHTML = shifty.template("index")({ 
             upcomingEvents: this.collection.toJSON(), 
+            urgent: this.urgent.toJSON(),
             smCount: this.count.sm,
             barCount: this.count.bar,
             guardCount: this.count.guard,

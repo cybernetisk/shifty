@@ -78,23 +78,30 @@ $(document).ready(function() {
             },
 
             index: function() {
-                var c = new shifty.collections.Events();
+                var e = new shifty.collections.Events();
+                var s = new shifty.collections.Shifts();
                 var count;
 
-                $.ajaxSetup( { "async": false } );
-                var count = $.getJSON( "count_shifts", function(data) {
+                $.ajax({
+                    dataType: "json",
+                    async: false,
+                    url: "count_shifts",
+                    success: function( data ) {
                         count = data;
-                        console.log("ja", data.bar);
+                    }
                 });
 
                 var v = new shifty.views.Index({
-                    collection: c,
+                    collection: e,
+                    urgent: s,
                     shift_counts: count
                 });
 
+                max = moment().add(17, 'days').format('YYYY-MM-DD');
 
                 vh.push(v, 
-                    c.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }})
+                    e.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }}),
+                    s.fetch({ data: { page: 1, page_size: 5, min_date: 'today', max_date: max, 'volunteer': null }})
                 );
             },
 

@@ -3,6 +3,9 @@ shifty.collections.Shifts = Backbone.Collection.extend({
     url: function() {
         return '/rest/shift/';
     },
+    parse: function(data) {
+        return data.results;
+    },
 
     /**
      * Sort function to sort shifts by its shift type

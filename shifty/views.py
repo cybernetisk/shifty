@@ -12,7 +12,7 @@ import reversion
 from django.db import transaction
 from django.contrib.auth.decorators import permission_required
 from django.views.decorators.csrf import ensure_csrf_cookie
-import datetime
+from datetime import date, timedelta
 
 
 def eventInfo(request, eventId):
@@ -24,15 +24,15 @@ def eventInfo(request, eventId):
 
 # added by marill 
 def count_shifts(request):
-    smFree = Shift.objects.filter(volunteer__isnull=True, shift_type=1, start__gte=datetime.date.today()).count()
-    barFree = Shift.objects.filter(volunteer__isnull=True, shift_type=2, start__gte=datetime.date.today()).count()
-    guardFree = Shift.objects.filter(volunteer__isnull=True, shift_type=3, start__gte=datetime.date.today()).count()
-    djFree = Shift.objects.filter(volunteer__isnull=True, shift_type=4, start__gte=datetime.date.today()).count()
+    smFree = Shift.objects.filter(volunteer__isnull=True, shift_type=1, start__gte=date.today()).count()
+    barFree = Shift.objects.filter(volunteer__isnull=True, shift_type=2, start__gte=date.today()).count()
+    guardFree = Shift.objects.filter(volunteer__isnull=True, shift_type=3, start__gte=date.today()).count()
+    djFree = Shift.objects.filter(volunteer__isnull=True, shift_type=4, start__gte=date.today()).count()
 
-    smAll = Shift.objects.filter(shift_type=1, start__gte=datetime.date.today()).count()
-    barAll = Shift.objects.filter(shift_type=2, start__gte=datetime.date.today()).count()
-    guardAll = Shift.objects.filter(shift_type=3, start__gte=datetime.date.today()).count()
-    djAll = Shift.objects.filter(shift_type=4, start__gte=datetime.date.today()).count()
+    smAll = Shift.objects.filter(shift_type=1, start__gte=date.today()).count()
+    barAll = Shift.objects.filter(shift_type=2, start__gte=date.today()).count()
+    guardAll = Shift.objects.filter(shift_type=3, start__gte=date.today()).count()
+    djAll = Shift.objects.filter(shift_type=4, start__gte=date.today()).count()
     
     data = {'sm': {'free': smFree, 'all': smAll},
             'bar': {'free': barFree, 'all': barAll},
