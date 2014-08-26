@@ -333,11 +333,11 @@ table.datepicker {
                 }
 
                 &.count {
-                    //@include grid-column(2 of 15);
+                    @include span-columns(2 of 15);
                 }
 
                 &.shifttype {
-                    //@include grid-column(7 of 15);
+                    @include span-columns(7 of 15);
                     margin-top:2px;
                     height:28px;
                     padding:0px;
@@ -346,7 +346,7 @@ table.datepicker {
                 }
 
                 &.start, &.stop {
-                    //@include grid-column(3 of 15);
+                    @include span-columns(3 of 15);
                 }
             }
         }
