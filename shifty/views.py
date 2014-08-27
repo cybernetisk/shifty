@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response
-from shifty.models import Shift, Event, ShiftType, ContactInfo, WeekdayChangedException
+from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayChangedException
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.core import serializers
@@ -13,7 +13,7 @@ from django.db import transaction
 from django.contrib.auth.decorators import permission_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from datetime import date, timedelta
-
+from django.db.models import Count
 
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
@@ -39,6 +39,22 @@ def count_shifts(request):
             'guard': {'free': guardFree, 'all': guardAll},
             'dj': {'free': djFree, 'all': djAll},
             }
+    return HttpResponse(json.dumps(data), mimetype='application/json')
+
+def best_volunteers(request):
+    today = date.today()
+    month = today.month
+    year = today.year
+    if month < 8:    
+        term = date(year, 1, 1)
+    else:
+        term = date(year, 8, 1)
+
+    users = User.objects.filter(shift__start__range=(term, today)).annotate(num_shifts=Count('shift'))
+
+    data = []
+    for u in users:
+        data.append({'user':u.username, 'num':u.num_shifts})
     return HttpResponse(json.dumps(data), mimetype='application/json')
 
 def shifts(request):

@@ -67,5 +67,16 @@ Handlebars.registerHelper("getResponsible", function(datetime, format)
     return moment(datetime).format(format);
 });
 
+Handlebars.registerHelper("getTerm", function()
+{   
+    year = moment().format('YYYY');
+    month = moment().format('M');
+    if(month<8){
+        return "våren "+year;
+    }else{
+        return "høsten "+year;
+    }
+});
+
 
 

@@ -97,7 +97,7 @@ $(document).ready(function() {
                     shift_counts: count
                 });
 
-                max = moment().add(17, 'days').format('YYYY-MM-DD');
+                max = moment().add(8, 'days').format('YYYY-MM-DD');
 
                 vh.push(v, 
                     e.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }}),

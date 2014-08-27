@@ -67,16 +67,16 @@
 
 <div class='row'>
 <div class='large-5 columns panel frontpage_box'>
-<h3><i class="fi-megaphone icon"></i><i>Fem skift som haster!</i></h3>
+<h3><i class="fi-megaphone icon"></i><i>Skift som haster!</i></h3>
 <ul>
 {{#each urgent }}
-	<li><a href="/event/{{ event.id }}">{{ shift_type.title }}</a> - {{formatDate start "dddd D. MMMM YYYY"}}</li>
+	<li><b><a href="/event/{{ event.id }}">{{ shift_type.title }}</a></b> (På {{formatDate start "dddd HH:mm"}}-{{formatDate stop "HH:mm"}})</li>
 {{/each}}
 </ul>
 </div>
 
 <div class='large-5 columns panel frontpage_box'>
-<h3><i class="fi-trophy icon"></i><i>Beste funker høst 2014</i></h3>
+<h3><i class="fi-trophy icon"></i><i>Beste funker {{ getTerm }}</i></h3>
 </div>
 </div>
 

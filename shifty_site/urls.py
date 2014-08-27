@@ -35,5 +35,6 @@ urlpatterns = patterns('',
     url(r'^copy_events', 'shifty.views.copy_events'),
     url(r'^shift_types.css', 'shifty.views.shift_types_colors'),
     url(r'^count_shifts', 'shifty.views.count_shifts'),
+    url(r'^best_volunteers', 'shifty.views.best_volunteers'),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )
