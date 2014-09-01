@@ -7,7 +7,7 @@ import datetime
 import reversion
 from django.db import transaction
 from colorful.fields import RGBColorField
-
+from collections import defaultdict
 
 class WeekdayChangedException(Exception):
     def __init__(self, events):
@@ -38,6 +38,12 @@ class Event(models.Model):
             return None
         return {'title':res[0].title, 'id':res[0].id}
 
+    @property
+    def responsible(self):
+        for k in self.shifts.all():
+            if k.shift_type.responsible:
+                return k
+        return None
     def __unicode__(self):
         return "%s (%s)" % (self.title, self.start.strftime("%d. %b %Y %H").lstrip("0").lower())
 
@@ -100,6 +106,17 @@ class Event(models.Model):
                 copies.append(event.copy(offset=offset))
                 reversion.set_comment("Copied event from %r" % event)
         return copies
+
+    @property
+    def events_in_columns(self):
+        res = defaultdict(lambda: {})
+        for k in self.shifts.all():
+            if not k.start.hour in res[k.shift_type.id]:
+                res[k.shift_type.id][k.start.hour] = {'shift_type_id':k.shift_type.id, 'shift':k, 'shifts':[k], 'shift_type':k.shift_type}
+            else:
+                res[k.shift_type.id][k.start.hour]['shifts'].append(k)
+        return [x.values() for x in res.values()]
+
 reversion.register(Event, follow=["shifts"])
 
 class Shift(models.Model):
@@ -124,6 +141,11 @@ class Shift(models.Model):
             return 'long'
         else:
             return 'short'
+
+    def take(self, volunteer):
+        assert self.volunteer is None
+        self.volunteer = volunteer
+        self.save()
 
     # Returns shift duration in hours
     def duration(self):

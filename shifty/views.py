@@ -15,6 +15,33 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 import datetime
 
 
+def events(request):
+    events = Event.objects.filter(start__gte=datetime.date.today()).all()
+    for event in events:
+        event.events_in_columns
+    return render(request, 'shifty/events.html', dict(events=events))
+
+def event_shifts(request):
+    event_id = request.GET['event_id']
+    shift_type_id = request.GET['shift_type_id']
+    start = request.GET['start']
+
+    event = Event.objects.get(id=int(event_id))
+    res = event.shifts.filter(shift_type_id=shift_type_id).all()
+    shifts = []
+    for shift in res:
+        shifts.append(shift)
+    return render(request, 'shifty/event_shifts.html', dict(shifts=shifts, event=event))
+
+def take_shifts(request, shift_id):
+    shift = Shift.objects.get(id=shift_id)
+    if shift.volunteer is None:
+        user = User.objects.all()[0]
+        shift.take(user)
+        return HttpResponseRedirect("/admin/shifty/event/")
+
+
+
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
 

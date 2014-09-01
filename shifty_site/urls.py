@@ -24,7 +24,9 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'shifty.views.backbone_router'),
-    url(r'^events$', 'shifty.views.backbone_router'),
+    url(r'^events$', 'shifty.views.events'),
+    url(r'^event_shifts$', 'shifty.views.event_shifts'),
+    url(r'^shift/take/(\d+)$', 'shifty.views.take_shifts'),
     url(r'^event/info/(\d+)$', 'shifty.views.eventInfo'), #returns JSON
     url(r'^getEvents/(\d+)/(\d+)$', 'shifty.views.getEvents'), # with limit and offset
     url(r'^rest/', include(router.urls)),

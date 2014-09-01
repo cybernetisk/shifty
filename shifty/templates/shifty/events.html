@@ -1,0 +1,41 @@
+{% extends "shifty/base.html" %}
+{% load i18n l10n %}
+{% load admin_urls %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+
+
+{% for event in events %}
+<div class="event">
+    <h2>{{event.title}} {{event.start}} - ledige skift: {{event.availableShifts}}</h2>
+    {% for column in event.events_in_columns %}
+        <column>
+            {% for start in column %}
+            <a href="/event_shifts?event_id={{event.id}}&shift_type_id={{start.shift_type.id}}&start={{start.shift.start|date:"H:i"}}">
+                <div class="shift shift_type_{{ start.shift_type.id }} {{start.shift.durationType}}">
+                    <div class="title">{{ start.shift_type.title }} ({{start.shifts|length}})</div>
+                    <div class="time">{{ start.shift.start |date:"H:i"}} - {{start.shift.stop |date:"H:i"}}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </column>
+    {% endfor %}
+    <column>
+    <div class="comments">
+        <div class="title">Kommentarer</div>
+        {{event.description}}
+    </div>
+    <div class="comments">
+        <div class="title">Ansvarlig</div>
+        Navn: {{event.responsible.firstname}} {{event.responsible.lastname}}<br />
+        Email: {{event.responsible.email}}<br />
+        Telefon: {{event.responsible.contactinfo.phone}}<br />
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

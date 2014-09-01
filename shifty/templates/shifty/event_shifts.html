@@ -1,0 +1,30 @@
+{% extends "shifty/base.html" %}
+{% load i18n l10n %}
+{% load admin_urls %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+
+{% for shift in shifts %}
+
+    <div class="shift shift_type_{{ shift.shift_type.id }} {{shift.durationType}}">
+        <div class="title">{{ shift.shift_type.title }}</div>
+        <div class="time">{{ shift.start |date:"H:i"}} - {{shift.stop |date:"H:i"}}</div>
+        {% if shift.volunteer.first_name != None %}
+        <div>
+            Fornavn: {{shift.volunteer.first_name}}
+            Fornavn: {{shift.volunteer.firstname}}
+            Fornavn: {{shift.volunteer.id}}
+            Fornavn: {{shift.volunteer}}
+        </div>
+        {% else %}
+            <a href="/shift/take/{{shift.id}}">Take shift</a>
+        {% endif %}
+    </div>
+
+{% endfor %}
+
+
+{% endblock %}
