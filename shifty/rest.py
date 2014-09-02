@@ -34,6 +34,7 @@ class ShiftFilter(django_filters.FilterSet):
     min_date = RelativeDateFilter(name="start", lookup_type='gte')
     max_date = RelativeDateFilter(name="start", lookup_type='lte')
     shift_type = django_filters.NumberFilter(name="shift_type")
+    volunteer = django_filters.NumberFilter(name="volunteer") 
     class Meta:
         model = Shift
         fields = ['min_date', 'max_date', 'shift_type', 'volunteer']

@@ -51,7 +51,10 @@ a#next_event, a#last_event {
 		}
 		.shadow {
 			background-color: lighten(gray, 30%);
-		}	
+		}
+		th {
+			padding: 2px;
+		}
 	}
 
 	table {

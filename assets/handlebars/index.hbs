@@ -33,34 +33,15 @@
 <div class='large-12 columns panel frontpage_box'>
 <h3><i class="fi-info icon"></i><i>Shifty status</i></h3>
 <table width='100%' class='free_shifts'>
-	<tr>
-		<th class='status'>Skjenkemester</th>
-		<th class='status'>({{ smCount.free }} av {{smCount.all}} ledig)</th>
-		<th style="font-align:right" width='70%'>
-			<div class='shift_type_1' style="width:{{ calculateWidth smCount.free smCount.all }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth smCount.free smCount.all }}%"> </div>
-		</th>
-	</tr>
-	<tr>
-		<th class='status'>Barfunk</th>
-		<th class='status'>({{ barCount.free }} av {{barCount.all}} ledig)</th>
-		<th style="font-align:right" width='70%'>
-			<div class='shift_type_2' style="width:{{ calculateWidth barCount.free barCount.all }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth barCount.free barCount.all }}%"> </div>
-		</th>
-	</tr>
-	<tr>
-		<th class='status'>Vakt</th>
-		<th class='status'>({{ guardCount.free }} av {{guardCount.all}} ledig)</th>
-		<th style="font-align:right" width='70%'>
-			<div class='shift_type_3' style="width:{{ calculateWidth guardCount.free guardCount.all }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth guardCount.free guardCount.all }}%"> </div>
-		</th>
-	</tr>
-	<tr>
-		<th class='status'>DJ</th>
-		<th class='status'>({{ djCount.free }} av {{djCount.all}} ledig)</th>
-		<th style="font-align:right" width='70%'>
-			<div class='shift_type_4' style="width:{{ calculateWidth djCount.free djCount.all }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth djCount.free djCount.all }}%"> </div>
-		</th>
-	</tr>
+	{{#each status }}
+		<tr>
+			<th class='status'>{{ title }}</th>
+			<th class='status'>({{ free }} av {{ all }} ledig)</th>
+			<th style="font-align:right" width='70%'>
+				<div class='shift_type_{{ id }}' style="width:{{ calculateWidth free all }}%"> </div><div class='shadow' style="width:{{ calculateRemainingWidth free all }}%"> </div>
+			</th>
+		</tr>
+	{{/each}}
 </table>
 </div>
 </div>

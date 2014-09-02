@@ -45,7 +45,7 @@ Handlebars.registerHelper('calculateRemainingWidth', function(n, all) {
         val =  (n/all)*100;
         return Math.floor(val);   
     }else{
-        return 99.5;
+        return 99;
     }
 
 });
@@ -55,7 +55,7 @@ Handlebars.registerHelper('calculateWidth', function(n, all) {
         val =  (n/all)*100;
         return 100-Math.floor(val);   
     }else{
-        return 0.5;
+        return 1;
     }
 
 });

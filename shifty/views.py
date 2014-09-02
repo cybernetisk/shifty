@@ -24,22 +24,15 @@ def eventInfo(request, eventId):
 
 # added by marill 
 def count_shifts(request):
-    smFree = Shift.objects.filter(volunteer__isnull=True, shift_type=1, start__gte=date.today()).count()
-    barFree = Shift.objects.filter(volunteer__isnull=True, shift_type=2, start__gte=date.today()).count()
-    guardFree = Shift.objects.filter(volunteer__isnull=True, shift_type=3, start__gte=date.today()).count()
-    djFree = Shift.objects.filter(volunteer__isnull=True, shift_type=4, start__gte=date.today()).count()
+    result = []
+    for s in ShiftType.objects.all():
+        result.append({'title': s.title,
+                        'id': s.id,
+                        'free': Shift.objects.filter(volunteer__isnull=True, shift_type=s.id, start__gte=date.today()).count(), 
+                        'all': Shift.objects.filter(shift_type=s.id, start__gte=date.today()).count()})
 
-    smAll = Shift.objects.filter(shift_type=1, start__gte=date.today()).count()
-    barAll = Shift.objects.filter(shift_type=2, start__gte=date.today()).count()
-    guardAll = Shift.objects.filter(shift_type=3, start__gte=date.today()).count()
-    djAll = Shift.objects.filter(shift_type=4, start__gte=date.today()).count()
-    
-    data = {'sm': {'free': smFree, 'all': smAll},
-            'bar': {'free': barFree, 'all': barAll},
-            'guard': {'free': guardFree, 'all': guardAll},
-            'dj': {'free': djFree, 'all': djAll},
-            }
-    return HttpResponse(json.dumps(data), mimetype='application/json')
+    return HttpResponse(json.dumps(result), mimetype='application/json')
+
 
 def best_volunteers(request):
     today = date.today()
@@ -54,7 +47,7 @@ def best_volunteers(request):
 
     data = []
     for u in users:
-        data.append({'user':u.username, 'num':u.num_shifts})
+        data.append({'user':u.username, 'num':u.num_shifts, 'id': u.id})
     return HttpResponse(json.dumps(data), mimetype='application/json')
 
 def shifts(request):
