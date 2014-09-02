@@ -1,5 +1,5 @@
 var shifty = {views: {}, models: {}, collections: {}};
-moment.lang('nb');
+moment.locale('nb');
 
 var csrftoken = document.cookie.match(/csrftoken=(\w+)/);
 
