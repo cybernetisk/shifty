@@ -29,12 +29,10 @@ class EventFilter(django_filters.FilterSet):
         model = Event
         fields = ['min_date']
 
-
 class ShiftFilter(django_filters.FilterSet):
     min_date = RelativeDateFilter(name="start", lookup_type='gte')
     max_date = RelativeDateFilter(name="start", lookup_type='lte')
     shift_type = django_filters.NumberFilter(name="shift_type")
-    volunteer = django_filters.NumberFilter(name="volunteer") 
     class Meta:
         model = Shift
         fields = ['min_date', 'max_date', 'shift_type', 'volunteer']
@@ -75,6 +73,18 @@ class EventViewSet(viewsets.ModelViewSet):
             return response
 
         return CreateModelMixin.create(self, request, *args, **kwargs)
+
+class FreeShiftsViewSet(viewsets.ModelViewSet):
+
+    queryset = Shift.objects.filter(volunteer__isnull=True)
+
+    def get_serializer_class(self):
+        if self.request.method in ['PATCH', 'POST', 'PUT']:
+            return ShiftWriteSerializer
+        return ShiftSerializer
+
+    #permission_classes = (isAdminOrReadOnly,)
+    filter_class = ShiftFilter
 
 class ShiftViewSet(viewsets.ModelViewSet):
 

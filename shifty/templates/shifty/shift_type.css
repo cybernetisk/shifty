@@ -6,4 +6,9 @@
     border: 1px solid {{ shift_type.border_color }};
 }
 
+.shift_type_{{ shift_type.id }}.taken
+{
+    opacity:0.35;
+}
+
 {% endfor %}

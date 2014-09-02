@@ -80,7 +80,9 @@ $(document).ready(function() {
 
             index: function() {
                 var e = new shifty.collections.Events();
-                var s = new shifty.collections.Shifts();
+                var s = new shifty.collections.Shifts({
+                    free: true
+                });
 
                 defers = [];
 
@@ -99,7 +101,7 @@ $(document).ready(function() {
                 
                 max = moment().add(8, 'days').format('YYYY-MM-DD');
                 defers.push(e.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }}));
-                defers.push(s.fetch({ data: { page: 1, page_size: 5, min_date: 'today', max_date: max, 'volunteer': null }}));
+                defers.push(s.fetch({ data: { page: 1, page_size: 5, min_date: 'today', max_date: max}}));
                 defers.push(count);
                 defers.push(best);
 

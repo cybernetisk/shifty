@@ -12,6 +12,7 @@ router.register(r'event', rest.EventViewSet)
 router.register(r'shift', rest.ShiftViewSet)
 router.register(r'shifttype', rest.ShiftTypeViewSet)
 router.register(r'user', rest.UserViewSet, "user")
+router.register(r'free_shifts', rest.FreeShiftsViewSet)
 
 urlpatterns = patterns('',
     # Examples:

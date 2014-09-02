@@ -1,8 +1,16 @@
 shifty.collections.Shifts = Backbone.Collection.extend({
     model: shifty.models.Shift,
-    url: function() {
-        return '/rest/shift/';
+
+    initialize: function(opts) {
+        opts = opts || {};
+
+        if (opts.free) {
+            this.url = "/rest/free_shifts/";
+        } else {
+            this.url = "/rest/shift/";
+        }
     },
+
     parse: function(data) {
         return data.results;
     },
