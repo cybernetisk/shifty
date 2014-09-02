@@ -43,7 +43,7 @@ def best_volunteers(request):
     else:
         term = date(year, 8, 1)
 
-    users = User.objects.filter(shift__start__range=(term, today)).annotate(num_shifts=Count('shift'))
+    users = User.objects.filter(shift__start__range=(term, today)).annotate(num_shifts=Count('shift')).order_by('-num_shifts')[:5]
 
     data = []
     for u in users:
