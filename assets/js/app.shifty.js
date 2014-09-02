@@ -80,29 +80,29 @@ $(document).ready(function() {
             index: function() {
                 var e = new shifty.collections.Events();
                 var s = new shifty.collections.Shifts();
-                var count;
 
-                $.ajax({
-                    dataType: "json",
-                    async: false,
-                    url: "count_shifts",
-                    success: function( data ) {
-                        count = data;
-                    }
-                });
+                defers = [];
 
                 var v = new shifty.views.Index({
                     collection: e,
-                    urgent: s,
-                    shift_counts: count
+                    urgent: s
                 });
 
-                max = moment().add(8, 'days').format('YYYY-MM-DD');
+                var count = $.ajax({dataType: "json", url: "count_shifts"}).done(function(data){
+                   v.count = data; 
+                });
 
-                vh.push(v, 
-                    e.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }}),
-                    s.fetch({ data: { page: 1, page_size: 5, min_date: 'today', max_date: max, 'volunteer': null }})
-                );
+                var best = $.ajax({dataType: "json", url: "best_volunteers"}).done(function(data){
+                   v.best = data; 
+                });
+                
+                max = moment().add(8, 'days').format('YYYY-MM-DD');
+                defers.push(e.fetch({ data: { page: 1, page_size: 5, min_date: 'today' }}));
+                defers.push(s.fetch({ data: { page: 1, page_size: 5, min_date: 'today', max_date: max, 'volunteer': null }}));
+                defers.push(count);
+                defers.push(best);
+
+                vh.push(v, defers);
             },
 
             events: function() {

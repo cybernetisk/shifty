@@ -58,6 +58,11 @@
 
 <div class='large-5 columns panel frontpage_box'>
 <h3><i class="fi-trophy icon"></i><i>Beste funker {{ getTerm }}</i></h3>
+<ol>
+{{#each best }}
+	<li><b>{{ user }}</b> ({{ num }} skift)</li>
+{{/each}}
+</ol>
 </div>
 </div>
 
