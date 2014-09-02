@@ -1,5 +1,6 @@
 shifty.views.Popout = Backbone.View.extend({
-    el: $('<div id="popout" class="popout"></div>'),
+    id: 'popout',
+    className: 'popout',
 
     events: {
         "click .close-button": "hide"
@@ -12,31 +13,33 @@ shifty.views.Popout = Backbone.View.extend({
     },
 
     render: function() {
-        var html = shifty.template("popout")({});
-        this.$el.html(html);
+        this.el.innerHTML = shifty.template("popout")({});
 
+        // Render the temo
         var bar = new shifty.views.BarShifts({
             parent: this,
-            el: this.$el.find(".popout-content"),
+            el: this.el.querySelector(".popout-content"),
             model: new shifty.models.Event({
                 start: new Date()
             })
         });
         bar.render();
         this.views.push(bar);
+
+        return this;
     },
 
     show: function() {
-        this.$el.addClass("open");
+        this.el.classList.add("open");
     },
 
     hide: function() {
-        this.$el.removeClass("open");
+        this.el.classList.remove("open");
     }
 });
 
 shifty.views.BarShifts = Backbone.View.extend({
-    el: $('<div class="popout"></div>'),
+    className: 'popout',
 
     state: {
         datepicker: true
@@ -70,7 +73,7 @@ shifty.views.BarShifts = Backbone.View.extend({
         this.el.innerHTML = shifty.template('sidebar.bar')(context);
 
         var shiftList = new shifty.views.ShiftList({
-            el: this.$el.find(".shifts"),
+            el: this.el.querySelector(".shifts"),
             collection: this.shifts,
             parent: this
         });
@@ -155,31 +158,32 @@ shifty.views.BarShifts = Backbone.View.extend({
             if (!stop.getMonth) {
                 stop = stop.match(/(\d{2})(:(\d{2}))?/);
 
-                if(!start[3])
-                  start[3] = "00";
+                if(!stop[3])
+                  stop[3] = "00";
 
-                stopMin = parseInt(stop[1], 10)*60+parseInt(stop[2], 10);
+                stopMin = parseInt(stop[1], 10)*60+parseInt(stop[3], 10);
 
                 if (startMin < stopMin) {
-                    shift.set("stop", new Date(y,m,d,stop[1], stop[2]));
+                    shift.set("stop", new Date(y, m, d, stop[1], stop[3]));
                 } else {
-                    shift.set("stop", new Date(y,m,d+1,stop[1], stop[2]));
+                    shift.set("stop", new Date(y, m, d+1 ,stop[1], stop[3]));
                 }
             }
 
             shift.set("event_id", this.model.get("id"));
 
+            var s = shift.toJSON();
+            delete s.count;
+
+            console.log(s);
+
             for (var j = 0; j < shift.get("count"); j++) {
-                shifts.push(shift.toJSON());
+                shifts.push(s);
             }
         }
 
         this.model.set("description", this.$("#event-comment").val());
-
-        this.model.set("shifts", _.map(shifts, function(s) {
-            delete s.count;
-            return s;
-        }));
+        this.model.set("shifts", shifts);
 
         this.model.save().done(function() {
             this.model = new shifty.models.Event({
@@ -191,17 +195,6 @@ shifty.views.BarShifts = Backbone.View.extend({
         }.bind(this)).fail(function() {
             console.log(arguments);
         }.bind(this));
-
-        /*
-        var _this = this;
-        var defer = this.model.save();
-        defer.done(function(a,b,c) {
-            console.log(_this.model.toJSON());
-        }).fail(function(a,b,c) {
-            console.log(_this.model.toJSON());
-            console.log(a.responseText,b,c);
-        });
-        */
     }
 });
 
@@ -292,7 +285,11 @@ shifty.views.ShiftList = Backbone.View.extend({
         var shift = {};
 
         for (var i = 0; i < fields.length; i++) {
-            shift[fields[i].name] = fields[i].value;
+            var v = fields[i].value;
+            if (v.match(/^\d+$/)) {
+                v = parseInt(v, 10);
+            }
+            shift[fields[i].name] = v;
         }
 
         var m = new shifty.models.Shift(shift);

@@ -78,5 +78,12 @@ Handlebars.registerHelper("getTerm", function()
     }
 });
 
-
+Handlebars.registerHelper('shiftType', function(id) {
+    try {
+        return shifty.shiftTypes.get(id).get("title");
+    } catch (e) {
+        console.error("Unknown shift type: "+id, e);
+        return "unknown";
+    }
+});
 

@@ -20,17 +20,10 @@ shifty.views.Dropdown = Backbone.View.extend({
         selected: undefined
     },
 
-    shifttypes: [
-        {id: 0, name: "Skjenkemester"},
-        {id: 1, name: "Barfunk"},
-        {id: 2, name: "vakt"},
-        {id: 3, name: "DJ"}
-    ],
-
     render: function() {
         // Render the dropdown tempalte
         this.el.innerHTML = this.template({
-            shifttypes: this.shifttypes,
+            shifttypes: shifty.shiftTypes.toJSON(),
             name: this.name
         });
 
@@ -79,7 +72,7 @@ shifty.views.Dropdown = Backbone.View.extend({
         }
 
         this.state.el.classList.add("selected");
-        this.display.textContent = this.shifttypes[this.state.selected].name;
+        this.display.textContent = shifty.shiftTypes.get(this.state.selected).get("title");
         this.input.value = this.state.selected;
     },
 

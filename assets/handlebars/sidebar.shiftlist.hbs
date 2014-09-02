@@ -6,7 +6,7 @@
 </header>
 {{#each shifts}}
 <div class="shift row" data-index="{{@index}}" tabindex="0">
-    <span class="no-click large-8">{{count}}x {{shifttype}}</span>
+    <span class="no-click large-8">{{count}}x {{shiftType shift_type_id}}</span>
     <span class="no-click large-4 text-right time">{{formatTime start}} - {{formatTime stop}}</span>
 </div>
 {{/each}}

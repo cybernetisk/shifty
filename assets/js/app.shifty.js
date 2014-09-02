@@ -27,7 +27,7 @@ shifty.template = function(id) {
 
     // Return the compiled template
     return shifty.template_cache[id];
-}
+};
 
 function ViewHandler(baseView) {
     var current;
@@ -58,12 +58,13 @@ function ViewHandler(baseView) {
 }
 
 $(document).ready(function() {
-    // admin menu
-    (function() {
+    // Pre–fetch shift types
+    shifty.shiftTypes = new shifty.collections.ShiftTypes();
+    shifty.shiftTypes.fetch().done(function() {
         var a;
         a = new shifty.views.AdminMenu();
         a.render();
-    })();
+    });
 
     // router
     (function() {
