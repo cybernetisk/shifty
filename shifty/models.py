@@ -150,7 +150,8 @@ reversion.register(Shift)
 
 
 def parse_html_color(color):
-    print "Inside function"
+    if not color:
+        return 0, 0, 0
     return int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)
 
 def html_color(r, g, b):
