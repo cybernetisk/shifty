@@ -2,7 +2,6 @@ shifty.models.Shift = Backbone.Model.extend({
     urlRoot: "/rest/shift/",
 
     initialize: function(attrs) {
-        
     },
 
     validate: function(attrs, options) {
@@ -14,10 +13,10 @@ shifty.models.Shift = Backbone.Model.extend({
         }
 
         if (!errors.start && attrs.start && !attrs.start.match(/(0[0-9]|1[0-9]|2[0-3])([:\.][0-5][0-9])/))
-            errors.start = "Må være på formatet HH:MM";
+            errors.start = "Må være på formatet HH eller HH:MM";
 
         if (!errors.stop && attrs.stop && !attrs.stop.match(/(0[0-9]|1[0-9]|2[0-3])([:\.][0-5][0-9])/))
-            errors.stop = "Må være på formatet HH:MM";
+            errors.stop = "Må være på formatet HH eller HH:MM";
 
         if (errors.length > 0) return errors;
     },

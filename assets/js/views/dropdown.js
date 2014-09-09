@@ -93,7 +93,7 @@ shifty.views.Dropdown = Backbone.View.extend({
         }
 
         this.state.el.classList.add("selected");
-        this.display.textContent = this.shifttypes[this.state.selected].name;
+        this.display.textContent = shifty.shiftTypes.get(this.state.selected).get("title");
         this.input.value = this.state.selected;
     },
 
@@ -110,7 +110,7 @@ shifty.views.Dropdown = Backbone.View.extend({
     },
 
     select: function() {
-        this.display.textContent = this.shifttypes[this.input.value].name;
+        this.display.textContent = shifty.shiftTypes.get(this.input.value).get("title");
         this.$el.parent().next("input").focus();
     },
 
