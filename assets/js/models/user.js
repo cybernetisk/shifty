@@ -9,13 +9,18 @@ shifty.models.User = Backbone.Model.extend({
         console.log(username);
         var tmp = $.post('/login', {'username':username, 'password':password});
         tmp.success(function(res, response){
-            csrftoken = res['csrf'];
-            console.log(csrftoken);
-            $.ajaxSetup({
-                headers: { 'X-CSRFToken': csrftoken }
-            });
-            shifty.state.user = new shifty.models.User();
-            success();
+            if(res['status'] == 'ok')
+            {
+                csrftoken = res['csrf'];
+                console.log(csrftoken);
+                $.ajaxSetup({
+                    headers: { 'X-CSRFToken': csrftoken }
+                });
+                shifty.state.user = new shifty.models.User();
+                success();
+                return;
+            }
+            failed();
         });
         tmp.error(failed);
     },
