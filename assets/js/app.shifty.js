@@ -10,6 +10,7 @@ if(csrftoken != null)
         headers: { 'X-CSRFToken': csrftoken }
     });
 }
+console.log(csrftoken);
 
 shifty.template_cache = {};
 

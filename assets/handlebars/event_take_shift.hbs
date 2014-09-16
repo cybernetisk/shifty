@@ -17,9 +17,13 @@ input variables:
             <div class="twin" data-shift-id="{{ id }}">
                 <div class="type {{ ../cssClass }}"></div>
                 <div class="comment">
-                    Kommentar<br>
+                    {{#if volunteer}}
+
+                    Taken by {{ volunteer.username }}
+                    {{else}}
                     <button class="take_shift_button" data-shift-id="{{ id }}">Take shift</button>
                     <input type="text" name="comment" class="comment" value="{{ comment }}">
+                    {{/if}}
                 </div>
             </div>
         {{/each}}

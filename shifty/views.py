@@ -4,7 +4,7 @@ from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayCha
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
-
+import django
 from django.http import HttpResponse
 from django.core import serializers
 import json
@@ -31,8 +31,9 @@ def login(request):
     password = request.POST['password']
     user = authenticate(username=user, password=password)
     if user is not None and user.is_active:
-        django_login(request, user)
-        return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
+        res = django_login(request, user)
+        csrf = django.middleware.csrf.get_token(request)
+        return HttpResponse(json.dumps({'status':'ok', 'csrf':csrf}), mimetype='application/json')
     return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
 
 
@@ -98,15 +99,13 @@ def create_shift_user(request):
 
 @reversion.create_revision()
 def take_shift(request):
-    data = json.loads(request.body)
-
 
     user = request.user
     assert user
     # username = data['name']
     # comment = data['comment'] if 'comment' in data else None
-
-    shift_id = data['id']
+    comment = None
+    shift_id = request.POST['shift_id']
     shift = Shift.objects.get(pk=shift_id)
 
 

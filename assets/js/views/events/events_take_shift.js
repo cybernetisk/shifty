@@ -71,49 +71,6 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
         this.known_users = {};
         this.modal_active = true;
 
-        // autocomplete users
-        var remoteUsers = new Bloodhound({
-            name: 'user',
-            datumTokenizer: function(d)
-            {
-                return Bloodhound.tokenizers.whitespace(d.value);
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            remote: {
-                url: '/rest/user/?search=%QUERY',
-                filter: function(data)
-                {
-                    var d = [];
-                    self.known_users = [];
-                    $(data.results).each(function(i, node)
-                    {
-                        concat = node.first_name && node.last_name ? " " : "";
-                        d.push({
-                            value: node.username,
-                            tokens: [node.username, node.first_name, node.last_name],
-                            name: node.first_name + concat + node.last_name
-                        });
-                        self.known_users[node.username] = [node.id, node.first_name + " " + node.last_name];
-                    });
-                    return d;
-                }
-            }
-        });
-        
-        remoteUsers.initialize();
-        this.$('input.user_search').each(function(elm)
-        {
-            $(elm).data('existing', false);
-        }).typeahead(null, {
-            source: remoteUsers.ttAdapter(),
-            templates: {
-                suggestion: function(obj)
-                {
-                    return '<p>'+obj.value+(obj.name ? ' ('+obj.name+')' : '')+'</p>';
-                }
-            }
-        })
-
         // show box
         $("body").append(this.$el);
         this.$el.foundation('reveal', 'open', {
@@ -131,34 +88,13 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
     {
         if (e) e.preventDefault();
         var elm = e.currentTarget;
+        var self = this;
 
         var shift_id = $(elm).data('shift-id')
-        $.post('/take_shift', {'shift_id':shift_id});
-        /*
-        this.twinsData.shiftsCollection.each(function(shift)
-        {
-            var volunteer_id = $("[data-shift-id="+shift.get("id")+"] [name=name]").data("volunteerId") || null;
-            var old = (shift.get("volunteer") && shift.get("volunteer").id) || null;
-
-            if (old == volunteer_id)
-                return;
-
-            if (volunteer_id)
-                console.log("changed user to", volunteer_id);
-
-            else
-                console.log("removed user", "old", old, "new", volunteer_id);
-
-            shift.set("volunteer", volunteer_id);
-            shift.set("comment", $("[data-shift-id="+shift.get("id")+"] [name=comment]").val());
-            console.log("save", shift.save({
-                "volunteer": volunteer_id,
-                "comment": shift.get("comment")}, {patch:true}));
-            console.log("chagned", shift.changedAttributes());
-            console.log("attributes", shift.attributes);
-        });
-        */
-
-        //console.log("twins", this.twinsData);
+        $.post('/take_shift', {'shift_id':shift_id})
+            .success(function(){
+                self.$el.foundation('reveal', 'close');
+                
+            });
     }
 });
