@@ -2,6 +2,9 @@
 from django.shortcuts import render_to_response
 from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayChangedException
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as django_login
+
 from django.http import HttpResponse
 from django.core import serializers
 import json
@@ -21,6 +24,17 @@ def eventInfo(request, eventId):
     p = {'event':event.toDict(), 'columns':event.getShiftColumns()}
 
     return HttpResponse(json.dumps(p), mimetype='application/json')
+
+
+def login(request):
+    user = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=user, password=password)
+    if user is not None and user.is_active:
+        django_login(request, user)
+        return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
+    return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
+
 
 # added by marill 
 def count_shifts(request):
@@ -86,34 +100,26 @@ def create_shift_user(request):
 def take_shift(request):
     data = json.loads(request.body)
 
-    username = data['name']
-    comment = data['comment'] if 'comment' in data else None
+
+    user = request.user
+    assert user
+    # username = data['name']
+    # comment = data['comment'] if 'comment' in data else None
+
     shift_id = data['id']
     shift = Shift.objects.get(pk=shift_id)
 
 
     with transaction.atomic(), reversion.create_revision():
-        if username == "":
-            if shift.volunteer != None:
-                shift.volunteer = None
-                if comment is not None:
-                    shift.comment = comment
-                reversion.set_comment("Removed user from shift")
-                shift.save()
-            return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
+        if shift.volunteer != None and user != shift.volunteer:
+            return HttpResponse(json.dumps({'status':'taken'}), mimetype='application/json')
 
-        user = User.objects.get(username=username)
-
-        if user is not None:
-            if shift.volunteer != None and user != shift.volunteer:
-                return HttpResponse(json.dumps({'status':'taken'}), mimetype='application/json')
-
-            shift.volunteer = user
-            if comment is not None:
-                shift.comment = comment
-            shift.save()
-            reversion.set_comment("Took shift")
-            return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
+        shift.volunteer = user
+        if comment is not None:
+            shift.comment = comment
+        shift.save()
+        reversion.set_comment("Took shift")
+        return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
     return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
 
 
@@ -171,3 +177,4 @@ def backbone_router(request):
 def shift_types_colors(request):
     shift_types = ShiftType.objects.all()
     return render(request, 'shifty/shift_type.css', dict(shift_types=shift_types), content_type="text/css")
+

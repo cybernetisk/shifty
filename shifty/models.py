@@ -186,3 +186,4 @@ class ContactInfo(models.Model):
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=100)
 reversion.register(ContactInfo)
+

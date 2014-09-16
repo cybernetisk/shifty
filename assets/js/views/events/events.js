@@ -46,12 +46,30 @@ shifty.views.Events = Backbone.View.extend({
         }.bind(this));
     },
 
+    loginBox: function(after_success)
+    {
+        var login = new shifty.views.Login({'after_success':after_success});
+        login.parentView = this;
+        login.render();
+    },
+
     takeShiftBox: function(shiftElm, twinsData)
     {
-        var takeshift = new shifty.views.EventsTakeShift();
-        takeshift.shiftElm = shiftElm;
-        takeshift.twinsData = twinsData;
-        takeshift.refView = this;
-        takeshift.render();
+        if(shifty.state.user == undefined)
+        {
+            var self = this;
+            var after_success = function(){
+                self.takeShiftBox(shiftElm, twinsData);
+            }
+            this.loginBox(after_success);
+        }
+        else
+        {
+            var takeshift = new shifty.views.EventsTakeShift();
+            takeshift.shiftElm = shiftElm;
+            takeshift.twinsData = twinsData;
+            takeshift.refView = this;
+            takeshift.render();
+        }
     }
 });

@@ -1,12 +1,13 @@
-var shifty = {views: {}, models: {}, collections: {}};
+var shifty = {views: {}, models: {}, collections: {}, state:{}};
 moment.locale('nb');
 
 var csrftoken = document.cookie.match(/csrftoken=(\w+)/);
 
 if(csrftoken != null)
 {
+    csrftoken = csrftoken[1];
     $.ajaxSetup({
-        headers: { 'X-CSRFToken': csrftoken[1] }
+        headers: { 'X-CSRFToken': csrftoken }
     });
 }
 

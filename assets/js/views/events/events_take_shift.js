@@ -132,6 +132,9 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
         if (e) e.preventDefault();
         var elm = e.currentTarget;
 
+        var shift_id = $(elm).data('shift-id')
+        $.post('/take_shift', {'shift_id':shift_id});
+        /*
         this.twinsData.shiftsCollection.each(function(shift)
         {
             var volunteer_id = $("[data-shift-id="+shift.get("id")+"] [name=name]").data("volunteerId") || null;
@@ -154,6 +157,7 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
             console.log("chagned", shift.changedAttributes());
             console.log("attributes", shift.attributes);
         });
+        */
 
         //console.log("twins", this.twinsData);
     }

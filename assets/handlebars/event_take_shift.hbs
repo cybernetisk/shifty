@@ -16,27 +16,14 @@ input variables:
         {{#each twins}}
             <div class="twin" data-shift-id="{{ id }}">
                 <div class="type {{ ../cssClass }}"></div>
-                <div class="username">
-                    Brukernavn<br>
-                    <input type="text" name="name" class="name user_search" placeholder="Bruk helst UiO-brukernavn" value="{{ volunteer.username }}" data-volunteer-id="{{ volunteer.id }}">
-                </div>
-                <div class="realname">
-                    Navn<br>
-                    <input type="text" value="{{ volunteer.firstname }} {{ volunteer.lastname }}" disabled>
-                    <!--<span>{{ volunteer.firstname }}</span> <span>{{ volunteer.lastname }}</span>-->
-                </div>
                 <div class="comment">
                     Kommentar<br>
+                    <button class="take_shift_button" data-shift-id="{{ id }}">Take shift</button>
                     <input type="text" name="comment" class="comment" value="{{ comment }}">
                 </div>
             </div>
         {{/each}}
     </div>
 
-    <p class="text-center">Ved ukjent brukernavn vil du få mulighet til å opprette brukeren når brukernavnet er fylt inn.</p>
-
-    <div class="text-center">
-        <a href="#" class='button small success take_shift_button'>Lagre</a>
-    </div>
     <a class="close-reveal-modal">&#215;</a>
 </div>        

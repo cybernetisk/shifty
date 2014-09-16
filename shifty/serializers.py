@@ -9,7 +9,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'first_name', 'last_name', 'contactinfo')
         depth = 1
 
-
 class ShiftSerializer(serializers.ModelSerializer):
     duration = serializers.Field(source='duration');
     durationType = serializers.Field(source='durationType')
