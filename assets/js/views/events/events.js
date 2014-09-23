@@ -4,7 +4,7 @@ shifty.views.Events = Backbone.View.extend({
 
     events: {
         'click .view_shifts_columns': 'columnsView',
-        'click .view_shifts_table': 'tableView'
+        'click .view_shifts_table': 'tableView',
     },
 
     initialize: function(el) {
@@ -15,9 +15,16 @@ shifty.views.Events = Backbone.View.extend({
         this.eventViews = [];
         this.limit = 5;
         this.offset = 1;*/
+        this.listenTo(this.collection, 'reset', this.render);
     },
 
-    render: function() {
+    refresh: function()
+    {
+        this.collection.fetch({'reset':true, data: {min_date: 'today'}});
+    },
+
+    render: function()
+    {
         this.$el.html(shifty.template("events")());
         this.sub = this.$(".events_wrap");
         this.columnsView();
@@ -55,9 +62,9 @@ shifty.views.Events = Backbone.View.extend({
 
     takeShiftBox: function(shiftElm, twinsData)
     {
+        var self = this;
         if(shifty.state.user == undefined)
         {
-            var self = this;
             var after_success = function(){
                 self.takeShiftBox(shiftElm, twinsData);
             }
@@ -69,6 +76,10 @@ shifty.views.Events = Backbone.View.extend({
             takeshift.shiftElm = shiftElm;
             takeshift.twinsData = twinsData;
             takeshift.refView = this;
+            takeshift.on_update = function()
+            {
+                self.refresh();
+            }
             takeshift.render();
         }
     }
