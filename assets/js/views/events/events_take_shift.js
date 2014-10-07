@@ -92,11 +92,21 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
 
         var shift_id = $(elm).data('shift-id')
         $.post('/take_shift', {'shift_id':shift_id})
-            .success(function(){
-                self.$el.foundation('reveal', 'close');
-                if(self.on_update != undefined)
+            .success(function(result){
+                if(result['status'] == 'taken')
                 {
-                    self.on_update();
+                    alert("oh no! somebody took the shift ahead of you... We have to reload the page!");
+                    self.$el.foundation('reveal', 'close');
+                    if(self.on_update != undefined)
+                        self.on_update();
+                }
+                else
+                {
+                    self.$el.foundation('reveal', 'close');
+                    if(self.on_update != undefined)
+                    {
+                        self.on_update();
+                    }
                 }
             });
     }
