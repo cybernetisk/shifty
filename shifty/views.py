@@ -69,6 +69,14 @@ def shifts(request):
     events = Event.objects.all()
     return render_to_response('shifty/shifts.html', {'events':events})
 
+def whoami(request):
+    if request.user:
+        user = request.user
+        whoami = {'username':user.username, 'id':user.id}
+    else:
+        whoami = {}
+    return HttpResponse(json.dumps(whoami), mimetype='application/json')
+
 def test(request):
     events = Event.objects.all()
     return render_to_response('shifty/test.html', {'events':events})

@@ -75,12 +75,20 @@ shifty.views.EventColumned = Backbone.View.extend({
             // add the shift to the active column if it has no next or next is no twin
             if (!next || !shift.isTwin(next))
             {
+                var free = 0;
+                for(var j = 0; j < twins.length; j++)
+                {
+                    if(twins[j].volunteer == undefined)
+                        free += 1;
+                }
+
                 columns[colIndex].push({
                     'shift': data,
                     'cssClass': cssClass,
                     'twins': twins,
                     'shiftsCollection': shiftsCollection,
                     'twinsCount': twins.length,
+                    'freeCount': free,
                     'hasTwins': twins.length > 1,
                     'available': available
                 });

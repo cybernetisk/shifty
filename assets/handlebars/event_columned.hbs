@@ -7,7 +7,7 @@
 				<div class='title'>
 					{{ shift.shift_type.title }}
 					{{#if hasTwins }}
-						({{twinsCount}})
+						({{freeCount}}/{{twinsCount}})
 					{{/if}}
 				</div>
 				<div class='time'>{{ formatDate shift.start "HH:mm" }}-{{ formatDate shift.stop "HH:mm" }}</div>
@@ -24,10 +24,18 @@
 		{{#if responsible}}
 		<div class='contact'>
 			<div class='title'>Ansvarlig</div>
-			Navn: {{responsible.firstname}} {{responsible.lastname}}<br>
-			Bruker: {{responsible.username}}<br>
-			Epost: {{responsible.email}}<br>
-			Mobil: {{responsible.phone}}
+			<div>
+				Navn:&nbsp;{{responsible.firstname}}&nbsp;{{responsible.lastname}}
+			</div>
+			<div>
+				Bruker: {{responsible.username}}
+			</div>
+			<div>
+				Epost: {{responsible.email}}
+			</div>
+			<div>
+				Mobil: {{responsible.phone}}
+			</div>
 		</div>
 		{{/if}}
 	</column>		
