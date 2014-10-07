@@ -13,7 +13,7 @@ class BongLog(models.Model):
         ('2', 'revoked')
     )
 
-    user = models.OneToOneField(User)
+    wallet = models.ForeignKey(BongWallet)
     action = models.CharField(max_length=1, choices=BONG_ACTION_CHOICES, default='0')
     shift = models.OneToOneField(Shift, null=True)
     date = models.DateTimeField()
