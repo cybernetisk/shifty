@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from rest_framework import routers
+from bong import views
 from shifty import rest
 
 # Uncomment the next two lines to enable the admin:
@@ -8,6 +9,9 @@ admin.autodiscover()
 
 
 router = routers.DefaultRouter()
+
+router.register(r'wallets', views.WalletViewSet)
+
 router.register(r'event', rest.EventViewSet)
 router.register(r'shift', rest.ShiftViewSet)
 router.register(r'shifttype', rest.ShiftTypeViewSet)
@@ -39,5 +43,8 @@ urlpatterns = patterns('',
     url(r'^best_volunteers', 'shifty.views.best_volunteers'),
     url(r'^login', 'shifty.views.login'),
     url(r'^whoami', 'shifty.views.whoami'),
+
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )
