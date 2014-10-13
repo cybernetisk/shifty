@@ -178,7 +178,13 @@ def copy_events(request):
 
 @ensure_csrf_cookie
 def backbone_router(request):
-    return render_to_response('shifty/base.html')
+    if request.user.is_authenticated:
+        user = request.user
+        user = {'username':user.username, 'id':user.id}
+        user = json.dumps(user)
+    else:
+        user = None
+    return render_to_response('shifty/base.html', dict(user=user))
 
 
 def shift_types_colors(request):

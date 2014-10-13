@@ -30,8 +30,8 @@
     {% endcompress %}
 
         <script type="text/javascript">
-            {% if user.is_authenticated %}
-            shifty.user = jQuery.parseJSON("{{ user|escapejs }}");
+            {% if user %}
+            shifty.user = jQuery.parseJSON('{{ user|safe }}');
             {% else %}
             shifty.user = null;
             {% endif %}
