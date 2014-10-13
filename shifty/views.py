@@ -178,7 +178,7 @@ def copy_events(request):
 
 @ensure_csrf_cookie
 def backbone_router(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         user = request.user
         user = {'username':user.username, 'id':user.id}
         user = json.dumps(user)

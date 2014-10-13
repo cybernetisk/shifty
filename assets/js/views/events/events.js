@@ -63,7 +63,7 @@ shifty.views.Events = Backbone.View.extend({
     takeShiftBox: function(shiftElm, twinsData)
     {
         var self = this;
-        if(shifty.state.user == undefined)
+        if(shifty.user == null)
         {
             var after_success = function(){
                 self.takeShiftBox(shiftElm, twinsData);
