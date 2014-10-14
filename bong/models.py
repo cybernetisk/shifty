@@ -2,7 +2,6 @@ from django.db import models, transaction
 from django.contrib.auth.models import User
 from shifty.models import Shift
 
-# @transaction.atomic
 class BongWallet(models.Model):
     user = models.ForeignKey(User)
     balance = models.IntegerField(default=0)
