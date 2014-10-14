@@ -33,7 +33,24 @@ class BongTestCase(TestCase):
         self.assertEqual(self.wallet.balance, 2)
 
     def testRevokeBong(self):
-        log = BongLog(wallet = self.wallet, action = BongLog.REVOKED, shift = self.shift, date = self.now, modify = 5)
+        log = BongLog(wallet = self.wallet, action = BongLog.REVOKED, shift = self.shift, date = self.now, modify = 4)
         log.save()
 
-        self.assertEqual(self.wallet.balance, 2)
+        self.assertEqual(self.wallet.balance, 3)
+
+    def testImmutableBongLogEntry(self):
+        log = BongLog(wallet = self.wallet, action = BongLog.ASSIGNED, shift = self.shift, date = self.now, modify = 5)
+        log.save()
+
+        log.modify = 100;
+        log.save()
+
+        self.assertEqual(self.wallet.balance, 12)
+
+    def testDeleteBongLogDisabled(self):
+        log = BongLog(wallet = self.wallet, action = BongLog.ASSIGNED, shift = self.shift, date = self.now, modify = 5)
+        log.save()
+        log.delete()
+
+        query = BongLog.objects.get(id=1)
+        self.assertIsNotNone(query)
