@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from shifty.models import Shift
 
 class BongWallet(models.Model):
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User)
     balance = models.IntegerField(default=0)
+
 
 class BongLog(models.Model):
     BONG_ACTION_CHOICES = (
