@@ -10,7 +10,8 @@ class AccessRights(models.Model):
     operational_level = models.BooleanField(default=False)
     forening_level = models.BooleanField(default=False)
     have_access = models.CharField(max_length = 50, choices=
-                                        (('1', 'have access'),
+                                        (('0', 'should have access'),
+                                         ('1', 'have access'),
                                          ('2', 'should not have access'),
                                          ('3', 'does not have access'))
                                   )
