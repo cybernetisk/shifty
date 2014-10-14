@@ -9,6 +9,18 @@ class BongWallet(models.Model):
     def delete(self, *args, **kwargs):
         return #no deleting of bong wallets!
 
+    def calcBalance(self):
+        self.balance = 0
+        logs = query = BongLog.objects.filter(wallet__exact=self)
+
+        for log in logs:
+            if log.action == BongLog.ASSIGNED:
+                self.balance += log.modify
+            elif log.action in (BongLog.CLAIMED, BongLog.REVOKED):
+                self.balance -= log.modify
+
+        self.save()
+
 class BongLog(models.Model):
     ASSIGNED = '0';
     CLAIMED = '1';

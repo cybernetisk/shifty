@@ -54,3 +54,22 @@ class BongTestCase(TestCase):
 
         query = BongLog.objects.get(id=1)
         self.assertIsNotNone(query)
+
+    def testCalcBongWalletBalance(self):
+        log1 = BongLog(wallet = self.wallet, action = BongLog.ASSIGNED, shift = self.shift, date = self.now, modify = 1)
+        log1.save()
+        log2 = BongLog(wallet = self.wallet, action = BongLog.ASSIGNED, date = self.now, modify = 2)
+        log2.save()
+        log3 = BongLog(wallet = self.wallet, action = BongLog.CLAIMED, date = self.now, modify = 5)
+        log3.save()
+
+        self.assertEqual(self.wallet.balance, 5)
+
+        self.wallet.balance = 1000
+        self.wallet.save()
+
+        self.assertEqual(self.wallet.balance, 1000)
+
+        self.wallet.calcBalance()
+
+        self.assertEqual(self.wallet.balance, 5 - 7)
