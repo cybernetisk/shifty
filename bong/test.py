@@ -55,6 +55,12 @@ class BongTestCase(TestCase):
         query = BongLog.objects.get(id=1)
         self.assertIsNotNone(query)
 
+    def testDeleteBongWalletDisabled(self):
+        self.wallet.delete()
+
+        query = BongWallet.objects.get(id=1)
+        self.assertIsNotNone(query)
+
     def testCalcBongWalletBalance(self):
         log1 = BongLog(wallet = self.wallet, action = BongLog.ASSIGNED, shift = self.shift, date = self.now, modify = 1)
         log1.save()

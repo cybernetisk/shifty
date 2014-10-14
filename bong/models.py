@@ -11,13 +11,10 @@ class BongWallet(models.Model):
 
     def calcBalance(self):
         self.balance = 0
-        logs = query = BongLog.objects.filter(wallet__exact=self)
 
+        logs = BongLog.objects.filter(wallet__exact=self)
         for log in logs:
-            if log.action == BongLog.ASSIGNED:
-                self.balance += log.modify
-            elif log.action in (BongLog.CLAIMED, BongLog.REVOKED):
-                self.balance -= log.modify
+            self.balance += log.getModifier()
 
         self.save()
 
@@ -39,12 +36,14 @@ class BongLog(models.Model):
             if self.id is None:
                 super(BongLog, self).save(*args, **kwargs)
 
-                if self.action == self.ASSIGNED:
-                    self.wallet.balance += self.modify
-                elif self.action in (self.CLAIMED, self.REVOKED):
-                    self.wallet.balance -= self.modify
-
+                self.wallet.balance += self.getModifier()
                 self.wallet.save()
+
+    def getModifier(self):
+        if self.action == self.ASSIGNED:
+            return self.modify
+        elif self.action in (self.CLAIMED, self.REVOKED):
+            return -self.modify
 
     def delete(self, *args, **kwargs):
         return #no deleting of logs!
