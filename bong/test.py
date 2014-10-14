@@ -17,11 +17,23 @@ class BongTestCase(TestCase):
         self.shift_type.save()
         self.shift = Shift(event=self.event, start=self.now, stop=self.now, shift_type = self.shift_type)
         self.shift.save()
-        self.wallet = BongWallet(user=self.user, balance=0)
+        self.wallet = BongWallet(user=self.user, balance=7)
         self.wallet.save()
 
-    def testAssignBongs(self):
+    def testAssignBong(self):
         log = BongLog(wallet = self.wallet, action = BongLog.ASSIGNED, shift = self.shift, date = self.now, modify = 5)
         log.save()
 
-        self.assertEqual(self.wallet.balance, 5)
+        self.assertEqual(self.wallet.balance, 12)
+
+    def testClaimBong(self):
+        log = BongLog(wallet = self.wallet, action = BongLog.CLAIMED, shift = self.shift, date = self.now, modify = 5)
+        log.save()
+
+        self.assertEqual(self.wallet.balance, 2)
+
+    def testRevokeBong(self):
+        log = BongLog(wallet = self.wallet, action = BongLog.REVOKED, shift = self.shift, date = self.now, modify = 5)
+        log.save()
+
+        self.assertEqual(self.wallet.balance, 2)
