@@ -135,7 +135,8 @@ INSTALLED_APPS = (
     'reversion',
     'colorful',
     'compressor',
-    'bong'
+    'bong',
+    'accessRights',
 )
 
 # A sample logging configuration. The only tangible logging
