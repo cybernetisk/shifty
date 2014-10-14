@@ -1,7 +1,8 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
 from shifty.models import Shift
 
+# @transaction.atomic
 class BongWallet(models.Model):
     user = models.OneToOneField(User)
     balance = models.IntegerField(default=0)
@@ -12,6 +13,13 @@ class BongLog(models.Model):
         ('1', 'claimed'),
         ('2', 'revoked')
     )
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            if self.id is None:
+                super(BongLog, self).save(*args, **kwargs)
+                self.wallet.balance += self.modify
+                self.wallet.save()
 
     wallet = models.ForeignKey(BongWallet)
     action = models.CharField(max_length=1, choices=BONG_ACTION_CHOICES, default='0')
