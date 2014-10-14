@@ -3,8 +3,10 @@ from bong.forms import WalletForm
 from bong.models import BongWallet, BongLog
 
 class BongWalletAdmin(admin.ModelAdmin):
-    list_display = ('user', 'balance')
     search_fields = ['user__username']
+    list_display = ('user', 'balance')
+
+    readonly_fields = ('user', 'balance')
 
     actions = None
 

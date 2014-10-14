@@ -6,6 +6,8 @@ class BongWallet(models.Model):
     user = models.ForeignKey(User)
     balance = models.IntegerField(default=0)
 
+    def delete(self, *args, **kwargs):
+        return #no deleting of bong wallets!
 
 class BongLog(models.Model):
     BONG_ACTION_CHOICES = (
@@ -20,6 +22,9 @@ class BongLog(models.Model):
                 super(BongLog, self).save(*args, **kwargs)
                 self.wallet.balance += self.modify
                 self.wallet.save()
+
+    def delete(self, *args, **kwargs):
+        return #no deleting of logs!
 
     wallet = models.ForeignKey(BongWallet)
     action = models.CharField(max_length=1, choices=BONG_ACTION_CHOICES, default='0')
