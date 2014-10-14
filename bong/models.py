@@ -10,24 +10,35 @@ class BongWallet(models.Model):
         return #no deleting of bong wallets!
 
 class BongLog(models.Model):
+    ASSIGNED = '0';
+    CLAIMED = '1';
+    REVOKED = '2';
+
     BONG_ACTION_CHOICES = (
-        ('0', 'assigned'),
-        ('1', 'claimed'),
-        ('2', 'revoked')
+        (ASSIGNED, 'assigned'),
+        (CLAIMED, 'claimed'),
+        (REVOKED, 'revoked')
     )
 
     def save(self, *args, **kwargs):
         with transaction.atomic():
+            self.modify = abs(self.modify)
+
             if self.id is None:
                 super(BongLog, self).save(*args, **kwargs)
-                self.wallet.balance += self.modify
+
+                if self.action == self.ASSIGNED:
+                    self.wallet.balance += self.modify
+                elif self.action in (self.CLAIMED, self.REVOKED):
+                    self.wallet.balance -= self.modify
+
                 self.wallet.save()
 
     def delete(self, *args, **kwargs):
         return #no deleting of logs!
 
     wallet = models.ForeignKey(BongWallet)
-    action = models.CharField(max_length=1, choices=BONG_ACTION_CHOICES, default='0')
+    action = models.CharField(max_length=1, choices=BONG_ACTION_CHOICES, default=ASSIGNED)
     shift = models.OneToOneField(Shift, null=True)
     date = models.DateTimeField()
     modify = models.IntegerField(default=0)
