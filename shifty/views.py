@@ -113,7 +113,8 @@ def create_shift_user(request):
                                     password=password)
     django_login(request, new_user)
 
-    return HttpResponse(json.dumps({'user':get_user_stuff(request)}), mimetype='application/json')
+    csrf = django.middleware.csrf.get_token(request)
+    return HttpResponse(json.dumps({'user':get_user_stuff(request), 'csrf':csrf}), mimetype='application/json')
 
 
 @reversion.create_revision()

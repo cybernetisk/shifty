@@ -52,6 +52,12 @@ shifty.views.NewUser = Backbone.View.extend({
         this.model.save([], {
             success: function(model, response, options)
             {
+                csrftoken = response['csrf'];
+                console.log(csrftoken);
+                $.ajaxSetup({
+                    headers: { 'X-CSRFToken': csrftoken }
+                });
+
                 shifty.user = response['user'];
                 self.options['on_close']();
             },
