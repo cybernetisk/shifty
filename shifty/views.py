@@ -26,6 +26,11 @@ def eventInfo(request, eventId):
     return HttpResponse(json.dumps(p), mimetype='application/json')
 
 
+
+def get_user_stuff(request):
+    user = request.user
+    return {'username':user.username, 'id':user.id, 'admin':user.is_staff}
+
 def login(request):
     user = request.POST['username']
     password = request.POST['password']
@@ -33,7 +38,7 @@ def login(request):
     if user is not None and user.is_active:
         res = django_login(request, user)
         csrf = django.middleware.csrf.get_token(request)
-        return HttpResponse(json.dumps({'status':'ok', 'csrf':csrf}), mimetype='application/json')
+        return HttpResponse(json.dumps({'status':'ok', 'csrf':csrf, 'user':get_user_stuff(request)}), mimetype='application/json')
     return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
 
 
@@ -71,8 +76,7 @@ def shifts(request):
 
 def whoami(request):
     if request.user:
-        user = request.user
-        whoami = {'username':user.username, 'id':user.id}
+        whoami = get_user_stuff(request)
     else:
         whoami = {}
     return HttpResponse(json.dumps(whoami), mimetype='application/json')
@@ -98,16 +102,22 @@ def create_shift_user(request):
     email = data['email']
     phone = data['phone']
 
-    user = User.objects.create_user(username, email, first_name=firstname, last_name=lastname)
+    password = "lol"
+
+    user = User.objects.create_user(username, email, first_name=firstname, last_name=lastname, password=password)
     contact_info = ContactInfo(phone=phone)
     contact_info.user = user
     contact_info.save()
 
-    return HttpResponse(json.dumps({'id': user.id}), mimetype='application/json')
+    new_user = authenticate(username=username,
+                                    password=password)
+    django_login(request, new_user)
+
+    return HttpResponse(json.dumps({'user':get_user_stuff(request)}), mimetype='application/json')
+
 
 @reversion.create_revision()
 def take_shift(request):
-
     user = request.user
     assert user
     # username = data['name']
@@ -115,7 +125,6 @@ def take_shift(request):
     comment = None
     shift_id = request.POST['shift_id']
     shift = Shift.objects.get(pk=shift_id)
-
 
     with transaction.atomic(), reversion.create_revision():
         if shift.volunteer != None and user != shift.volunteer:
@@ -128,7 +137,6 @@ def take_shift(request):
         reversion.set_comment("Took shift")
         return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
     return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
-
 
 
 from django import forms
@@ -176,14 +184,15 @@ def copy_events(request):
         form.fields["events"].queryset = events
     return render(request, 'shifty/copy_events.html', dict(form=form))
 
+
 @ensure_csrf_cookie
 def backbone_router(request):
     if request.user.is_authenticated():
-        user = request.user
-        user = {'username':user.username, 'id':user.id}
+        user = get_user_stuff(request)
         user = json.dumps(user)
     else:
         user = None
+
     return render_to_response('shifty/base.html', dict(user=user))
 
 

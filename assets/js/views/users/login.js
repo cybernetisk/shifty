@@ -115,10 +115,11 @@ shifty.views.Login = Backbone.View.extend({
     {
         var self = this;
         var parentView = this.parentView;
+
         var new_user = new shifty.views.NewUser({
                 'on_close':
                     function(){
-                        parentView.takeShiftBox($(self).data('args'));
+                        self.success();
                     }
             });
         new_user.render();

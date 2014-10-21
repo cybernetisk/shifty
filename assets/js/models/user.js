@@ -16,7 +16,7 @@ shifty.models.User = Backbone.Model.extend({
                 $.ajaxSetup({
                     headers: { 'X-CSRFToken': csrftoken }
                 });
-                shifty.user = new shifty.models.User();
+                shifty.user = res['user'];
                 success();
                 return;
             }

@@ -1,5 +1,7 @@
 <div class='event'>
-	<h2>{{ formatDate event.start "dddd D. MMMM YYYY" }} - {{ event.title }} - Ledige skift: {{event.available}}</h2>
+	<h2>{{ formatDate event.start "dddd D. MMMM YYYY" }} - {{ event.title }} - Ledige skift: {{event.available}}
+		{{# if user.admin }}- <a href="/admin/shifty/event/{{event.id}}/" data-bypass>Edit</a>{{/if }}
+	</h2>
   	{{#each columns}}
   		<column>
 			{{#each this}}

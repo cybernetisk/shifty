@@ -52,7 +52,7 @@ shifty.views.NewUser = Backbone.View.extend({
         this.model.save([], {
             success: function(model, response, options)
             {
-                shifty.state.user = new shifty.models.User();
+                shifty.user = response['user'];
                 self.options['on_close']();
             },
             error: function()
