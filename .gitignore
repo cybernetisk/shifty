@@ -24,3 +24,6 @@ virtualenv
 # external libraries etc that are autofetched
 assets/bower_components
 node_modules
+
+# PyCharm project files
+.idea/
