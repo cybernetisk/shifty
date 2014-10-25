@@ -12,9 +12,6 @@ from rest_framework.mixins import CreateModelMixin
 import datetime
 
 
-
-
-
 class RelativeDateFilter(django_filters.CharFilter):
     def filter(self, qs, value):
         res = None
@@ -42,7 +39,7 @@ class ShiftFilter(django_filters.FilterSet):
         fields = ['min_date', 'max_date', 'shift_type', 'volunteer']
 
 
-class EventViewSet(viewsets.ModelViewSet):
+class EventViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Event.objects.all().order_by('start')
@@ -80,7 +77,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
         return CreateModelMixin.create(self, request, *args, **kwargs)
 
-class FreeShiftsViewSet(viewsets.ModelViewSet):
+class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Shift.objects.filter(volunteer__isnull=True)
@@ -93,7 +90,7 @@ class FreeShiftsViewSet(viewsets.ModelViewSet):
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter
 
-class ShiftViewSet(viewsets.ModelViewSet):
+class ShiftViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Shift.objects.all()
@@ -106,21 +103,21 @@ class ShiftViewSet(viewsets.ModelViewSet):
     filter_class = ShiftFilter
 
 
-class ShiftTypeViewSet(viewsets.ModelViewSet):
+class ShiftTypeViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = ShiftType.objects.all()
     serializer_class = ShiftTypeSerializer
 
-
-class UserViewSet(viewsets.ModelViewSet):
+"""
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username', 'first_name', 'last_name')
-
+"""
 
 """class ViewSet(viewsets.ModelViewSet):
     
