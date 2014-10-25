@@ -7,7 +7,8 @@ import datetime
 import reversion
 from django.db import transaction
 from colorful.fields import RGBColorField
-
+from django.utils import timezone
+from midnight import midnight, day
 
 class WeekdayChangedException(Exception):
     def __init__(self, events):
@@ -19,6 +20,14 @@ class Event(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     start = models.DateTimeField()
+
+    @property
+    def week(self):
+        return self.start.strftime("%V")
+
+    @property
+    def finished(self):
+        return self.start.date() < datetime.date.today()
 
     @property
     def next(self):
@@ -105,7 +114,7 @@ reversion.register(Event, follow=["shifts"])
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
     shift_type = models.ForeignKey("ShiftType", null=False, related_name='+')
-    volunteer = models.ForeignKey(User, null=True, blank=True)
+    volunteer = models.ForeignKey(User, null=True, blank=True, related_name='shifts')
     comment = models.TextField(blank=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
@@ -125,11 +134,28 @@ class Shift(models.Model):
         else:
             return 'short'
 
+    def user_collides(self, user):
+        _start = midnight(self.start)
+        _stop = _start + day
+        shifts = user.shifts.filter(Q(start__range=(_start, _stop)) | Q(stop__range=(_start, _stop)))
+        for shift in shifts:
+            if shift.collides(self):
+                return shift
+        return None
+
+    def collides(self, shift):
+        if self.start <= shift.start < self.stop:
+            return True
+        if self.start < shift.stop <= self.stop:
+            return True
+        if shift.start <= self.start < shift.stop:
+            return True
+        return False
+
     # Returns shift duration in hours
     def duration(self):
         dt = self.stop - self.start
         return round(dt.seconds / 3600.0, 1)
-
 
     def save(self, *args, **kwargs):
         if self.stop < self.start:
@@ -146,6 +172,10 @@ class Shift(models.Model):
                 'start':_date(self.start, "H:i"), 
                 'stop':_date(self.stop, "H:i"),
                 'cssClass':'shift_type_' + self.id}
+
+    def day_desc(self):
+        return "%s %s-%s" % (self.shift_type.title, self.start.strftime("%H"), self.stop.strftime("%H"))
+
 reversion.register(Shift)
 
 

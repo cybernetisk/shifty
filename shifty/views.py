@@ -131,6 +131,10 @@ def take_shift(request):
         if shift.volunteer != None and user != shift.volunteer:
             return HttpResponse(json.dumps({'status':'taken'}), mimetype='application/json')
 
+        collision = shift.user_collides(user)
+        if collision is not None:
+            return HttpResponse(json.dumps({'status':'collides', 'shift_id':collision.id, 'desc':collision.day_desc()}), mimetype='application/json')
+
         shift.volunteer = user
         if comment is not None:
             shift.comment = comment

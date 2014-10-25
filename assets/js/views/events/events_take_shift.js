@@ -100,7 +100,11 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
                     if(self.on_update != undefined)
                         self.on_update();
                 }
-                else
+                else if(result['status'] == 'collides')
+                {
+                    alert("This shift collides with another shift you have... (" + result['desc'] + ")");
+                }
+                else if(result['status'] == 'ok')
                 {
                     self.$el.foundation('reveal', 'close');
                     if(self.on_update != undefined)
