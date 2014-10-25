@@ -2,6 +2,9 @@ from django.conf.urls import patterns, include, url
 from rest_framework import routers
 from shifty import rest
 
+from django.conf.urls import patterns, url, include
+
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -11,7 +14,7 @@ router = routers.DefaultRouter()
 router.register(r'event', rest.EventViewSet)
 router.register(r'shift', rest.ShiftViewSet)
 router.register(r'shifttype', rest.ShiftTypeViewSet)
-router.register(r'user', rest.UserViewSet, "user")
+#router.register(r'user', rest.UserViewSet, "user")
 router.register(r'free_shifts', rest.FreeShiftsViewSet)
 
 urlpatterns = patterns('',
