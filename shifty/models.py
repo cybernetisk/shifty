@@ -9,6 +9,7 @@ from django.db import transaction
 from colorful.fields import RGBColorField
 from django.utils import timezone
 from midnight import midnight, day
+import colorsys
 
 class WeekdayChangedException(Exception):
     def __init__(self, events):
@@ -191,6 +192,12 @@ def html_color(r, g, b):
         g = 0
     if b < 0:
         b = 0
+    if r > 255:
+        r = 255
+    if g > 255:
+        g = 255
+    if b > 255:
+        b = 255
     return "#%02x%02x%02x" % (r, g, b)
 
 class ShiftType(models.Model):
@@ -207,6 +214,22 @@ class ShiftType(models.Model):
     def border_color(self):
         r, g, b = parse_html_color(str(self.color))
         return html_color(r - 20, g - 20, b - 20)
+
+    @property
+    def taken_color(self):
+        r, g, b = map(lambda x: float(x) / 255, parse_html_color(str(self.color)))
+        h,s,v = colorsys.rgb_to_hsv(r,g,b)
+        print h,s,v
+        s = max(0, s - 0.5)
+        v = min(1, v - 0.1)
+        r, g, b = map(lambda x: int(x * 255), colorsys.hsv_to_rgb(h, s, v))
+        return html_color(r,g,b)
+
+    @property
+    def yourshift_color(self):
+        r, g, b = parse_html_color(str(self.color))
+        return html_color(r + 80, g + 80, b + 80)
+
 
     def __unicode__(self):
         return self.title

@@ -8,7 +8,29 @@
 
 .shift_type_{{ shift_type.id }}.taken
 {
-    opacity:0.35;
+    background: {{ shift_type.taken_color }};
 }
+
+
+.shift_type_{{ shift_type.id }}.yourshift
+{
+    background: repeating-linear-gradient(
+      45deg,
+      {{shift_type.yourshift_color}},
+      {{shift_type.yourshift_color}} 10px,
+      {{shift_type.border_color}} 10px,
+      {{shift_type.border_color}} 20px
+    );
+
+    border: 1px solid blue;
+
+    text-shadow:
+        -1px -1px 0 #666,
+        1px -1px 0 #666,
+        -1px 1px 0 #666,
+        1px 1px 0 #666;  
+}
+
+
 
 {% endfor %}

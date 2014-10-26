@@ -5,7 +5,7 @@
   	{{#each columns}}
   		<column>
 			{{#each this}}
-			<div class="shift {{ cssClass }} {{ shift.durationType }}{{#unless available}} taken{{/unless}}" id="shift_{{ shift.id }}">
+			<div class="shift {{ cssClass }} {{ shift.durationType }}{{#unless available}} taken{{/unless}} {{#if ownshift}}yourshift{{/if}}" id="shift_{{ shift.id }}">
 				<div class='title'>
 					{{ shift.shift_type.title }}
 					{{#if hasTwins }}

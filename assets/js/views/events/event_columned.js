@@ -12,7 +12,8 @@ shifty.views.EventColumned = Backbone.View.extend({
         this.el.innerHTML = shifty.template("event_columned")({
             'event': this.model.toJSON(),
             'columns': this.getShiftColumns(),
-            'responsible': this.model.getResponsible()
+            'responsible': this.model.getResponsible(),
+            'user':shifty.user
         });
 
         return this.el;
@@ -76,10 +77,13 @@ shifty.views.EventColumned = Backbone.View.extend({
             if (!next || !shift.isTwin(next))
             {
                 var free = 0;
+                var ownshift = false;
                 for(var j = 0; j < twins.length; j++)
                 {
                     if(twins[j].volunteer == undefined)
                         free += 1;
+                    if(twins[j].volunteer != null && shifty.user != null && twins[j].volunteer.id == shifty.user.id)
+                        ownshift = true;
                 }
 
                 columns[colIndex].push({
@@ -90,7 +94,8 @@ shifty.views.EventColumned = Backbone.View.extend({
                     'twinsCount': twins.length,
                     'freeCount': free,
                     'hasTwins': twins.length > 1,
-                    'available': available
+                    'available': available,
+                    'ownshift':ownshift
                 });
                 self.grouplinks[data.id] = columns[colIndex][columns[colIndex].length-1];
                 twins = [];
