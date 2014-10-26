@@ -19,10 +19,12 @@
 		</column>
   	{{/each}}
   	<column>
+  		{{#if event.description}}
 		<div class='comments'>
 			<div class='title'>Kommentarer</div>
 			{{ event.description }}
 		</div>
+		{{/if}}
 		{{#if responsible}}
 		<div class='contact'>
 			<div class='title'>Ansvarlig</div>
