@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 import django
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 import json
 from django.forms.models import model_to_dict
@@ -23,7 +23,7 @@ def eventInfo(request, eventId):
 
     p = {'event':event.toDict(), 'columns':event.getShiftColumns()}
 
-    return HttpResponse(json.dumps(p), mimetype='application/json')
+    return JsonResponse(p)
 
 
 
@@ -38,8 +38,8 @@ def login(request):
     if user is not None and user.is_active:
         res = django_login(request, user)
         csrf = django.middleware.csrf.get_token(request)
-        return HttpResponse(json.dumps({'status':'ok', 'csrf':csrf, 'user':get_user_stuff(request)}), mimetype='application/json')
-    return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
+        return JsonResponse({'status':'ok', 'csrf':csrf, 'user':get_user_stuff(request)})
+    return JsonResponse({'status':'failed'})
 
 
 # added by marill 
@@ -51,7 +51,7 @@ def count_shifts(request):
                         'free': Shift.objects.filter(volunteer__isnull=True, shift_type=s.id, start__gte=date.today()).count(), 
                         'all': Shift.objects.filter(shift_type=s.id, start__gte=date.today()).count()})
 
-    return HttpResponse(json.dumps(result), mimetype='application/json')
+    return JsonResponse(result)
 
 
 def best_volunteers(request):
@@ -68,7 +68,7 @@ def best_volunteers(request):
     data = []
     for u in users:
         data.append({'user':u.username, 'num':u.num_shifts, 'id': u.id})
-    return HttpResponse(json.dumps(data), mimetype='application/json')
+    return JsonResponse(data)
 
 def shifts(request):
     events = Event.objects.all()
@@ -79,7 +79,7 @@ def whoami(request):
         whoami = get_user_stuff(request)
     else:
         whoami = {}
-    return HttpResponse(json.dumps(whoami), mimetype='application/json')
+    return JsonResponse(whoami)
 
 def test(request):
     events = Event.objects.all()
@@ -91,7 +91,7 @@ def getEvents(request, offset, limit):
     for e in events:
         result.append({'event':e.toDict(), 'columns':e.getShiftColumns()})
 
-    return HttpResponse(json.dumps(result), mimetype='application/json')
+    return JsonResponse(result)
 
 def create_shift_user(request):
     data = json.loads(request.body)
@@ -114,7 +114,7 @@ def create_shift_user(request):
     django_login(request, new_user)
 
     csrf = django.middleware.csrf.get_token(request)
-    return HttpResponse(json.dumps({'user':get_user_stuff(request), 'csrf':csrf}), mimetype='application/json')
+    return JsonResponse({'user':get_user_stuff(request), 'csrf':csrf})
 
 
 @reversion.create_revision()
@@ -129,19 +129,19 @@ def take_shift(request):
 
     with transaction.atomic(), reversion.create_revision():
         if shift.volunteer != None and user != shift.volunteer:
-            return HttpResponse(json.dumps({'status':'taken'}), mimetype='application/json')
+            return JsonResponse({'status':'taken'})
 
         collision = shift.user_collides(user)
         if collision is not None:
-            return HttpResponse(json.dumps({'status':'collides', 'shift_id':collision.id, 'desc':collision.day_desc()}), mimetype='application/json')
+            return JsonResponse({'status':'collides', 'shift_id':collision.id, 'desc':collision.day_desc()})
 
         shift.volunteer = user
         if comment is not None:
             shift.comment = comment
         shift.save()
         reversion.set_comment("Took shift")
-        return HttpResponse(json.dumps({'status':'ok'}), mimetype='application/json')
-    return HttpResponse(json.dumps({'status':'failed'}), mimetype='application/json')
+        return JsonResponse({'status':'ok'})
+    return JsonResponse({'status':'failed'})
 
 
 from django import forms
