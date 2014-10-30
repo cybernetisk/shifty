@@ -9,5 +9,6 @@ setup(name='shifty',
                           'pyyaml',
                           'django-reversion',
                           'django-colorful',
-                          'django-compressor']
+                          'django-compressor',
+                          'django-autocomplete-light']
       )

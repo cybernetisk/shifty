@@ -4,6 +4,8 @@ from shifty import rest
 
 from django.conf.urls import patterns, url, include
 
+import autocomplete_light
+autocomplete_light.autodiscover()
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -26,7 +28,6 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'shifty.views.backbone_router'),
     url(r'^events$', 'shifty.views.backbone_router'),
     url(r'^event/info/(\d+)$', 'shifty.views.eventInfo'), #returns JSON
@@ -43,4 +44,7 @@ urlpatterns = patterns('',
     url(r'^login', 'shifty.views.login'),
     url(r'^whoami', 'shifty.views.whoami'),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
+    url(r'^autocomplete/', include('autocomplete_light.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 )

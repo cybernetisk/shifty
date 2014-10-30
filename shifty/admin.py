@@ -9,13 +9,25 @@ from django import forms
 
 from django.db import models
 
+import autocomplete_light
+
+class UserAutocomplete(autocomplete_light.AutocompleteModelBase):
+    search_fields = ['^first_name', 'last_name', 'username']
+autocomplete_light.register(User, UserAutocomplete)
+
+
+
 class ShiftInLine(admin.TabularInline):
-    model = Shift
     extra = 0
     formfield_overrides = {
         models.TextField: {'widget': forms.Textarea(attrs={'rows':3, 'cols':40})},
     }
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'volunteer':
+            kwargs['widget'] = autocomplete_light.ChoiceWidget('UserAutocomplete')
+        return super(ShiftInLine,self).formfield_for_dbfield(db_field,**kwargs)
 
+    model = Shift
 
 class EventInLine(admin.TabularInline):
     model = Event
@@ -41,8 +53,8 @@ class EventAdmin(reversion.VersionAdmin):
 
     class Media:
         js = (
-            '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', # jquery
-            '/static/js/admin_hack.js'
+           # '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', # jquery
+            '/static/js/admin_hack.js',
         )
 
 class ShiftAdmin(reversion.VersionAdmin):
