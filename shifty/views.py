@@ -51,7 +51,7 @@ def count_shifts(request):
                         'free': Shift.objects.filter(volunteer__isnull=True, shift_type=s.id, start__gte=date.today()).count(), 
                         'all': Shift.objects.filter(shift_type=s.id, start__gte=date.today()).count()})
 
-    return JsonResponse(result)
+    return JsonResponse({'result':result})
 
 
 def best_volunteers(request):
@@ -68,7 +68,7 @@ def best_volunteers(request):
     data = []
     for u in users:
         data.append({'user':u.username, 'num':u.num_shifts, 'id': u.id})
-    return JsonResponse(data)
+    return JsonResponse({'result':data})
 
 def shifts(request):
     events = Event.objects.all()

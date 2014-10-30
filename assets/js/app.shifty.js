@@ -94,11 +94,11 @@ $(document).ready(function() {
                 });
 
                 var count = $.ajax({dataType: "json", url: "count_shifts"}).done(function(data){
-                   v.count = data; 
+                   v.count = data['result']; 
                 });
 
                 var best = $.ajax({dataType: "json", url: "best_volunteers"}).done(function(data){
-                   v.best = data; 
+                   v.best = data['result']; 
                 });
                 
                 max = moment().add(8, 'days').format('YYYY-MM-DD');
