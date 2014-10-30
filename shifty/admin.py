@@ -13,6 +13,12 @@ import autocomplete_light
 
 class UserAutocomplete(autocomplete_light.AutocompleteModelBase):
     search_fields = ['^first_name', 'last_name', 'username']
+
+    def choices_for_request(self):
+        if not self.request.user.is_staff:
+            return []
+        return super(UserAutocomplete, self).choices_for_request()
+
 autocomplete_light.register(User, UserAutocomplete)
 
 
