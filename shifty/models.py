@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.template.defaultfilters import date as _date
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 import datetime
 import reversion
@@ -140,9 +141,15 @@ class Shift(models.Model):
         _stop = _start + day
         shifts = user.shifts.filter(Q(start__range=(_start, _stop)) | Q(stop__range=(_start, _stop)))
         for shift in shifts:
-            if shift.collides(self):
+            if self != shift and shift.collides(self):
                 return shift
         return None
+
+    def clean(self):
+        if self.volunteer is not None:
+            collision = self.user_collides(self.volunteer)
+            if collision is not None:
+                raise ValidationError('Collides with another shift (%s)' % collision.day_desc())
 
     def collides(self, shift):
         if self.start <= shift.start < self.stop:
