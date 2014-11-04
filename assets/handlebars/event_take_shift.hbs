@@ -18,11 +18,14 @@ input variables:
                 <div class="type {{ ../cssClass }}"></div>
                 <div class="comment">
                     {{#if volunteer}}
-
-                    Taken by {{ volunteer.username }}
+                        {{#if yourShift}}
+                            Taken by you!
+                        {{else}}
+                            Taken by {{ volunteer.username }}
+                        {{/if}}
                     {{else}}
-                    <button class="take_shift_button" data-shift-id="{{ id }}">Take shift</button>
-                    <input type="text" name="comment" class="comment" value="{{ comment }}">
+                        <button class="take_shift_button" data-shift-id="{{ id }}">Take shift</button>
+                        <input type="text" name="comment" class="comment" value="{{ comment }}">
                     {{/if}}
                 </div>
             </div>

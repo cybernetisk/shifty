@@ -3,6 +3,7 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
     // data: twinsData
     events: {
         'click .take_shift_button': 'saveState',
+        
 
         // creating new users
         'typeahead:selected input.user_search': function(ev, sug, name)
@@ -66,6 +67,20 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
     },
     render: function()
     {
+
+        var yourShift;
+
+        for(var i = 0; i < this.twinsData.twins.length; i++)
+        {
+            var shift = this.twinsData.twins[i]
+            
+            if(shift.volunteer != undefined)
+                if(shifty.user.id == shift.volunteer.id)
+                    shift.yourShift = true;
+            else
+                shift.yourShift = false;
+
+        }
         this.setElement($(shifty.template("event_take_shift")(this.twinsData)));
         var self = this;
 
@@ -94,6 +109,37 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
 
         var shift_id = $(elm).data('shift-id')
         $.post('/take_shift', {'shift_id':shift_id})
+            .success(function(result){
+                if(result['status'] == 'taken')
+                {
+                    alert("oh no! somebody took the shift ahead of you... We have to reload the page!");
+                    self.$el.foundation('reveal', 'close');
+                    if(self.on_update != undefined)
+                        self.on_update();
+                }
+                else if(result['status'] == 'collides')
+                {
+                    alert("This shift collides with another shift you have... (" + result['desc'] + ")");
+                }
+                else if(result['status'] == 'ok')
+                {
+                    self.$el.foundation('reveal', 'close');
+                    if(self.on_update != undefined)
+                    {
+                        self.on_update();
+                    }
+                }
+            });
+    },
+
+    removeState: function(e)
+    {
+        if (e) e.preventDefault();
+        var elm = e.currentTarget;
+        var self = this;
+
+        var shift_id = $(elm).data('shift-id')
+        $.post('/free_shift', {'shift_id':shift_id})
             .success(function(result){
                 if(result['status'] == 'taken')
                 {
