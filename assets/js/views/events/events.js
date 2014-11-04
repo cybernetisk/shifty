@@ -17,7 +17,9 @@ shifty.views.Events = Backbone.View.extend({
         this.eventViews = [];
         this.limit = 5;
         this.offset = 1;*/
+        var self = this;
         this.listenTo(this.collection, 'reset', this.render);
+        shifty.events.on('refresh', function(){ self.refresh();});
     },
 
     refresh: function()

@@ -1,3 +1,4 @@
+
 shifty.views.Login = Backbone.View.extend({
     // data: shiftElm
     // data: twinsData
@@ -102,8 +103,16 @@ shifty.views.Login = Backbone.View.extend({
 
     success: function(e)
     {
+        this.$el.foundation('reveal', 'close');
+
         var args = $(this).data('args');
-        args['after_success']()
+
+        if(args == undefined)
+            return;
+        shifty.events.trigger('refresh');
+
+        if(args['after_success'] != undefined)
+            args['after_success']();
     },
 
     failed: function(e)

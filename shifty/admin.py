@@ -22,7 +22,6 @@ class UserAutocomplete(autocomplete_light.AutocompleteModelBase):
 autocomplete_light.register(User, UserAutocomplete)
 
 
-
 class ShiftInLine(admin.TabularInline):
     extra = 0
     formfield_overrides = {
@@ -52,9 +51,7 @@ make_copy.short_description = "Copy selected events"
 
 class EventAdmin(reversion.VersionAdmin):
     inlines = [ShiftInLine]
-
     list_display = ('title', 'start', )
-
     actions = [make_copy]
 
     class Media:

@@ -1,4 +1,7 @@
-var shifty = {views: {}, models: {}, collections: {}, state:{}};
+var global_events = {}
+global_events = _.extend({}, Backbone.Events);
+
+var shifty = {views: {}, models: {}, collections: {}, state:{}, events:global_events};
 moment.locale('nb');
 
 var csrftoken = document.cookie.match(/csrftoken=(\w+)/);
@@ -67,6 +70,9 @@ $(document).ready(function() {
         a = new shifty.views.AdminMenu();
         a.render();
     });
+
+    var authbox = new shifty.views.Authbox();
+    authbox.render();
 
     // router
     (function() {

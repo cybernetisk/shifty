@@ -58,6 +58,7 @@ shifty.views.NewUser = Backbone.View.extend({
                     headers: { 'X-CSRFToken': csrftoken }
                 });
 
+                shifty.events.trigger('refresh');
                 shifty.user = response['user'];
                 self.options['on_close']();
             },

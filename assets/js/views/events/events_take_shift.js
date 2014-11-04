@@ -61,7 +61,9 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
             this.modal_active = false;
         }
     },
-
+    initialized: function(){
+        shifty.events.on('logout', function(){self.$el.foundation('reveal', 'close');});
+    },
     render: function()
     {
         this.setElement($(shifty.template("event_take_shift")(this.twinsData)));
