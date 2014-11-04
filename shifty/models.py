@@ -176,8 +176,8 @@ class Shift(models.Model):
     def toDict(self):
         return {'id': self.id,
                 'type':str(self),
-                'durationType':self.durationType(), 
-                'start':_date(self.start, "H:i"), 
+                'durationType':self.durationType(),
+                'start':_date(self.start, "H:i"),
                 'stop':_date(self.stop, "H:i"),
                 'cssClass':'shift_type_' + self.id}
 
@@ -247,3 +247,6 @@ class ContactInfo(models.Model):
     phone = models.CharField(max_length=100)
 reversion.register(ContactInfo)
 
+class UserShiftQualification(models.Model):
+    user = models.OneToOneField(User)
+    shifType = models.ManyToManyField(ShiftType)

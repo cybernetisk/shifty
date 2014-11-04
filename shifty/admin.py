@@ -1,5 +1,6 @@
 from django.contrib import admin
 from shifty.models import Event, Shift, ShiftType, ContactInfo
+from shifty.models import UserShiftQualification
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.http import HttpResponseRedirect
@@ -68,9 +69,13 @@ class ContactInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'contact infos'
 
+class ShiftQualificationInline(admin.StackedInline):
+    model = UserShiftQualification
+    verbose_name_plural = 'user shift qualifications'
+
 # Define a new User admin
 class UserAdmin(UserAdmin):
-    inlines = (ContactInline, )
+    inlines = (ContactInline, ShiftQualificationInline)
 
 # Re-register UserAdmin
 admin.site.unregister(User)
