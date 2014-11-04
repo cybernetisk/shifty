@@ -22,9 +22,7 @@ from django.db.models import Count
 
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
-
     p = {'event':event.toDict(), 'columns':event.getShiftColumns()}
-
     return JsonResponse(p)
 
 def logout_view(request):
