@@ -7,7 +7,7 @@ class BongWallet(models.Model):
     balance = models.IntegerField(default=0)
 
     def delete(self, *args, **kwargs):
-        return #no deleting of bong wallets!
+        return # no deleting of bong wallets!
 
     def calcBalance(self):
         self.balance = 0
@@ -16,7 +16,14 @@ class BongWallet(models.Model):
         for log in logs:
             self.balance += log.getModifier()
 
-        self.save()
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            # disable modifying wallets directly
+            if self.id is None:
+                super(BongWallet, self).save(*args, **kwargs)
+
+    def doSave(self):
+        super(BongWallet, self).save()
 
 class BongLog(models.Model):
     ASSIGNED = '0';
@@ -33,6 +40,7 @@ class BongLog(models.Model):
         with transaction.atomic():
             self.modify = abs(self.modify)
 
+            # disable modifying logs
             if self.id is None:
                 super(BongLog, self).save(*args, **kwargs)
 

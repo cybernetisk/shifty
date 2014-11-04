@@ -7,7 +7,8 @@ class BongWalletAdmin(admin.ModelAdmin):
     search_fields = ['user__username']
     list_display = ('user', 'balance')
 
-    readonly_fields = ('user', 'balance')
+    display = ('user', )
+    readonly_fields = ('balance', )
 
 
 class BongLogAdmin(admin.ModelAdmin):

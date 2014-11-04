@@ -77,5 +77,6 @@ class BongTestCase(TestCase):
         self.assertEqual(self.wallet.balance, 1000)
 
         self.wallet.calcBalance()
+        self.wallet.save()
 
         self.assertEqual(self.wallet.balance, 5 - 7)
