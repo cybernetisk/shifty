@@ -77,7 +77,15 @@ $(document).ready(function() {
             routes: {
                 '':       'index',
                 'events': 'events',
-                'event/:id': 'event'
+                'event/:id': 'event',
+                'logout':'logout',
+            },
+
+            logout: function(){
+                $.get('/logout').done(function(data){
+                   shifty.user = undefined;
+                   window.location.reload();
+                });
             },
 
             index: function() {

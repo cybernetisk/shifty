@@ -4,6 +4,8 @@ from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayCha
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
+from django.contrib.auth import logout
+
 import django
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
@@ -25,7 +27,9 @@ def eventInfo(request, eventId):
 
     return JsonResponse(p)
 
-
+def logout_view(request):
+    logout(request)
+    return JsonResponse({'status':'ok'})
 
 def get_user_stuff(request):
     user = request.user

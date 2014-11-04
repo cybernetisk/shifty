@@ -48,6 +48,7 @@ urlpatterns = patterns('',
     url(r'^best_volunteers', 'shifty.views.best_volunteers'),
     url(r'^login', 'shifty.views.login'),
     url(r'^whoami', 'shifty.views.whoami'),
+    url(r'^logout', 'shifty.views.logout_view'),
 
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
