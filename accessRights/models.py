@@ -1,8 +1,15 @@
-from django.contrib.auth.models import User
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.db import models
 
 class AccessRights(models.Model):
+    class Meta:
+        permissions = (
+            ("perm1", "description of perm1"),
+            ("perm2", "description of perm2"),
+            ("perm3", "description of perm3"),
+            ("perm4", "description of perm4")
+        )
+
     user = models.ForeignKey(User)
     card_number = models.CharField(max_length=50)
     group = models.ForeignKey(Group)
