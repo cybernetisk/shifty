@@ -1,5 +1,6 @@
 from django.db import models, transaction
 from django.contrib.auth.models import User
+from datetime import datetime  
 from shifty.models import Shift
 
 class BongWallet(models.Model):
@@ -59,5 +60,5 @@ class BongLog(models.Model):
     wallet = models.ForeignKey(BongWallet)
     action = models.CharField(max_length=1, choices=BONG_ACTION_CHOICES, default=ASSIGNED)
     shift = models.OneToOneField(Shift, null=True)
-    date = models.DateTimeField()
+    date = models.DateTimeField(default=datetime.now, blank=True)
     modify = models.IntegerField(default=0)
