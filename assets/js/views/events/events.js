@@ -7,6 +7,8 @@ shifty.views.Events = Backbone.View.extend({
         'click .view_shifts_table': 'tableView',
     },
 
+    mode:'columns',
+
     initialize: function(el) {
         // TODO: pagination links and handling
         /*var limit = 5;
@@ -27,19 +29,24 @@ shifty.views.Events = Backbone.View.extend({
     {
         this.$el.html(shifty.template("events")());
         this.sub = this.$(".events_wrap");
-        this.columnsView();
+        if(this.mode == 'columns')
+            this.columnsView();
+        else
+            this.tableView();
         return this.el;
     },
 
     columnsView: function(e)
     {
         if (e) e.preventDefault();
+        this.mode = 'columns';
         this.genView(shifty.views.EventColumned);
     },
 
     tableView: function(e)
     {
         if (e) e.preventDefault();
+        this.mode = 'table';
         this.genView(shifty.views.EventTable);
     },
 
