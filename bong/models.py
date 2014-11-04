@@ -17,6 +17,8 @@ class BongWallet(models.Model):
         for log in logs:
             self.balance += log.getModifier()
 
+        return self.balance
+
     def save(self, *args, **kwargs):
         with transaction.atomic():
             # disable modifying wallets directly
