@@ -26,7 +26,7 @@ shifty.views.EventTable = Backbone.View.extend({
             'shift': data,
             'cssClass': "shift_type_" + data.shift_type.id,
             'twins': [data],
-            'shiftsCollection': new shifty.collections.shifts([shift]),
+            'shiftsCollection': new shifty.collections.Shifts([shift]),
             'twinsCount': 1,
             'hasTwins': false
         };
