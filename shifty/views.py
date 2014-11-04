@@ -144,6 +144,25 @@ def take_shift(request):
     return JsonResponse({'status':'failed'})
 
 
+@reversion.create_revision()
+def free_shift(request):
+    user = request.user
+    assert user
+
+    comment = None
+    shift_id = request.POST['shift_id']
+    shift = Shift.objects.get(pk=shift_id)
+
+    with transaction.atomic(), reversion.create_revision():
+        if shift.user != user:
+            return JsonResponse({'status':'notyourshift'})
+
+        shift.volunteer = None
+        shift.save()
+        reversion.set_comment("Removed from shift")
+        return JsonResponse({'status':'ok'})
+    return JsonResponse({'status':'failed'})
+
 from django import forms
 
 from django.forms.extras.widgets import SelectDateWidget

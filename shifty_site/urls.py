@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^getEvents/(\d+)/(\d+)$', 'shifty.views.getEvents'), # with limit and offset
     url(r'^rest/', include(router.urls)),
     url(r'^take_shift', 'shifty.views.take_shift'),
+    url(r'^free_shift', 'shifty.views.free_shift'),
     url(r'^create_shift_user', 'shifty.views.create_shift_user'),
     url(r'^test', 'shifty.views.test'),
     url(r'^event/\d+', 'shifty.views.backbone_router'),
