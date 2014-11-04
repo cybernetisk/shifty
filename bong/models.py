@@ -1,6 +1,6 @@
 from django.db import models, transaction
 from django.contrib.auth.models import User
-from datetime import datetime  
+from datetime import datetime
 from shifty.models import Shift
 
 class BongWallet(models.Model):
@@ -22,9 +22,6 @@ class BongWallet(models.Model):
             # disable modifying wallets directly
             if self.id is None:
                 super(BongWallet, self).save(*args, **kwargs)
-
-    def doSave(self):
-        super(BongWallet, self).save()
 
 class BongLog(models.Model):
     ASSIGNED = '0';
