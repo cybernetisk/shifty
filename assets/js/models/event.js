@@ -11,7 +11,7 @@ shifty.models.Event = Backbone.Model.extend({
     getResponsible: function()
     {
         var sm = this.shifts.find(function(item) {
-            return item.attributes.shift_type.id == 1;
+            return item.attributes.shift_type.responsible;
         });
         console.log(sm);
 
