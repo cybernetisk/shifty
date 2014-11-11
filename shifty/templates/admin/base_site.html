@@ -1,6 +1,41 @@
 {% extends "admin/base.html" %}
 
 {% block extrahead %}
+    
+    <style type="text/css">
+    .header .logo {
+  font-size: 50px;
+  font-weight: bold;
+  letter-spacing: -6px;
+  text-decoration: none;
+}
+    .header .logo .blue {
+      color: #5bc0de;
+    }
+    .header .logo .yellow {
+      color: #f0ad4e;
+    }
+    .header .logo .green {
+      color: #5cb85c;
+    }
+    .header .logo .red {
+      color: #d9534f;
+    }
+
+    </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js" type="text/javascript"></script>
     {% include 'autocomplete_light/static.html' %}
+{% endblock %}
+
+{% block branding %}
+<div class="header">
+    <a class='logo' href='/'>
+        <span class='blue'>S</span>
+        <span class='yellow'>H</span>
+        <span class='green'>I</span>
+        <span class='red'>F</span>
+        <span class='blue'>T</span>
+        <span class='yellow'>Y</span>
+    </a>
+</div>
 {% endblock %}
