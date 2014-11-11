@@ -29,16 +29,16 @@
 		<div class='contact'>
 			<div class='title'>Ansvarlig</div>
 			<div>
-				Navn:&nbsp;{{event.responsible.firstname}}&nbsp;{{event.responsible.lastname}}
+				Navn:&nbsp;{{event.responsible.first_name}}&nbsp;{{event.responsible.last_name}}
 			</div>
 			<div>
 				Bruker: {{event.responsible.username}}
 			</div>
 			<div>
-				Epost: {{event.responsible.email}}
+				Epost: {{event.responsible.contactinfo.email}}
 			</div>
 			<div>
-				Mobil: {{event.responsible.phone}}
+				Mobil: {{event.responsible.contactinfo.phone}}
 			</div>
 		</div>
 		{{/if}}
