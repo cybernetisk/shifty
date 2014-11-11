@@ -52,7 +52,7 @@ make_copy.short_description = "Copy selected events"
 
 class EventAdmin(reversion.VersionAdmin):
     inlines = [ShiftInLine]
-    list_display = ('title', 'start', )
+    list_display = ('title', 'start', 'availableShifts', 'totalShifts' )
     actions = [make_copy]
 
     class Media:
