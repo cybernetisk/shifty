@@ -58,6 +58,9 @@ class Event(models.Model):
     def availableShifts(self):
         return self.shifts.filter(volunteer__isnull = True).count()
 
+    def totalShifts(self):
+        return self.shifts.count()
+
     def get_offset(self, date):
         return date - self.start.date()
 
@@ -82,29 +85,30 @@ class Event(models.Model):
         return event
 
     @classmethod
-    def get_min_offset(cls, events, date):
+    def get_max_offset(cls, events, date):
         offset = None
         for event in events:
             tmp_offset = event.get_offset(date)
-            if offset is None or tmp_offset < offset:
+            if offset is None or tmp_offset > offset:
                 offset = tmp_offset
         return offset
 
     @classmethod
     def check_same_day(cls, events, date):
-        offset = Event.get_min_offset(events, date)
+        offset = Event.get_max_offset(events, date)
         failed = []
         for event in events:
             now = event.start.date()
             after_offset = now + offset
             if now.weekday() != after_offset.weekday():
+                print now, after_offset
                 failed.append(event)
         if failed:
             raise WeekdayChangedException(failed)
 
     @classmethod
     def copy_events(cls, events, date):
-        offset = Event.get_min_offset(events, date)
+        offset = Event.get_max_offset(events, date)
         copies = []
         for event in events:
             with transaction.atomic(), reversion.create_revision():
