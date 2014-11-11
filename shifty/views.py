@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from datetime import date, timedelta
 from django.db.models import Count
+import datetime
 
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
@@ -205,8 +206,8 @@ def copy_events(request):
                 copies = Event.copy_events(events, date)
                 return HttpResponseRedirect("/admin/shifty/event/")
     else:
-        form = CopyEventsForm(initial={'events':ids})
-        form.fields["events"].queryset = events
+        event = Event.objects.filter(id__in=ids).order_by('start').first()
+        form = CopyEventsForm(initial={'events':ids, 'date':event.start + datetime.timedelta(days=7)})
         form.fields["events"].queryset = events
     return render(request, 'shifty/copy_events.html', dict(form=form))
 
