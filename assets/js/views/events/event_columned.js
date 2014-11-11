@@ -12,7 +12,7 @@ shifty.views.EventColumned = Backbone.View.extend({
         this.el.innerHTML = shifty.template("event_columned")({
             'event': this.model.toJSON(),
             'columns': this.getShiftColumns(),
-            'responsible': this.model.getResponsible(),
+            'responsible': this.model.responsible,
             'user':shifty.user
         });
 

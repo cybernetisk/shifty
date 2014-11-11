@@ -24,6 +24,12 @@ class Event(models.Model):
     start = models.DateTimeField()
 
     @property
+    def responsible(self):
+        for shift in self.shifts.all():
+            if shift.shift_type.responsible:
+                return shift.volunteer
+
+    @property
     def week(self):
         return self.start.strftime("%V")
 

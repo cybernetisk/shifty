@@ -25,20 +25,20 @@
 			{{ event.description }}
 		</div>
 		{{/if}}
-		{{#if responsible}}
+		{{#if event.responsible}}
 		<div class='contact'>
 			<div class='title'>Ansvarlig</div>
 			<div>
-				Navn:&nbsp;{{responsible.firstname}}&nbsp;{{responsible.lastname}}
+				Navn:&nbsp;{{event.responsible.firstname}}&nbsp;{{event.responsible.lastname}}
 			</div>
 			<div>
-				Bruker: {{responsible.username}}
+				Bruker: {{event.responsible.username}}
 			</div>
 			<div>
-				Epost: {{responsible.email}}
+				Epost: {{event.responsible.email}}
 			</div>
 			<div>
-				Mobil: {{responsible.phone}}
+				Mobil: {{event.responsible.phone}}
 			</div>
 		</div>
 		{{/if}}
