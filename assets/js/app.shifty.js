@@ -83,6 +83,7 @@ $(document).ready(function() {
             routes: {
                 '':       'index',
                 'events': 'events',
+                'myshifts': 'myshifts',
                 'event/:id': 'event',
                 'logout':'logout',
             },
@@ -127,6 +128,13 @@ $(document).ready(function() {
             events: function() {
                 var c = new shifty.collections.Events();
                 var v = new shifty.views.Events({
+                    collection: c
+                });
+                vh.push(v, c.fetch({data: {min_date: 'today'}}));
+            },
+            myshifts: function() {
+                var c = new shifty.collections.Events();
+                var v = new shifty.views.MyEvents({
                     collection: c
                 });
                 vh.push(v, c.fetch({data: {min_date: 'today'}}));

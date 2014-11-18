@@ -101,3 +101,18 @@ shifty.views.Events = Backbone.View.extend({
         }
     }
 });
+
+
+
+shifty.views.MyEvents = shifty.views.Events.extend({
+    genView: function(viewModel)
+    {
+        this.sub.empty();
+        this.collection.each(function(ev) {
+            ev.shifts.models = ev.shifts.filter(function(s){return s.get('volunteer') != null && s.get('volunteer').id == shifty.user.id;});
+            var v = new viewModel({model: ev});
+            v.parentView = this;
+            this.sub.append(v.render());
+        }.bind(this));
+    },
+});
