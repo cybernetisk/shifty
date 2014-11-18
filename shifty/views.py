@@ -20,6 +20,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from datetime import date, timedelta
 from django.db.models import Count
 import datetime
+from django.utils import timezone
 
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
@@ -158,12 +159,14 @@ def free_shift(request):
 
     with transaction.atomic(), reversion.create_revision():
         if shift.volunteer != user:
-            return JsonResponse({'status':'notyourshift'})
+            return JsonResponse({'status':'failed', 'msg':'Not your shift', 'reason':'notyourshift'})
+        if shift.start - timezone.now() < timezone.timedelta(days=1):
+            return JsonResponse({'status':'failed', 'msg':'Too little time before shift, contact responsible', 'reason':'toshort'})
         shift.volunteer = None
         shift.save()
         reversion.set_comment("Removed from shift")
         return JsonResponse({'status':'ok'})
-    return JsonResponse({'status':'failed'})
+    return JsonResponse({'status':'failed', 'reason':'unknown'})
 
 from django import forms
 

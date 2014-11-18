@@ -111,9 +111,9 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
         $.post("/free_shift", {'shift_id':shift_id})
             .success(function(result)
             {
-                if(result['status'] == 'notyourshift')
+                if(result['status'] == 'failed')
                 {
-                    alert("Not your shift....");
+                    alert(result['msg']);
                 }
                 else if(result['status'] == 'ok')
                 {
