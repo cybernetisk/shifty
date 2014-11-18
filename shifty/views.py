@@ -157,9 +157,8 @@ def free_shift(request):
     shift = Shift.objects.get(pk=shift_id)
 
     with transaction.atomic(), reversion.create_revision():
-        if shift.user != user:
+        if shift.volunteer != user:
             return JsonResponse({'status':'notyourshift'})
-
         shift.volunteer = None
         shift.save()
         reversion.set_comment("Removed from shift")

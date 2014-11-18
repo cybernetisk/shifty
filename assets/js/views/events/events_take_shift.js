@@ -3,6 +3,7 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
     // data: twinsData
     events: {
         'click .take_shift_button': 'saveState',
+        'click .untake_shift_button': 'releaseShift',
         
 
         // creating new users
@@ -100,7 +101,27 @@ shifty.views.EventsTakeShift = Backbone.View.extend({
         // focus to input field
         setTimeout(function(){ self.$("input.user_search.tt-input").first().focus(); }, 200);
     },
+    releaseShift: function(e)
+    {
+        if (e) e.preventDefault();
+        var elm = e.currentTarget;
+        var self = this;
 
+        var shift_id = $(elm).data('shift-id')
+        $.post("/free_shift", {'shift_id':shift_id})
+            .success(function(result)
+            {
+                if(result['status'] == 'notyourshift')
+                {
+                    alert("Not your shift....");
+                }
+                else if(result['status'] == 'ok')
+                {
+                    self.$el.foundation('reveal', 'close');
+                    self.on_update();
+                }
+            });
+    },
     saveState: function(e)
     {
         if (e) e.preventDefault();

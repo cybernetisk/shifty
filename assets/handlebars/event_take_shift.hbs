@@ -19,7 +19,7 @@ input variables:
                 <div class="comment">
                     {{#if volunteer}}
                         {{#if yourShift}}
-                            Taken by you!
+                            <button class="untake_shift_button" data-shift-id="{{ id }}">Untake shift</button>
                         {{else}}
                             Taken by {{ volunteer.username }}
                         {{/if}}
