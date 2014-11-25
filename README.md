@@ -19,7 +19,7 @@ For Ubuntu 14.04 installing all these from package manager works fine. Installin
 
 ## Updating
 1. Run migrations (creates database, ++): `$ ./migrate.sh`
-2. Install fixtures if wanted: `$ ./manage.py loaddata shifts`
+2. Generate some events and shifts `$ ./manage.py makeevents`
 3. Install/update dependencies: `$ bower install`
 4. Generate new static-files (js/css): `$ grunt` (this will also run the watcher)
 
