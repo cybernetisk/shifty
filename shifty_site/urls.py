@@ -57,4 +57,6 @@ urlpatterns = patterns('',
 
     url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^perms/', 'accessRights.views.show_permissions'),
 )

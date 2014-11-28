@@ -1,0 +1,16 @@
+{% extends "shifty/base.html" %}
+
+{% block content %}
+    <h1>Intern Cards:</h1>
+    {% for instance in intern_cards %}
+        <h2>{{ instance.user.username }} info:</h2>
+        <p>
+            Date given:  {{ instance.date_given }}<br>
+            Group: {{ instance.group }}
+        </p>
+        <hr>
+    {% endfor %}
+
+    <h1>Access Rights:</h1>
+
+{% endblock %}
