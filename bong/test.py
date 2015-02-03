@@ -69,6 +69,8 @@ class BongTestCase(TestCase):
         log3 = BongLog(wallet = self.wallet, action = BongLog.CLAIMED, date = self.now, modify = 5)
         log3.save()
 
+        wallet2 = BongWallet.objects.get(id=1)
+        
         self.assertEqual(self.wallet.balance, 5)
 
         self.wallet.balance = 1000

@@ -21,9 +21,7 @@ class BongWallet(models.Model):
 
     def save(self, *args, **kwargs):
         with transaction.atomic():
-            # disable modifying wallets directly
-            if self.id is None:
-                super(BongWallet, self).save(*args, **kwargs)
+            super(BongWallet, self).save(*args, **kwargs)
 
 class BongLog(models.Model):
     ASSIGNED = '0';
@@ -39,6 +37,9 @@ class BongLog(models.Model):
     def save(self, *args, **kwargs):
         with transaction.atomic():
             self.modify = abs(self.modify)
+
+            # import pdb
+            # pdb.set_trace()
 
             # disable modifying logs
             if self.id is None:
