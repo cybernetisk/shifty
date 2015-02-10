@@ -62,9 +62,7 @@ Following should be in your path:
 
 3. `python manage.py migrate`
 
-4. `python manage.py loaddata`
-
-5. `sifty\initial_data.json`
+4. `python manage.py loaddata sifty\initial_data.json`
 
 6. Generate some events and shifts `$ .\manage.py makeevents`
 
