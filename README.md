@@ -56,11 +56,18 @@ Following should be in your path:
 6. Continue on the updating-section
 
 ### Updating
-1. Run migrations 
-    1.1. python manage.py makemigrations shifty
-    1.2. python manage.py migrate
-    1.3. python manage.py loaddata sifty\initial_data.json
+1. Run migrations:
+  
+2. `python manage.py makemigrations shifty`
 
-2. Generate some events and shifts `$ .\manage.py makeevents`
-3. Install/update dependencies: `$ bower install`
-4. Generate new static-files (js/css): `$ grunt` (this will also run the watcher)
+3. `python manage.py migrate`
+
+4. `python manage.py loaddata`
+
+5. `sifty\initial_data.json`
+
+6. Generate some events and shifts `$ .\manage.py makeevents`
+
+7. Install/update dependencies: `$ bower install`
+
+8. Generate new static-files (js/css): `$ grunt` (this will also run the watcher)
