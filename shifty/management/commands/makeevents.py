@@ -23,7 +23,7 @@ def getshifttype(title):
 
 def make_shifts(event):
     barfunk = getshifttype(title='Barfunk')
-    vaktfunk = getshifttype(title='Vaktfunk')
+    # vaktfunk = getshifttype(title='Vaktfunk')
     start = event.start - datetime.timedelta(hours=1)
 
     skjenkemester = getshifttype(title="Skjenkemester")
@@ -33,8 +33,8 @@ def make_shifts(event):
               start=start,
               stop=start + datetime.timedelta(hours=9))
     s.save()
-
-    for i in [0,0,4, 4]:
+    # 17:50-22:00, 19:30-00:00, 21:30-02:00
+    for i in [0,0,3.5, 3.5, 5.5, 5.5]:
         s = Shift(event=event,
                   start=addhours(start, i),
                   stop=addhours(start, i + 4),
@@ -48,14 +48,13 @@ def make_shifts(event):
                   shift_type=dj)
         s.save()
 
-
-    start = event.start - datetime.timedelta(hours=1)
-    for i in [0,0]:
-        s = Shift(event=event,
-                  start=addhours(start, i),
-                  stop=addhours(start, i + 8),
-                  shift_type=vaktfunk)
-        s.save()
+    # start = event.start - datetime.timedelta(hours=1)
+    # for i in [0,0]:
+    #     s = Shift(event=event,
+    #               start=addhours(start, i),
+    #               stop=addhours(start, i + 8),
+    #               shift_type=vaktfunk)
+    #     s.save()
 
 def create_events():
     k = datetime.datetime.now()
