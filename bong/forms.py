@@ -13,3 +13,4 @@ class WalletForm(forms.ModelForm):
 
     class Meta:
         model = BongWallet
+        fields = '__all__'
