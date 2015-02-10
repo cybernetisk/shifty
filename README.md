@@ -28,7 +28,8 @@ For Ubuntu 14.04 installing all these from package manager works fine. Installin
 2. Open your browser at http://localhost:8000
 3. The server will restart when it notices changes to Python-code
 
-###WIndows install guide
+
+##WIndows install guide
  Required:
  1. python 2.7.9
  2. ipython
@@ -54,7 +55,7 @@ Following should be in your path:
 5. Install Node-dependencies (normal packages): `npm install` (Bower is for JS-dependencies)
 6. Continue on the updating-section
 
-## Updating
+### Updating
 1. Run migrations 
     1.1. python manage.py makemigrations shifty
     1.2. python manage.py migrate
