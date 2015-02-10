@@ -4,12 +4,17 @@ from datetime import datetime
 from shifty.models import Shift
 
 class BongWallet(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     balance = models.IntegerField(default=0)
 
     def delete(self, *args, **kwargs):
-        return # no deleting of bong wallets!
+        return # no deleting of bong wallets
 
+    '''
+    calcBalance can iterate over bong logs and recalculate the sum
+
+    do we need this? - Steffen
+    '''
     def calcBalance(self):
         self.balance = 0
 
@@ -38,9 +43,6 @@ class BongLog(models.Model):
         with transaction.atomic():
             self.modify = abs(self.modify)
 
-            # import pdb
-            # pdb.set_trace()
-
             # disable modifying logs
             if self.id is None:
                 super(BongLog, self).save(*args, **kwargs)
@@ -55,7 +57,7 @@ class BongLog(models.Model):
             return -self.modify
 
     def delete(self, *args, **kwargs):
-        return #no deleting of logs!
+        return #no deleting of logs
 
     wallet = models.ForeignKey(BongWallet)
     action = models.CharField(max_length=1, choices=BONG_ACTION_CHOICES, default=ASSIGNED)
