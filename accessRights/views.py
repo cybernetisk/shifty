@@ -11,4 +11,4 @@ def show_permissions(request):
         'access_data': access_model
     }
 
-    return render(request, 'access_views/test.html', context)
+    return render(request, 'accessRights/test.html', context)
