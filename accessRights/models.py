@@ -11,6 +11,9 @@ class AccessRights(models.Model):
             ("perm4", "description of perm4")
         )
 
+    def __unicode__(self):
+        return ("User : " + self.user.username)
+
     user = models.ForeignKey(User)
     card_number = models.CharField(max_length=50)
     group = models.ForeignKey(Group)

@@ -117,6 +117,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'shifty/templates'),
+    os.path.join(BASE_DIR, 'accessRights/templates')
 )
 
 INSTALLED_APPS = (
