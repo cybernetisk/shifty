@@ -58,14 +58,10 @@ Following should be in your path:
 ### Updating
 1. Run migrations:
   
-2. `python manage.py makemigrations shifty`
+2. run `win_migrations.bat`
 
-3. `python manage.py migrate`
+3. Generate some events and shifts `$ .\manage.py makeevents`
 
-4. `python manage.py loaddata sifty\initial_data.json`
+4. Install/update dependencies: `$ bower install`
 
-6. Generate some events and shifts `$ .\manage.py makeevents`
-
-7. Install/update dependencies: `$ bower install`
-
-8. Generate new static-files (js/css): `$ grunt` (this will also run the watcher)
+5. Generate new static-files (js/css): `$ grunt` (this will also run the watcher)
