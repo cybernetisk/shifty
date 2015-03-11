@@ -1,0 +1,54 @@
+{% extends "shifty/base.html" %}
+
+{% block content %}
+    <h1>Intern Cards:</h1>
+    <table width="1300">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Card Number</th>
+            <th>Date given</th>
+            <th>Given By</th>
+            <th>Group</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for instance in intern_cards %}
+            <tr align="center">
+                <td>{{ instance.user.username }}</td>
+                <td>{{ instance.card_number }}</td>
+                <td>{{ instance.date_given }}</td>
+                <td>{{ instance.given_by }}</td>
+                <td>{{ instance.group }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Access Rights:</h1>
+    <table width="1300">
+        <thead>
+        <tr align="center">
+            <th>Username</th>
+            <th>Group</th>
+            <th>Aktiv Level</th>
+            <th>Operational Level</th>
+            <th>Forening Level</th>
+            <th>Access Level</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for instance in access_data %}
+            <tr align="center">
+                <td>{{ instance.user.username }}</td>
+                <td>{{ instance.group }}</td>
+                <td>{{ instance.aktiv_level }}</td>
+                <td>{{ instance.operational_level }}</td>
+                <td>{{ instance.forening_level }}</td>
+                <td>{{ instance.have_access }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
