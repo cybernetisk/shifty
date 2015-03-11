@@ -4,6 +4,8 @@ from django.db import models
 
 class AccessRights(models.Model):
     class Meta:
+        # permission will act as access level indicator
+        # consider making a separate table
         permissions = (
             ("perm1", "description of perm1"),
             ("perm2", "description of perm2"),
@@ -11,25 +13,28 @@ class AccessRights(models.Model):
             ("perm4", "description of perm4")
         )
 
-    def __unicode__(self):
-        return ("User : " + self.user.username)
-
     user = models.ForeignKey(User)
-    card_number = models.CharField(max_length=50)
     group = models.ForeignKey(Group)
     aktiv_level = models.BooleanField(default=False)
     operational_level = models.BooleanField(default=False)
     forening_level = models.BooleanField(default=False)
     have_access = models.CharField(max_length=50, choices=(
-        ('0', 'should have access'),
-        ('1', 'have access'),
-        ('2', 'should not have access'),
-        ('3', 'does not have access'))
+        ('should have access', 'should have access'),
+        ('have access', 'have access'),
+        ('should not have access', 'should not have access'),
+        ('does not have access', 'does not have access'))
     )
+
+    def __unicode__(self):
+        return ("User : " + self.user.username)
 
 
 class InternCards(models.Model):
     user = models.OneToOneField(User, related_name='Card recieved')
+    card_number = models.CharField(max_length=50)
     group = models.ForeignKey(Group)
     given_by = models.ForeignKey(User, related_name='Card given')
     date_given = models.DateField()
+
+    def __unicode__(self):
+        return "User: " + self.user.username
