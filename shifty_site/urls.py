@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from rest_framework import routers
 from bong import views
 from shifty import rest
-
+from accessRights.views import InternCardsViewSet, AccessRightsViewSet
 from django.conf.urls import patterns, url, include
 
 import autocomplete_light
@@ -16,7 +16,8 @@ admin.autodiscover()
 router = routers.DefaultRouter()
 
 router.register(r'wallets', views.WalletViewSet)
-
+router.register(r'accessRights', AccessRightsViewSet)
+router.register(r'internCards', InternCardsViewSet)
 router.register(r'event', rest.EventViewSet)
 router.register(r'shift', rest.ShiftViewSet)
 router.register(r'shifttype', rest.ShiftTypeViewSet)
