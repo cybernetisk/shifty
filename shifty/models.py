@@ -123,6 +123,16 @@ class Event(models.Model):
         return copies
 reversion.register(Event, follow=["shifts"])
 
+
+class ShiftEndReport(models.Model):
+    shift = models.ForeignKey("Shift", null=False, related_name="end_report")
+    event = models.ForeignKey("Event", null=False, related_name='end_reports')
+    verified = models.BooleanField()
+    signed = models.ForeignKey(User, null=True, blank=True)
+    corrected_hours = models.DecimalField(max_digits=3, decimal_places=1, null=True)
+    bong_ref = models.IntegerField(null=True)
+
+
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
     shift_type = models.ForeignKey("ShiftType", null=False, related_name='+')
@@ -130,6 +140,8 @@ class Shift(models.Model):
     comment = models.TextField(blank=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
+
+    #new = models.BooleanField
 
     def __unicode__(self):
         return self.shift_type.title

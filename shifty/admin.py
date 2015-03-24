@@ -94,4 +94,4 @@ admin.site.register(User, UserAdmin)
 admin.site.register(ShiftType, reversion.VersionAdmin)
 admin.site.register(Shift, ShiftAdmin)
 
-admin.site.register(Event, EventClose)
+#admin.site.register(Event, EventClose)

@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response
-from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayChangedException
+from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayChangedException, ShiftEndReport
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
@@ -21,6 +21,10 @@ from datetime import date, timedelta
 from django.db.models import Count
 import datetime
 from django.utils import timezone
+
+
+from django.forms.models import inlineformset_factory, modelformset_factory, formset_factory
+
 
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
@@ -237,3 +241,32 @@ def shift_types_colors(request):
     shift_types = ShiftType.objects.all()
     return render(request, 'shifty/shift_type.css', dict(shift_types=shift_types), content_type="text/css")
 
+from django.forms import ModelForm
+class EventEndForm(ModelForm):
+    class Meta:
+        model = Event
+        exclude = ['']
+
+class ShiftEndReportForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ShiftEndReportForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['signed'].widget.attrs['readonly'] = True
+
+    class Meta:
+        model = ShiftEndReport
+        fields = ['verified', 'corrected_hours', 'signed']
+        exclude = []
+
+def event_verify(request, eventId):
+    eventFormset = formset_factory(ShiftEndReportForm)
+    event = Event.objects.get(id=eventId)
+    shifts = []
+    for shift in event.shifts.all():
+        end_report = dict(shift_id=shift.id, event_id=event.id, verified=False, signed=request.user)
+        shifts.append(end_report)
+    print shifts
+    form = eventFormset(initial=shifts)
+
+    return render_to_response('shift_verify.html', dict(form=form))

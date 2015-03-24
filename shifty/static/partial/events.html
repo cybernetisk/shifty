@@ -25,13 +25,22 @@
                 <td>{{shift.duration}} hours</td>
                 <td>
                     <div ng-show="shift.volunteer!=null">
-                        {{shift.volunteer.first_name}}
+                        <input ng-model="shift.volunteer.username" />
                     </div>
                     <div ng-show="shift.volunteer==null">
+                        <input ng-model="shift.volunteer.username" />
                         <button class="btn" ng-click="take_shift(shift);">Take</button>
                     </div>
                 </td>
-
+                <td>
+                    <div ng-show="shift.volunteer!=null">
+                        <input ng-model="shift.volunteer.comment" />
+                    </div>
+                    <div ng-show="shift.volunteer==null">
+                        <input ng-model="shift.volunteer.comment" />
+                        <button class="btn" ng-click="take_shift(shift);">Take</button>
+                    </div>
+                </td>
             </tr>
         </table>
     </div>

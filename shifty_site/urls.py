@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^$', 'shifty.views.backbone_router'),
+    url(r'^$', 'shifty.views.angular_router'),
     url(r'^events$', 'shifty.views.backbone_router'),
     url(r'^myshifts$', 'shifty.views.backbone_router'),
     url(r'^event/info/(\d+)$', 'shifty.views.eventInfo'), #returns JSON
@@ -59,4 +59,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^perms/', 'accessRights.views.show_permissions'),
+    url(r'^event_verify/(\d+)', 'shifty.views.event_verify'),
 )
