@@ -1,0 +1,38 @@
+<div ng-repeat="event in events">
+    <div class="event_list">
+        <h2>{{event.title}}</h2>
+        {{event.start}}
+        <div ng-show="event.responsible">
+            <h3>Ansvarlig</h3>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Navn</th>
+                        <td>{{event.responsible.first_name}} {{event.responsible.last_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Telefon</th>
+                        <td>{{event.responsible.contactinfo.phone}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <table>
+            <tr class="shift" ng-repeat="shift in event.shifts">
+                <td class="{{'shift_type_' + shift.shift_type.id}}"></td>
+                <td>{{shift.shift_type.title}}</td>
+                <td>{{shift.start|date:"HH:mm"}}-{{shift.stop|date:"HH:mm"}}</td>
+                <td>{{shift.duration}} hours</td>
+                <td>
+                    <div ng-show="shift.volunteer!=null">
+                        {{shift.volunteer.first_name}}
+                    </div>
+                    <div ng-show="shift.volunteer==null">
+                        <button class="btn" ng-click="take_shift(shift);">Take</button>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+</div>

@@ -97,6 +97,10 @@ def getEvents(request, offset, limit):
 
     return JsonResponse(result)
 
+
+def angular_router(request):
+    return render_to_response('shifty/angular.html')
+
 def create_shift_user(request):
     data = json.loads(request.body)
 
@@ -120,15 +124,19 @@ def create_shift_user(request):
     csrf = django.middleware.csrf.get_token(request)
     return JsonResponse({'user':get_user_stuff(request), 'csrf':csrf})
 
-
+import json
 @reversion.create_revision()
 def take_shift(request):
     user = request.user
+    json_data = json.loads(request.read())
     assert user
     # username = data['name']
     # comment = data['comment'] if 'comment' in data else None
     comment = None
-    shift_id = request.POST['shift_id']
+    print request.REQUEST
+    print request.POST
+    shift_id = json_data['shift_id']
+    #shift_id = request.POST['shift_id']
     shift = Shift.objects.get(pk=shift_id)
 
     with transaction.atomic(), reversion.create_revision():

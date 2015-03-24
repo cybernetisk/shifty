@@ -47,35 +47,6 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly,)
     filter_class = EventFilter
 
-    """
-    Create a model instance.
-    """
-    def create(self, request, *args, **kwargs):
-        if isinstance(request.DATA, dict) and len(request.DATA['shifts']) > 0:
-            shifts = request.DATA['shifts']
-            request.DATA['shifts'] = []
-            response = CreateModelMixin.create(self, request, *args, **kwargs)
-
-            result = response.data
-            event_id = result['id']
-            serializer = ShiftSerializer()
-            exceptions = {}
-            for i, _shift in enumerate(shifts):
-                try:
-                    if 'shift_type' in _shift:
-                        _shift['shift_type_id'] = _shift['shift_type']['id']
-                        del _shift['shift_type']
-                    _s = Shift(event_id=event_id, **_shift)
-                    _s.clean_fields()
-                    _s.save()
-                    json = serializer.to_native(_s)
-                    result['shifts'].append(json)
-                except Exception as ex:
-                    exceptions[i] = str(ex)
-            result['errors'] = exceptions
-            return response
-
-        return CreateModelMixin.create(self, request, *args, **kwargs)
 
 class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
@@ -108,21 +79,3 @@ class ShiftTypeViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = ShiftType.objects.all()
     serializer_class = ShiftTypeSerializer
-
-"""
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = (isAdminOrReadOnly, )
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('username', 'first_name', 'last_name')
-"""
-
-"""class ViewSet(viewsets.ModelViewSet):
-    
-    API endpoint that allows groups to be viewed or edited.
-    
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-"""

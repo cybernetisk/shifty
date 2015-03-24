@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shifty.models import Event, Shift, ShiftType, ContactInfo
+from shifty.models import Event, Shift, ShiftType, ContactInfo, ShiftEndReport
 from shifty.models import UserShiftQualification
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
@@ -11,6 +11,8 @@ from django import forms
 from django.db import models
 
 import autocomplete_light
+
+
 
 class UserAutocomplete(autocomplete_light.AutocompleteModelBase):
     search_fields = ['^first_name', 'last_name', 'username']
@@ -48,6 +50,13 @@ def make_copy(modeladmin, request, queryset):
 make_copy.short_description = "Copy selected events"
 
 
+class ShiftEndReportInLine(admin.TabularInline):
+    model = ShiftEndReport
+    extra = 0
+
+
+class EventClose(reversion.VersionAdmin):
+    inlines = [ShiftEndReportInLine]
 
 
 class EventAdmin(reversion.VersionAdmin):
@@ -81,6 +90,8 @@ class UserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(Event, EventAdmin)
+#admin.site.register(Event, EventAdmin)
 admin.site.register(ShiftType, reversion.VersionAdmin)
 admin.site.register(Shift, ShiftAdmin)
+
+admin.site.register(Event, EventClose)
