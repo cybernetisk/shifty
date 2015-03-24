@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shifty.models import Event, Shift, ShiftType, ContactInfo #, ShiftEndReport
+from shifty.models import Event, Shift, ShiftType, ContactInfo, ShiftEndReport  #, ShiftEndReport
 from shifty.models import UserShiftQualification
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
@@ -70,6 +70,10 @@ class EventAdmin(reversion.VersionAdmin):
             '/static/js/admin_hack.js',
         )
 
+class ShiftEndReportAdmin(reversion.VersionAdmin):
+    pass
+
+
 class ShiftAdmin(reversion.VersionAdmin):
     list_display = ('shift_type', 'event', 'start')
 
@@ -93,5 +97,6 @@ admin.site.register(User, UserAdmin)
 #admin.site.register(Event, EventAdmin)
 admin.site.register(ShiftType, reversion.VersionAdmin)
 admin.site.register(Shift, ShiftAdmin)
+admin.site.register(ShiftEndReport, ShiftEndReportAdmin)
 
 #admin.site.register(Event, EventClose)

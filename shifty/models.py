@@ -125,8 +125,7 @@ reversion.register(Event, follow=["shifts"])
 
 
 class ShiftEndReport(models.Model):
-    shift = models.ForeignKey("Shift", null=False, related_name="end_report")
-    event = models.ForeignKey("Event", null=False, related_name='end_reports')
+    shift = models.ForeignKey("Shift", unique=True, null=False, related_name="end_report")
     verified = models.BooleanField()
     signed = models.ForeignKey(User, null=True, blank=True)
     corrected_hours = models.DecimalField(max_digits=3, decimal_places=1, null=True)

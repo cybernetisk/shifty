@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User, Group
+from django.core.serializers import get_serializer
 from rest_framework import viewsets, filters
-from shifty.serializers import EventSerializer, ShiftSerializer, ShiftWriteSerializer, ShiftTypeSerializer, UserSerializer
-from models import Event, Shift, ShiftType, User
+from shifty.serializers import EventSerializer, ShiftSerializer, ShiftWriteSerializer, ShiftTypeSerializer, UserSerializer, \
+    ShiftEndReportSerializer
+from models import Event, Shift, ShiftType, User, ShiftEndReport
 
 import django_filters
 from django.core import serializers
@@ -46,6 +48,19 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EventSerializer
     permission_classes = (isAdminOrReadOnly,)
     filter_class = EventFilter
+
+class ShiftEndReportViewSet(viewsets.ModelViewSet):
+
+    queryset = ShiftEndReport.objects.all()
+    serializer_class = ShiftEndReportSerializer
+
+    # FIXME: find a better way
+    def get_serializer(self, *args, **kwargs):
+        return ShiftEndReportSerializer(*args, many=True, **kwargs)
+
+
+    def perform_create(self, serializer):
+        serializer.save(signed=self.request.user)
 
 
 class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):

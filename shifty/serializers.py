@@ -1,5 +1,5 @@
 #from django.contrib.auth.models import User, Group
-from models import Event, Shift, ShiftType, User
+from models import Event, Shift, ShiftType, User, ShiftEndReport
 from rest_framework import serializers
 from rest_framework import filters
 
@@ -27,12 +27,23 @@ class LimitedUserSerializer(serializers.ModelSerializer):
                 return self._full_serializer.to_native(obj)
         return super(LimitedUserSerializer, self).to_native(obj)
 
+class ShiftEndReportSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ShiftEndReport
+
+class ShiftEndReportLightSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ShiftEndReport
+        fields = ('id', 'verified', 'corrected_hours')
 
 
 class ShiftSerializer(serializers.ModelSerializer):
     duration = serializers.ReadOnlyField();
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
+    end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
 
     # def list(self, request, *args, **kwargs):
     #     res = super(ShiftSerializer, self).list(request, *args, **kwargs)
@@ -45,7 +56,7 @@ class ShiftSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shift
-        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType')
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report')
         depth = 1
 
 class ShiftWriteSerializer(serializers.ModelSerializer):
