@@ -1,0 +1,41 @@
+<html lang="en" ng-app="cyb.shifty">
+    <head>
+        <meta charset="utf-8">
+        <title>Shifty</title>
+        <link rel="stylesheet" href="/static/css/foundation.css">
+        <link rel="stylesheet" href="/static/css/shifty.css">
+        <link rel="stylesheet" href="/shift_types.css">
+
+        <script type="text/javascript" src="/static/angular/angular.min.js"></script>
+        <script type="text/javascript" src="/static/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script type="text/javascript" src="/static/angular-resource/angular-resource.min.js"></script>
+
+        
+        <script type="text/javascript" src="/static/js/module.js"></script>
+        <script type="text/javascript" src="/static/js/events/controller.js"></script>
+        <script type="text/javascript" src="/static/js/shifts/service.js"></script>
+        <script type="text/javascript" src="/static/js/events/services.js"></script>
+
+    </head>
+    <body>
+    {% block header %}
+        <div class='header'>
+            <a class='logo' href='/'>
+                <span class='blue'>S</span>
+                <span class='yellow'>H</span>
+                <span class='green'>I</span>
+                <span class='red'>F</span>
+                <span class='blue'>T</span>
+                <span class='yellow'>Y</span>
+            </a>
+            <div id="authbox">
+                <a href="/logout" style="float:right; color:white;">Logout</a>
+            </div>
+        </div>
+    {% endblock %}
+
+    <div ui-view class="container">
+    </div>
+
+    </body>
+</html>
