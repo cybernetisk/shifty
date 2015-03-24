@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shifty.models import Event, Shift, ShiftType, ContactInfo, ShiftEndReport
+from shifty.models import Event, Shift, ShiftType, ContactInfo #, ShiftEndReport
 from shifty.models import UserShiftQualification
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
@@ -50,13 +50,13 @@ def make_copy(modeladmin, request, queryset):
 make_copy.short_description = "Copy selected events"
 
 
-class ShiftEndReportInLine(admin.TabularInline):
-    model = ShiftEndReport
-    extra = 0
+# class ShiftEndReportInLine(admin.TabularInline):
+#     model = ShiftEndReport
+#     extra = 0
 
 
-class EventClose(reversion.VersionAdmin):
-    inlines = [ShiftEndReportInLine]
+# class EventClose(reversion.VersionAdmin):
+#     inlines = [ShiftEndReportInLine]
 
 
 class EventAdmin(reversion.VersionAdmin):
