@@ -30,6 +30,15 @@
         -1px 1px 0 #666,
         1px 1px 0 #666;  
 }
+.div_shift_type_{{ shift_type.id }}
+{
+    /*background: {{ shift_type.background_color }};*/
+    padding-left: 20px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    margin: 5px;
+    border-left: 15px solid {{ shift_type.border_color }};
+}
 
 
 
