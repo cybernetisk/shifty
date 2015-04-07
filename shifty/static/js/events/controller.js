@@ -5,7 +5,7 @@
 
     module.config(function ($stateProvider) {
         $stateProvider.state('event', {
-            url: '/event',
+            url: '',
             templateUrl: 'static/partial/events.html',
             controller: 'EventController as events'
         });
@@ -16,20 +16,58 @@
         })
     });
 
-    module.controller('EventController', function ($scope, EventService, ShiftService) {
+    module.controller('EventController', function ($scope, $http, EventService, ShiftService) {
         EventService.query(function(res) {
             $scope.events = res;
         });
 
+        $scope.refresh_event = function()
+        {
+            EventService.query(function(res) {
+                $scope.events = res;
+            });
+        }
+        $scope.show_taken = false;
+
         $scope.take_shift = function(shift)
         {
-            var req = ShiftService.take_shift(shift);
-            req.success($scope.handle_response);
+            // var req = ShiftService.take_shift(shift);
+            // req.success($scope.handle_response);
+            $http.post('/take_shift', {shift_id:shift['id'], username:shift['new_volunteer']})
+                .success(function(result){
+                    if(result['status'] == 'collides')
+                    {
+                        shift['fail_reason'] = 'Collides with ' + result['desc'];
+                    }
+                    else if(result['status'] == 'ok')
+                    {
+                        $scope.refresh_event();
+                    }
+                })
+        }
+
+        $scope.thefilter = function(x)
+        {
+            
+            if($scope.show_taken || x['volunteer'] == null)
+                return x;
+            return false;
+        }
+
+        $scope.remove_volunteer = function(shift)
+        {
+            $http.post('/free_shift', {shift_id:shift['id']})
+                .success(function(result){
+                    $scope.refresh_event();
+                });
         }
 
         $scope.handle_response = function(){
             EventService.query(function(res) {
                 $scope.events = res;
+                $scope.events.forEach(function(obj){
+                    obj['_volunteer'] = angular.copy(obj['volunteer']);
+                });
             });
         }
     });

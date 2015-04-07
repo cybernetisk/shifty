@@ -5,6 +5,4 @@ class isAdminOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
-        import pdb
-        pdb.set_trace()
         return request.user.is_staff

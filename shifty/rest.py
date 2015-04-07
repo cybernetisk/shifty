@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from django.core.serializers import get_serializer
 from rest_framework import viewsets, filters
-from shifty.serializers import EventSerializer, ShiftSerializer, ShiftWriteSerializer, ShiftTypeSerializer, UserSerializer, \
-    ShiftEndReportSerializer
+from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerializer, UserSerializer, \
+    ShiftEndReportSerializer, ShiftTakeSerializer
 from models import Event, Shift, ShiftType, User, ShiftEndReport
 
 import django_filters
@@ -11,8 +11,11 @@ from django.core import serializers
 from shifty.serializers import ShiftSerializer
 from shifty.permissions import isAdminOrReadOnly
 from rest_framework.mixins import CreateModelMixin
+from rest_framework import generics
 import datetime
 
+
+from rest_framework.decorators import detail_route, list_route
 
 class RelativeDateFilter(django_filters.CharFilter):
     def filter(self, qs, value):
@@ -39,6 +42,16 @@ class ShiftFilter(django_filters.FilterSet):
     class Meta:
         model = Shift
         fields = ['min_date', 'max_date', 'shift_type', 'volunteer']
+
+
+class EventViewSet(viewsets.ModelViewSet):
+    #permission_classes = (isAdminOrReadOnly, )
+
+    queryset = Event.objects.all().order_by('start')
+    serializer_class = EventSerializer
+    #permission_classes = (isAdminOrReadOnly,)
+    filter_class = EventFilter
+
 
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
@@ -76,15 +89,20 @@ class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter
 
-class ShiftViewSet(viewsets.ReadOnlyModelViewSet):
+class ShiftViewSet(viewsets.ModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Shift.objects.all()
 
-    def get_serializer_class(self):
-        if self.request.method in ['PATCH', 'POST', 'PUT']:
-            return ShiftWriteSerializer
-        return ShiftSerializer
+    # FIXME: find a better way
+    def get_serializer(self, *args, **kwargs):
+        if self.request.user.is_staff:
+            pass
+        if self.request.method == 'PATCH':
+            return ShiftTakeSerializer(*args, **kwargs)
+        #print self.request.method == 'POST'
+        return ShiftSerializer(*args, **kwargs)
+
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter
 
@@ -94,3 +112,17 @@ class ShiftTypeViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = ShiftType.objects.all()
     serializer_class = ShiftTypeSerializer
+
+
+class YourShiftViewSet(viewsets.ReadOnlyModelViewSet):
+    base_name = "lol"
+    def get_queryset(self):
+        user = self.request.user
+        return user.shifts.all()
+    serializer_class = ShiftSerializer
+
+    """
+    def get_queryset(self):
+        user = self.request.user
+        return Purchase.objects.filter(purchaser=user)
+    """

@@ -137,7 +137,6 @@ INSTALLED_APPS = (
     'reversion',
     'colorful',
     'compressor',
-    'bong',
     'accessRights',
 )
 

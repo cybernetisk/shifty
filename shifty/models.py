@@ -266,6 +266,8 @@ reversion.register(ShiftType)
 class ContactInfo(models.Model):
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=100)
+    auto_user = models.BooleanField(default=False)
+    claimed = models.BooleanField(default=False)
 reversion.register(ContactInfo)
 
 class UserShiftQualification(models.Model):

@@ -10,22 +10,10 @@ class UserSerializer(serializers.ModelSerializer):
         depth = 1
 
 class LimitedUserSerializer(serializers.ModelSerializer):
-    def __init__(self, *args, **kwargs):
-        super(LimitedUserSerializer, self).__init__(*args, **kwargs)
-        self._full_serializer = UserSerializer(*args, **kwargs)
-
     class Meta:
         model = User
         fields = ('username', )
         depth = 1
-
-    def to_native(self, obj):
-        if self.context['request'].user.is_authenticated():
-            print self.context['request'].user.id, obj.id
-            if self.context['request'].user.is_staff or \
-                    self.context['request'].user.id == obj.id:
-                return self._full_serializer.to_native(obj)
-        return super(LimitedUserSerializer, self).to_native(obj)
 
 class ShiftEndReportSerializer(serializers.ModelSerializer):
 
@@ -39,38 +27,63 @@ class ShiftEndReportLightSerializer(serializers.ModelSerializer):
         fields = ('id', 'verified', 'corrected_hours')
 
 
-class ShiftSerializer(serializers.ModelSerializer):
+class ShiftTakeSerializer(serializers.ModelSerializer):
     duration = serializers.ReadOnlyField();
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
     end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
 
-    # def list(self, request, *args, **kwargs):
-    #     res = super(ShiftSerializer, self).list(request, *args, **kwargs)
-    #     return res
+    def update(self, instance, validated_data):
+        print self.intitial_data
 
+        print validated_data
+        if instance.volunteer != None:
+            raise Exception("Shift allready taken")
+        _id = validated_data['volunteer'].get('id')
+        if _id is not None:
+            user = User.objects.get(id=_id)
+        else:
+            username = validated_data['volunteer'].get('username')
+            print "username=", username
+            user = User.objects.filter(username=username)
+            if user.count() != 1:
+                raise Exception("No user found")
+            user = user.one()
+        instance.volunteer = user
+        #instance.volunteer_id = user.id
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     res = super(ShiftSerializer, self).retrieve(request, *args, **kwargs)
-    #     return res
+        return instance
 
     class Meta:
         model = Shift
         fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report')
         depth = 1
 
-class ShiftWriteSerializer(serializers.ModelSerializer):
-    duration = serializers.ReadOnlyField(source='duration');
-    durationType = serializers.ReadOnlyField(source='durationType')
-    #volunteer = UserSerializer()
+
+class ShiftSerializer(serializers.ModelSerializer):
+    duration = serializers.ReadOnlyField();
+    durationType = serializers.ReadOnlyField()
+    volunteer = LimitedUserSerializer()
+    #end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
 
     class Meta:
         model = Shift
-        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType')
-        depth = 0
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report')
+        depth = 1
+
+class EventShiftSerializer(serializers.ModelSerializer):
+    duration = serializers.ReadOnlyField();
+    durationType = serializers.ReadOnlyField()
+    volunteer = LimitedUserSerializer()
+    #end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
+
+    class Meta:
+        model = Shift
+        fields = ('id', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report')
+        depth = 1
 
 class EventSerializer(serializers.ModelSerializer):
-    shifts = ShiftSerializer(many=True, read_only=True)
+    shifts = EventShiftSerializer(many=True, read_only=True,)
     #available = serializers.Field(source='availableShifts')
     responsible = UserSerializer()
 
