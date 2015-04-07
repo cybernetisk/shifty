@@ -37,7 +37,7 @@
     padding-bottom: 2px;
     padding-top: 2px;
     margin: 5px;
-    border-left: 15px solid {{ shift_type.border_color }};
+    border: 30px solid {{ shift_type.border_color }};
 }
 
 
