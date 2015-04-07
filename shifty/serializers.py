@@ -16,12 +16,10 @@ class LimitedUserSerializer(serializers.ModelSerializer):
         depth = 1
 
 class ShiftEndReportSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ShiftEndReport
 
 class ShiftEndReportLightSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ShiftEndReport
         fields = ('id', 'verified', 'corrected_hours')
@@ -31,7 +29,7 @@ class ShiftTakeSerializer(serializers.ModelSerializer):
     duration = serializers.ReadOnlyField();
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
-    end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
+    end_report = ShiftEndReportLightSerializer() #serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
 
     def update(self, instance, validated_data):
         print self.intitial_data
@@ -64,7 +62,15 @@ class ShiftSerializer(serializers.ModelSerializer):
     duration = serializers.ReadOnlyField();
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
+    end_report = ShiftEndReportLightSerializer()
     #end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
+
+    volunteer = serializers.SerializerMethodField('volunteerField')
+    def volunteerField(self, obj):
+        request = self.context.get('request', None)
+        if request.user.is_staff or request.user.id == obj.id:
+            return UserSerializer(instance=obj.volunteer).data
+        return LimitedUserSerializer(instance=obj.volunteer).data
 
     class Meta:
         model = Shift

@@ -52,6 +52,11 @@ class EventViewSet(viewsets.ModelViewSet):
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = EventFilter
 
+    def get_serializer_context(self):
+        context = super(EventViewSet, self).get_serializer_context()
+        context['request'] = self.request
+        return context
+
 
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
@@ -115,7 +120,6 @@ class ShiftTypeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class YourShiftViewSet(viewsets.ReadOnlyModelViewSet):
-    base_name = "lol"
     def get_queryset(self):
         user = self.request.user
         return user.shifts.all()
