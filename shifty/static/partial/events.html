@@ -3,7 +3,7 @@
         <div ng-repeat="event in events">
     <div class="event_list">
         <h2>{{event.title}}</h2>
-        {{event.start}}
+        {{event.start|date:"MMM dd, HH:mm"}}
         <div >
             <h3>Ansvarlig</h3>
             <table>
