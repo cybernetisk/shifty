@@ -122,6 +122,8 @@ class ShiftTypeViewSet(viewsets.ReadOnlyModelViewSet):
 class YourShiftViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
+        if user.is_anonymous():
+            return None
         return user.shifts.all()
     serializer_class = ShiftSerializer
 

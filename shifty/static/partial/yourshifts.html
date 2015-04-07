@@ -1,0 +1,18 @@
+<h1>Your Shifts!!!!</h1>
+
+<div ng-repeat="shift in shifts">
+    <div>
+        <h3 style="text-transform: capitalize">{{shift.event.title}}</h3>
+        <h3>{{ shift.shift_type.title }}</h3>
+        <p><bold>Description: </bold>{{ shift.event.description}}</p>
+        <p><bold>Responsible: </bold>{{ shift.shift_type.responsible }}</p>
+        <p><bold>Time(Event): </bold>{{ shift.event.start|date:"MMM dd, HH:mm" }}</p>
+        <p><bold>Time(Shift-start): </bold>{{ shift.start|date:"MMM dd, HH:mm" }}</p>
+        <p><bold>Time(Shift-stop): </bold>{{ shift.stop|date:"MMM dd, HH:mm" }}</p>
+        <p><bold>Username: </bold>{{ shift.volunteer.username }}</p>
+        <p><bold>Name: </bold>{{ shift.volunteer.first_name }}</p>
+        <p><bold>Last name: </bold>{{ shift.volunteer.last_name }}</p>
+        <p></p>
+    </div>
+    <hr>
+</div>

@@ -13,6 +13,17 @@
             url: '/overview/:eventId',
             templateUrl: 'static/partial/overview.html',
             controller: 'OverviewController as events'
+        });
+        $stateProvider.state('yourshifts', {
+            url: '/yourshifts',
+            templateUrl: 'static/partial/yourshifts.html',
+            controller: 'YourshiftController as yourshift'
+        });
+    });
+
+    module.controller('YourshiftController', function ($scope, $http) {
+        $http.get('/rest/yourshift/').success(function(result){
+            $scope.shifts = result
         })
     });
 
