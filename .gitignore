@@ -30,3 +30,7 @@ node_modules
 
 # PyCharm project files
 .idea/
+shifty/static/angular-resource/
+shifty/static/angular-ui-router/
+shifty/static/angular/
+shifty/migrations/0007_auto_20150407_1937.py
