@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'contactinfo')
-        depth = 1
+        depth = 0
 
 class LimitedUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,7 +63,11 @@ class ShiftSerializer(serializers.ModelSerializer):
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
     end_report = ShiftEndReportLightSerializer()
-    #end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
+
+    can_change = serializers.SerializerMethodField('canChangeField')
+    def canChangeField(self, obj):
+        request = self.context.get('request', None)
+        return obj.end_report.count() == 0
 
     volunteer = serializers.SerializerMethodField('volunteerField')
     def volunteerField(self, obj):
@@ -83,7 +87,7 @@ class ShiftSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shift
-        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report', 'yourshift')
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report', 'yourshift', 'can_change')
         depth = 1
 
 class EventShiftSerializer(ShiftSerializer):
@@ -100,18 +104,25 @@ class EventShiftSerializer(ShiftSerializer):
             return UserSerializer(instance=obj.volunteer).data
         return LimitedUserSerializer(instance=obj.volunteer).data
 
+    can_change = serializers.SerializerMethodField('canChangeField')
+    def canChangeField(self, obj):
+        request = self.context.get('request', None)
+        return obj.end_report.count() == 0
+
+
     end_report = serializers.SerializerMethodField('endReportField')
     def endReportField(self, obj):
         request = self.context.get('request', None)
-        if request.user.is_staff:
-            return ShiftEndReportLightSerializer(instance=obj.end_report).data
+        if not request.user.is_staff:
+            return None
+        if obj.end_report.count() > 0:
+            return ShiftEndReportLightSerializer(instance=obj.end_report.first()).data
         return None
-
     #end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
 
     class Meta:
         model = Shift
-        fields = ('id', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report', 'yourshift')
+        fields = ('id', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report', 'yourshift', 'can_change')
         depth = 1
 
 class EventSerializer(serializers.ModelSerializer):

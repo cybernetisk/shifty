@@ -41,7 +41,7 @@
                         </form>
                     </div>
                 </td>
-                <td>
+                <td ng-show="shift.can_change">
                     <div ng-show="shift.volunteer==null">
                         <button class="btn btn-small" ng-click="take_shift(shift);">Take</button>
                     </div>
@@ -51,6 +51,10 @@
                     <div ng-show="!shift.yourshift && shift.volunteer!=null">
                         <button class="btn" ng-click="remove_volunteer(shift)">Remove</button>
                     </div>
+                </td>
+                <td ng-hide="shift.can_change">
+                    (ended)
+                </td>
             </tr>
         </table>
     </div>
