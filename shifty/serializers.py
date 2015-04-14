@@ -93,6 +93,8 @@ class EventShiftSerializer(ShiftSerializer):
 
     volunteer = serializers.SerializerMethodField('volunteerField')
     def volunteerField(self, obj):
+        if obj.volunteer is None:
+            return None
         request = self.context.get('request', None)
         if request.user.is_staff:
             return UserSerializer(instance=obj.volunteer).data
