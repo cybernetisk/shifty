@@ -17,6 +17,14 @@ import datetime
 
 from rest_framework.decorators import detail_route, list_route
 
+class RequestContext(object):
+
+    def get_serializer_context(self):
+        context = super(EventViewSet, self).get_serializer_context()
+        context['request'] = self.request
+        return context
+
+
 class RelativeDateFilter(django_filters.CharFilter):
     def filter(self, qs, value):
         res = None
@@ -44,7 +52,7 @@ class ShiftFilter(django_filters.FilterSet):
         fields = ['min_date', 'max_date', 'shift_type', 'volunteer']
 
 
-class EventViewSet(viewsets.ModelViewSet):
+class EventViewSet(viewsets.ModelViewSet, RequestContext):
     #permission_classes = (isAdminOrReadOnly, )
 
     queryset = Event.objects.all().order_by('start')
@@ -52,14 +60,8 @@ class EventViewSet(viewsets.ModelViewSet):
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = EventFilter
 
-    def get_serializer_context(self):
-        context = super(EventViewSet, self).get_serializer_context()
-        context['request'] = self.request
-        return context
 
-
-
-class EventViewSet(viewsets.ReadOnlyModelViewSet):
+class EventViewSet(viewsets.ReadOnlyModelViewSet, RequestContext):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Event.objects.all().order_by('start')
@@ -94,19 +96,10 @@ class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter
 
-class ShiftViewSet(viewsets.ModelViewSet):
+class ShiftViewSet(viewsets.ModelViewSet, RequestContext):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Shift.objects.all()
-
-    # FIXME: find a better way
-    def get_serializer(self, *args, **kwargs):
-        if self.request.user.is_staff:
-            pass
-        if self.request.method == 'PATCH':
-            return ShiftTakeSerializer(*args, **kwargs)
-        #print self.request.method == 'POST'
-        return ShiftSerializer(*args, **kwargs)
 
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter

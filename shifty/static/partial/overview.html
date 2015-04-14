@@ -1,5 +1,6 @@
  <h2>{{event.title}}</h2>
 {{event.start}}
+  <div class="event_list">
 <div ng-show="event.responsible">
     <h3>Ansvarlig</h3>
     <table>
@@ -38,5 +39,5 @@
         </td>
     </tr>
 </table>
-
+</div>
  <button class="btn" ng-click="confirm_shifts(event);">Confirm all</button>

@@ -94,7 +94,7 @@ class UserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-#admin.site.register(Event, EventAdmin)
+admin.site.register(Event, EventAdmin)
 admin.site.register(ShiftType, reversion.VersionAdmin)
 admin.site.register(Shift, ShiftAdmin)
 admin.site.register(ShiftEndReport, ShiftEndReportAdmin)

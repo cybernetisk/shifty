@@ -68,16 +68,25 @@ class ShiftSerializer(serializers.ModelSerializer):
     volunteer = serializers.SerializerMethodField('volunteerField')
     def volunteerField(self, obj):
         request = self.context.get('request', None)
-        if request.user.is_staff or request.user.id == obj.id:
+        if request.user.is_staff or (request.user is not None and request.user.id == obj.volunteer.id):
             return UserSerializer(instance=obj.volunteer).data
         return LimitedUserSerializer(instance=obj.volunteer).data
 
+    yourshift = serializers.SerializerMethodField('yourshiftField')
+    def yourshiftField(self, obj):
+        request = self.context.get('request', None)
+        if request is None:
+            return False
+        if obj.volunteer is None:
+            return False
+        return obj.volunteer.id == request.user.id
+
     class Meta:
         model = Shift
-        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report')
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report', 'yourshift')
         depth = 1
 
-class EventShiftSerializer(serializers.ModelSerializer):
+class EventShiftSerializer(ShiftSerializer):
     duration = serializers.ReadOnlyField();
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
@@ -85,7 +94,7 @@ class EventShiftSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shift
-        fields = ('id', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report')
+        fields = ('id', 'shift_type', 'start', 'stop', 'volunteer', 'comment', 'duration', 'durationType', 'end_report', 'yourshift')
         depth = 1
 
 class EventSerializer(serializers.ModelSerializer):

@@ -27,17 +27,44 @@
         })
     });
 
-    module.controller('EventController', function ($scope, $http, EventService, ShiftService) {
-        EventService.query(function(res) {
-            $scope.events = res;
+
+function tag_collisions(events, user)
+{
+    var shifts = Array();
+    var yourshifts = Array();
+
+    events.forEach(function(event){
+        event.shifts.forEach(function(shift){
+            shifts.push(shift);
+            if(shift['user']['id'] == user['id'])
+                yourshifts.push(shift);
         });
+    });
+
+}
+
+
+
+module.controller('EventEditController', function ($scope, $stateParams, $http) {
+    
+    
+    
+});
+
+
+    module.controller('EventController', function ($scope, $http, EventService, ShiftService, AuthService) {
+        $scope.current_user = AuthService.currentUser();
 
         $scope.refresh_event = function()
         {
             EventService.query(function(res) {
                 $scope.events = res;
+
             });
         }
+
+        $scope.refresh_event();
+
         $scope.show_taken = false;
 
         $scope.take_shift = function(shift)

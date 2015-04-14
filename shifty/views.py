@@ -88,44 +88,9 @@ def whoami(request):
         whoami = {}
     return JsonResponse(whoami)
 
-# def test(request):
-#     events = Event.objects.all()
-#     return render_to_response('shifty/test.html', {'events':events})
-
-# def getEvents(request, offset, limit):
-#     events = Event.objects.order_by('start')[offset:offset+limit]
-#     result = []
-#     for e in events:
-#         result.append({'event':e.toDict(), 'columns':e.getShiftColumns()})
-
-#     return JsonResponse(result)
-
 @ensure_csrf_cookie
 def angular_router(request):
     return render_to_response('shifty/angular.html')
-
-# def create_shift_user(request):
-#     data = json.loads(request.body)
-
-#     username = data['username']
-#     firstname = data['firstname']
-#     lastname = data['lastname']
-#     email = data['email']
-#     phone = data['phone']
-
-#     password = "lol"
-
-#     user = User.objects.create_user(username, email, first_name=firstname, last_name=lastname, password=password)
-#     contact_info = ContactInfo(phone=phone)
-#     contact_info.user = user
-#     contact_info.save()
-
-#     new_user = authenticate(username=username,
-#                                     password=password)
-#     django_login(request, new_user)
-
-#     csrf = django.middleware.csrf.get_token(request)
-#     return JsonResponse({'user':get_user_stuff(request), 'csrf':csrf})
 
 import json
 @reversion.create_revision()
