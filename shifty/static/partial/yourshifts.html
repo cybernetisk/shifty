@@ -1,7 +1,6 @@
 <h1>Your Shifts!!!!</h1>
 
-<div ng-repeat="shift in shifts">
-    <div  class="div_shift_type_{{ shift.shift_type.id }}">
+<div class="div_shift_type_{{ shift.shift_type.id }}" ng-repeat="shift in shifts">
         <h3 style="text-transform: capitalize">{{shift.event.title}}</h3>
         <h3>{{ shift.shift_type.title }}</h3>
         <p ng-show="shift.event.description != ''"><bold>Description: </bold>{{ shift.event.description}}</p>
@@ -14,5 +13,7 @@
         <p ng-show="shift.volonteer.last_name != null"><bold>Last name: </bold>{{ shift.volunteer.last_name }}</p>
         <p><bold>Duration:</bold> {{ shift.duration }}</p>
         <p ng-show="shift.comment != ''"><bold>Comment: </bold>{{ shift.comment }}</p>
-    </div>
+
+        <button class="btn" ng-click="untake_shift(shift)">Untake</button>
+
 </div>

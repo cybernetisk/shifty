@@ -24,7 +24,29 @@
     module.controller('YourshiftController', function ($scope, $http) {
         $http.get('/rest/yourshift/').success(function(result){
             $scope.shifts = result
-        })
+        });
+        $http.get('/rest/event/').success(function(result){
+            $scope.events = result
+        });
+
+        $scope.refresh_event = function()
+        {
+            $http.get('/rest/yourshift/').success(function(result){
+            $scope.shifts = result
+            });
+            /*EventService.query(function(res) {
+                $scope.events = res;
+
+            });*/
+        }
+
+        $scope.untake_shift = function(shift)
+        {
+            $http.post('/free_shift', {shift_id:shift['id']})
+                .success(function(result){
+                    $scope.refresh_event();
+                });
+        }
     });
 
 
