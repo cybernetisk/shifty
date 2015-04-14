@@ -16,7 +16,7 @@ angular.module('cyb.shifty').factory('ShiftsReportService', function ($resource)
 
 
 angular.module('cyb.shifty').factory('AuthService', function($http) {
-  var currentUser = {'username':'admin', 'id':1};
+  var currentUser = {'username':'admin', 'id':1, 'is_staff':true};
 
   return {
     isLoggedIn: function() { currentUser != undefined },
