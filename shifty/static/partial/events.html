@@ -30,6 +30,13 @@
                 <td>{{shift.shift_type.title}}</td>
                 <td>{{shift.start|date:"HH:mm"}}-{{shift.stop|date:"HH:mm"}}</td>
                 <td>{{shift.duration}} hours</td>
+
+                <td ng-show="current_user.is_staff">
+                    {{shift.volunteer.first_name}} {{shift.volunteer.last_name}} 
+                </td>
+                <td ng-show="current_user.is_staff">
+                    {{shift.volunteer.contactinfo.phone}}
+                </td>
                 <td>
                     <div ng-show="shift.volunteer!=null">
                         {{ shift.volunteer.username }}
