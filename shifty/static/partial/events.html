@@ -1,21 +1,26 @@
 {{show_taken}}
-        <input type="checkbox" ng-model="show_taken" />
-        <div ng-repeat="event in events">
+<input type="checkbox" ng-model="show_taken"/>
+<div ng-repeat="event in events">
     <div class="event_list">
         <h2>{{event.title}}</h2>
         {{event.start|date:"MMM dd, HH:mm"}}
-        <div >
+
+        <span class="staff-actions" ng-show="is_staff">
+            <a href="#/overview/{{event.id}}">Overview event</a>
+        </span>
+
+        <div>
             <h3>Ansvarlig</h3>
             <table>
                 <tbody>
-                    <tr>
-                        <th>Navn</th>
-                        <td>{{event.responsible.first_name}} {{event.responsible.last_name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Telefon</th>
-                        <td>{{event.responsible.contactinfo.phone}}</td>
-                    </tr>
+                <tr>
+                    <th>Navn</th>
+                    <td>{{event.responsible.first_name}} {{event.responsible.last_name}}</td>
+                </tr>
+                <tr>
+                    <th>Telefon</th>
+                    <td>{{event.responsible.contactinfo.phone}}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -32,7 +37,7 @@
                     <div ng-show="shift.volunteer==null">
                         <div ng-show="shift.fail_reason" style="color:red;">{{shift.fail_reason}}</div>
                         <form ng-submit="take_shift(shift);">
-                            <input ng-model="shift.new_volunteer" />
+                            <input ng-model="shift.new_volunteer"/>
                         </form>
                     </div>
                 </td>

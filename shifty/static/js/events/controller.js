@@ -65,6 +65,7 @@ module.controller('EventEditController', function ($scope, $stateParams, $http) 
 
         $scope.refresh_event();
 
+        $scope.is_staff = AuthService.isStaff();
         $scope.show_taken = false;
 
         $scope.take_shift = function(shift)
@@ -110,8 +111,9 @@ module.controller('EventEditController', function ($scope, $stateParams, $http) 
         }
     });
 
-    module.controller('OverviewController', function ($scope, $stateParams, EventService, ShiftsReportService) {
-        console.log($stateParams.eventId);
+    module.controller('OverviewController', function ($scope, $stateParams, EventService, ShiftsReportService, AuthService) {
+        $scope.is_staff = AuthService.isStaff();
+
         EventService.get({id: $stateParams.eventId}, function(res) {
             $scope.event = res;
             // Prefill data (confirm everything in planned length to make the most probable scenario easy)
@@ -120,6 +122,11 @@ module.controller('EventEditController', function ($scope, $stateParams, $http) 
                 item.corrected_hours = item.duration;
             });
         });
+
+        // Stop further processing after loading event info
+        if (!$scope.is_staff) {
+            return;
+        }
 
         $scope.confirm_shifts = function(event)
         {
@@ -133,7 +140,6 @@ module.controller('EventEditController', function ($scope, $stateParams, $http) 
                 });
             });
             // Send data
-            console.log(output);
             ShiftsReportService.save(output);
         };
 
