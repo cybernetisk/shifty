@@ -20,7 +20,7 @@ angular.module('cyb.shifty').factory('AuthService', function($http) {
 
   return {
     isLoggedIn: function() { currentUser != undefined },
-    currentUser: function() { return currentUser; }
+    currentUser: function() { return currentUser; },
     isStaff: function() { return currentUser['is_staff']; }
   };
 });
