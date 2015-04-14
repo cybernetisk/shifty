@@ -114,14 +114,22 @@ module.controller('EventEditController', function ($scope, $stateParams, $http) 
     module.controller('OverviewController', function ($scope, $stateParams, EventService, ShiftsReportService, AuthService) {
         $scope.is_staff = AuthService.isStaff();
 
-        EventService.get({id: $stateParams.eventId}, function(res) {
-            $scope.event = res;
-            // Prefill data (confirm everything in planned length to make the most probable scenario easy)
-            $scope.event.shifts.forEach(function(item) {
-                item.verified =  true;
-                item.corrected_hours = item.duration;
+        var eventLoader = function () {
+            EventService.get({id: $stateParams.eventId}, function(res) {
+                $scope.event = res;
+                // Prefill data
+                $scope.event.shifts.forEach(function(item) {
+                    if (item.end_report) { // Use previous end reports data when available
+                        item.corrected_hours = parseInt(item.end_report.corrected_hours);
+                        item.verified = item.end_report.verified;
+                    } else { // Use planned length and confirm everything as the most probable scenario easy
+                        item.verified = true;
+                        item.corrected_hours = item.duration;
+                    }
+                });
             });
-        });
+        }
+        eventLoader();
 
         // Stop further processing after loading event info
         if (!$scope.is_staff) {
@@ -133,14 +141,19 @@ module.controller('EventEditController', function ($scope, $stateParams, $http) 
             // Gather the data from the model to formulate separate REST query
             var output = [];
             $scope.event.shifts.forEach(function(item) {
-                output.push({
-                    shift: item.id,
-                    verified: item.verified,
-                    corrected_hours: item.corrected_hours
-                });
+                if (item.volunteer) {
+                    output.push({
+                        shift: item.id,
+                        verified: item.verified,
+                        corrected_hours: item.corrected_hours
+                    });
+                }
             });
             // Send data
-            ShiftsReportService.save(output);
+            ShiftsReportService.save(output, function() {
+                // Reload saved data
+                eventLoader();
+            });
         };
 
         $scope.handle_response = function(){

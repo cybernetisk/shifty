@@ -20,5 +20,9 @@ angular.module('cyb.shifty').factory('LoginService', function ($resource) {
 });
 
 angular.module('cyb.shifty').factory('ShiftsReportService', function ($resource) {
-    return $resource('rest/shift_end_report/');
+    return $resource('rest/shift_end_report/', {},
+        {
+            'save': { method: 'POST', isArray: true }
+        }
+    );
 });
