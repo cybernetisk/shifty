@@ -90,6 +90,21 @@ class EventShiftSerializer(ShiftSerializer):
     duration = serializers.ReadOnlyField();
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
+
+    volunteer = serializers.SerializerMethodField('volunteerField')
+    def volunteerField(self, obj):
+        request = self.context.get('request', None)
+        if request.user.is_staff:
+            return UserSerializer(instance=obj.volunteer).data
+        return LimitedUserSerializer(instance=obj.volunteer).data
+
+    end_report = serializers.SerializerMethodField('endReportField')
+    def endReportField(self, obj):
+        request = self.context.get('request', None)
+        if request.user.is_staff:
+            return ShiftEndReportLightSerializer(instance=obj.end_report).data
+        return None
+
     #end_report = serializers.PrimaryKeyRelatedField(read_only=True)#ShiftEndReportLightSerializer()
 
     class Meta:
