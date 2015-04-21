@@ -7,10 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('shifty', '0009_auto_20150324_2045'),
+        ('shifty', '0007_shiftendreport'),
     ]
 
     operations = [
+        migrations.RemoveField(
+            model_name='shiftendreport',
+            name='event',
+        ),
         migrations.AddField(
             model_name='contactinfo',
             name='auto_user',
@@ -22,5 +26,10 @@ class Migration(migrations.Migration):
             name='claimed',
             field=models.BooleanField(default=False),
             preserve_default=True,
+        ),
+        migrations.AlterField(
+            model_name='shiftendreport',
+            name='bong_ref',
+            field=models.IntegerField(null=True, blank=True),
         ),
     ]
