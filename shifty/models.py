@@ -128,7 +128,7 @@ class ShiftEndReport(models.Model):
     verified = models.BooleanField()
     signed = models.ForeignKey(User, null=True, blank=True)
     corrected_hours = models.DecimalField(max_digits=3, decimal_places=1, null=True)
-    bong_ref = models.IntegerField(null=True)
+    bong_ref = models.IntegerField(null=True, blank=True)
     shift = models.ForeignKey("Shift", related_name='end_report')
 
 
