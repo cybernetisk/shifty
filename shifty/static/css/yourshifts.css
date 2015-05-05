@@ -1,0 +1,9 @@
+.yourshifts_table{
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+}
+
+.yourshifts_table tr > td:not(:first-of-type):not(:last-of-type){
+    min-width: 160px;
+    max-width: 160px;
+}

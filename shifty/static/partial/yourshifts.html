@@ -8,7 +8,8 @@
             <td>{{ shift['shift_type'].title }}</td>
             <td>{{ shift.start | date:"MMM dd, HH:mm" }}</td>
             <td>{{ shift.stop | date:"MMM dd, HH:mm" }}</td>
-            <td>{{ shift.comment }}</td>
+            <td ng-show="shift.comment == '' ">No comments.</td>
+            <td ng-show="shift.comment != '' ">{{ shift.comment }}</td>
             <td><button class="btn" ng-click="untake_shift(shift['id'])">Untake</button></td>
         </tr>
 
