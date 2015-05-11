@@ -2,13 +2,14 @@
     <head>
         <meta charset="utf-8">
         <title>Shifty</title>
-        <link rel="stylesheet" href="/static/css/foundation.css">
         <link rel="stylesheet" href="/static/css/shifty.css">
+        <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="/shift_types.css">
 
         <script type="text/javascript" src="/static/angular/angular.min.js"></script>
         <script type="text/javascript" src="/static/angular-ui-router/release/angular-ui-router.min.js"></script>
         <script type="text/javascript" src="/static/angular-resource/angular-resource.min.js"></script>
+        <script type="text/javascript" src="/static/angular-local-storage/dist/angular-local-storage.min.js"></script>
 
         
         <script type="text/javascript" src="/static/js/module.js"></script>
@@ -16,7 +17,10 @@
         <script type="text/javascript" src="/static/js/user.js"></script>
         <script type="text/javascript" src="/static/js/shifts/service.js"></script>
         <script type="text/javascript" src="/static/js/events/services.js"></script>
-
+        <script type="text/javascript" src="/static/angular-bootstrap/ui-bootstrap.js"></script>
+        <script type="text/javascript" src="/static/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script type="text/javascript" src="/static/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
     </head>
     <body>
     {% block header %}
@@ -31,8 +35,15 @@
             </a>
             <div id="authbox" style="display:inline-block;">
                 <a href="/" style="color:white;">Events</a>
+
+                <a href="/admin" style="color:white;">Admin</a>
+
+                {% if user %}
                 <a href="/#/yourshifts" style="color:white;">Your shifts</a>
                 <a href="/logout" style="color:white;">Logout</a>
+                {% else %}
+                <a href="/admin/login/?next=/" style="color:white;">Login</a>
+                {% endif %}
             </div>
         </div>
     {% endblock %}

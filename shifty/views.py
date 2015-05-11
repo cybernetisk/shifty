@@ -32,7 +32,7 @@ def eventInfo(request, eventId):
 
 def logout_view(request):
     logout(request)
-    return JsonResponse({'status':'ok'})
+    return HttpResponseRedirect('/')
 
 def get_user_stuff(request):
     user = request.user
@@ -90,7 +90,10 @@ def whoami(request):
 
 @ensure_csrf_cookie
 def angular_router(request):
-    return render_to_response('shifty/angular.html')
+    user = None
+    if request.user.is_authenticated():
+        user = request.user
+    return render_to_response('shifty/angular.html', {'user':user})
 
 import json
 @reversion.create_revision()

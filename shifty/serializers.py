@@ -48,7 +48,6 @@ class ShiftTakeSerializer(serializers.ModelSerializer):
                 raise Exception("No user found")
             user = user.one()
         instance.volunteer = user
-        #instance.volunteer_id = user.id
 
         return instance
 
@@ -58,11 +57,20 @@ class ShiftTakeSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class ShiftWriteSerializer(serializers.ModelSerializer):
+    # def __init__(self, *args, **kwargs):
+    #     many = kwargs.pop('many', True)
+    #     super(ShiftWriteSerializer, self).__init__(many=many, *args, **kwargs)
+
+    class Meta:
+        model = Shift
+        fields = ('id', 'event', 'shift_type', 'start', 'stop', 'comment', 'duration')
+
 class ShiftSerializer(serializers.ModelSerializer):
     duration = serializers.ReadOnlyField();
     durationType = serializers.ReadOnlyField()
     volunteer = LimitedUserSerializer()
-    end_report = ShiftEndReportLightSerializer()
+    end_report = ShiftEndReportLightSerializer(required=False)
 
     can_change = serializers.SerializerMethodField('canChangeField')
     def canChangeField(self, obj):
@@ -128,7 +136,7 @@ class EventShiftSerializer(ShiftSerializer):
 class EventSerializer(serializers.ModelSerializer):
     shifts = EventShiftSerializer(many=True, read_only=True,)
     #available = serializers.Field(source='availableShifts')
-    responsible = UserSerializer()
+    responsible = UserSerializer(required=False)
 
     class Meta:
         model = Event

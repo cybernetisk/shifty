@@ -3,7 +3,9 @@
 
     var module = angular.module('cyb.shifty', [
         'ui.router',
-        'ngResource'
+        'ngResource',
+        'LocalStorageModule',
+        'ui.bootstrap',
     ]);
 
 

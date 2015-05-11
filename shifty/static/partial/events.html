@@ -1,11 +1,9 @@
-{{show_taken}}
-<input type="checkbox" ng-model="show_taken"/>
 <div ng-repeat="event in events">
     <div class="event_list">
         <h2>{{event.title}}</h2>
         {{event.start|date:"MMM dd, HH:mm"}}
 
-        <span class="staff-actions" ng-show="is_staff">
+        <span class="staff-actions" ng-show="user.is_staff">
             <a href="#/overview/{{event.id}}">Overview event</a>
         </span>
 
