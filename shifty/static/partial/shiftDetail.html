@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{ shifts['shift_type']['title'] }}</h3>
+</div>
+<div class="modal-body">
+    <p><bold>Description:</bold></p>
+    <p ng-show="shifts['shift_type']!='' ">
+        {{ shifts['shift_type']['description'] }}
+    </p>
+    <p>
+        <bold>Is responsible :</bold>
+        <span class="glyphicon glyphicon-ok" ng-show="shifts['shift_type']['responsible']">
+        </span>
+        <span class="glyphicon glyphicon-remove" ng-show="!shifts['shift_type']['responsible']">
+        </span>
+
+    </p>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+</div>

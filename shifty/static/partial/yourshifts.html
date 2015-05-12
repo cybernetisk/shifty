@@ -1,4 +1,8 @@
-<h1>Your Shifts!!!!</h1>
+
+<a  href="" ng-click="showTitle = !showTitle">Show Title</a>
+
+<h1 ng-show="showTitle">Your Shifts!!!!</h1>
+
 
 <div ng-repeat="event in shift_by_event" class="event_list">
     <h3 style="text-transform: capitalize">{{ event['0']['event'].title }}</h3>
@@ -10,8 +14,15 @@
             <td>{{ shift.stop | date:"MMM dd, HH:mm" }}</td>
             <td ng-show="shift.comment == '' ">No comments.</td>
             <td ng-show="shift.comment != '' ">{{ shift.comment }}</td>
-            <td><button class="btn" ng-click="untake_shift(shift['id'])">Untake</button></td>
+            <td><button type="button" class="btn btn-default" ng-click="open(shift)">Show details</button></td>
+            <td><button type="button" class="btn btn-primary" ng-click="untake_shift(shift['id'])">Untake</button></td>
         </tr>
-
     </table>
+
+
 </div>
+
+    <script type="text/ng-template" id="myModalContent.html">
+
+    </script>
+{{ showTrigger }}

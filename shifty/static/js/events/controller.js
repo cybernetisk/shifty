@@ -31,7 +31,16 @@
         });
     });
 
-    module.controller('YourshiftController', function ($scope, $http) {
+    module.controller('ModalInstanceCtrl', function ($scope, $modalInstance, shift) {
+        $scope.shifts = shift;
+
+        $scope.ok = function () {
+            console.log($scope.shifts);
+            $modalInstance.close();
+        };
+    });
+
+    module.controller('YourshiftController', function ($scope, $http, $modal) {
         $http.get('/rest/yourshift/').success(function (result) {
             $scope.your_shifts = result;
             $scope.sort_shifts();
@@ -41,6 +50,7 @@
         $http.get('/rest/event/').success(function (result) {
             $scope.events = result;
         });
+
 
         $scope.sort_shifts = function () {
             $scope.shift_by_event = {};
@@ -67,7 +77,20 @@
                 .success(function (result) {
                     $scope.refresh_event();
                 });
-        }
+        };
+
+        $scope.open = function (shift) {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'static/partial/shiftDetail.html',
+                controller: 'ModalInstanceCtrl',
+                resolve: {
+                    shift: function (){
+                        return shift
+                    }
+                }
+            });
+        };
     });
 
 
@@ -85,226 +108,206 @@
 
     }
 
-module.controller('EventEditController', function ($scope, EventService, $stateParams, $http, AuthService) {
-    $scope.current_user = AuthService.currentUser();
-    $scope.new_hour_count = 0;
-    EventService.get({id: $stateParams.eventId}, function(res) {
-        for(var i = 0; i < $scope.event.shifts; i++)
-        {
-            delete $scope.event.shifts[i]['id'];
-        }
-    });
-
-    $http.get('/shifttype/').success(function(res)
-    {
-        $scope.shift_types = res;
-    })
-
-    $scope.new_shift = {duration:6};
-
-    $scope.clone = function(index)
-    {
-        var shift = $scope.event['shifts'][index];
-        var new_shift = angular.copy(shift);
-        delete new_shift['volunteer'];
-        delete new_shift['id'];
-        $scope.event['shifts'].splice(index + 1, 0, new_shift);
-    }
-
-    $scope.delete = function(index)
-    {
-        $scope.event['shifts'].splice(index, 1);
-    }
-
-    $scope.$watch('event.start', function(new_value, old_value){
-        if($scope.event == undefined)
-            return;
-
-        for(var i = 0; i < $scope.event.shifts.length; i++)
-        {
-            event = $scope.event.shifts[i];
-    
-            var event_start = $scope.event['start'];
-            if(!(event_start instanceof Date))
-                event_start = new Date(event_start);
-            if(!(event['start'] instanceof Date))
-                event['start'] = new Date(event['start']);
-            if(isNaN(event_start.getTime()))
-                return; // in case of invalid date
-            event['start'].setYear(event_start.getFullYear());
-            event['start'].setMonth(event_start.getMonth());
-            event['start'].setDate(event_start.getDate());
-        }
-    });
-
-    $scope.add_new_shift = function()
-    {
-        var new_shift = angular.copy($scope.new_shift);
-        var shifts = $scope.event['shifts'];
-
-        var event_start = $scope.event['start'];
-        if(!(event_start instanceof Date))
-            event_start = new Date(event_start);
-        if(isNaN(event_start.getTime()))
-            return; // in case of invalid date
-        new_shift['start'].setYear(event_start.getFullYear());
-        new_shift['start'].setMonth(event_start.getMonth());
-        new_shift['start'].setDate(event_start.getDate());
-
-        new_shift['stop'] = new Date(new_shift['start'].valueOf() + new_shift['duration'] * 3600 * 1000);
-        for(var i = 0; i < shifts.length; i++)
-        {
-            if(new Date(shifts[i]['start']) > new_shift['start'])
-            {
-                shifts.splice(i, 0, new_shift);
-                return;
+    module.controller('EventEditController', function ($scope, EventService, $stateParams, $http, AuthService) {
+        $scope.current_user = AuthService.currentUser();
+        $scope.new_hour_count = 0;
+        EventService.get({id: $stateParams.eventId}, function (res) {
+            for (var i = 0; i < $scope.event.shifts; i++) {
+                delete $scope.event.shifts[i]['id'];
             }
-        }
-        shifts.push(new_shift);
-    }
-
-    $scope.open = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        $scope.opened = true;
-    };
-
-    $scope.save = function()
-    {
-        var event = angular.copy($scope.event);
-        delete event['shifts'];
-        delete event['responsible'];
-
-        $http.post('/rest/event/', event).success(function(response){
-            var event_id = response['id'];
-            var shifts = angular.copy($scope.event.shifts);
-
-            shifts.forEach(function(shift)
-            {
-                shift['stop'] = new Date(shift['start'].valueOf() + shift['duration'] * 3600 * 1000);
-                shift['shift_type'] = shift['shift_type']['id'];
-            })
-            $http.post('/rest/shift/', shifts).success(function(response){
-
-            });
         });
-    }
-    
-});
 
-module.controller('EventCloneController', function ($scope, EventService, $stateParams, $http, AuthService) {
-    $scope.current_user = AuthService.currentUser();
-    $scope.new_hour_count = 0;
-    EventService.get({id: $stateParams.eventId}, function(res) {
-        $scope.event = res;
-        delete $scope.event['id'];
-        for(var i = 0; i < $scope.event.shifts; i++)
-        {
-            delete $scope.event.shifts[i]['id'];
+        $http.get('/shifttype/').success(function (res) {
+            $scope.shift_types = res;
+        })
+
+        $scope.new_shift = {duration: 6};
+
+        $scope.clone = function (index) {
+            var shift = $scope.event['shifts'][index];
+            var new_shift = angular.copy(shift);
+            delete new_shift['volunteer'];
+            delete new_shift['id'];
+            $scope.event['shifts'].splice(index + 1, 0, new_shift);
         }
-    });
 
-    $http.get('/shifttype/').success(function(res)
-    {
-        $scope.shift_types = res;
-    })
-
-    $scope.new_shift = {duration:6};
-
-    $scope.clone = function(index)
-    {
-        var shift = $scope.event['shifts'][index];
-        var new_shift = angular.copy(shift);
-        new_shift['volunteer'] = null;
-        new_shift['id'] = null;
-        $scope.event['shifts'].splice(index + 1, 0, new_shift);
-    }
-
-    $scope.delete = function(index)
-    {
-        $scope.event['shifts'].splice(index, 1);
-    }
-
-    $scope.$watch('event.start', function(new_value, old_value){
-        if($scope.event == undefined)
-            return;
-
-        for(var i = 0; i < $scope.event.shifts.length; i++)
-        {
-            event = $scope.event.shifts[i];
-    
-            var event_start = $scope.event['start'];
-            if(!(event_start instanceof Date))
-                event_start = new Date(event_start);
-            if(!(event['start'] instanceof Date))
-                event['start'] = new Date(event['start']);
-            if(isNaN(event_start.getTime()))
-                return; // in case of invalid date
-            event['start'].setYear(event_start.getFullYear());
-            event['start'].setMonth(event_start.getMonth());
-            event['start'].setDate(event_start.getDate());
+        $scope.delete = function (index) {
+            $scope.event['shifts'].splice(index, 1);
         }
-    });
 
-    $scope.add_new_shift = function()
-    {
-        var new_shift = angular.copy($scope.new_shift);
-        var shifts = $scope.event['shifts'];
-
-        var event_start = $scope.event['start'];
-        if(!(event_start instanceof Date))
-            event_start = new Date(event_start);
-        if(isNaN(event_start.getTime()))
-            return; // in case of invalid date
-        new_shift['start'].setYear(event_start.getFullYear());
-        new_shift['start'].setMonth(event_start.getMonth());
-        new_shift['start'].setDate(event_start.getDate());
-
-        new_shift['stop'] = new Date(new_shift['start'].valueOf() + new_shift['duration'] * 3600 * 1000);
-        for(var i = 0; i < shifts.length; i++)
-        {
-            if(new Date(shifts[i]['start']) > new_shift['start'])
-            {
-                shifts.splice(i, 0, new_shift);
+        $scope.$watch('event.start', function (new_value, old_value) {
+            if ($scope.event == undefined)
                 return;
+
+            for (var i = 0; i < $scope.event.shifts.length; i++) {
+                event = $scope.event.shifts[i];
+
+                var event_start = $scope.event['start'];
+                if (!(event_start instanceof Date))
+                    event_start = new Date(event_start);
+                if (!(event['start'] instanceof Date))
+                    event['start'] = new Date(event['start']);
+                if (isNaN(event_start.getTime()))
+                    return; // in case of invalid date
+                event['start'].setYear(event_start.getFullYear());
+                event['start'].setMonth(event_start.getMonth());
+                event['start'].setDate(event_start.getDate());
             }
-        }
-        shifts.push(new_shift);
-    }
-
-    $scope.open = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        $scope.opened = true;
-    };
-
-    $scope.save = function()
-    {
-        var event = angular.copy($scope.event);
-        delete event['id'];
-        delete event['shifts'];
-        delete event['responsible'];
-
-        $http.post('/rest/event/', event).success(function(response){
-            var event_id = response['id'];
-            var shifts = angular.copy($scope.event.shifts);
-
-            shifts.forEach(function(shift)
-            {
-                shift['event'] = event_id;
-                delete shift['id'];
-                delete shift['end_report'];
-                shift['stop'] = new Date(shift['start'].valueOf() + shift['duration'] * 3600 * 1000);
-                shift['shift_type'] = shift['shift_type']['id'];
-            })
-            $http.post('/rest/shift/', shifts).success(function(response){
-
-            });
         });
-    }
-});
+
+        $scope.add_new_shift = function () {
+            var new_shift = angular.copy($scope.new_shift);
+            var shifts = $scope.event['shifts'];
+
+            var event_start = $scope.event['start'];
+            if (!(event_start instanceof Date))
+                event_start = new Date(event_start);
+            if (isNaN(event_start.getTime()))
+                return; // in case of invalid date
+            new_shift['start'].setYear(event_start.getFullYear());
+            new_shift['start'].setMonth(event_start.getMonth());
+            new_shift['start'].setDate(event_start.getDate());
+
+            new_shift['stop'] = new Date(new_shift['start'].valueOf() + new_shift['duration'] * 3600 * 1000);
+            for (var i = 0; i < shifts.length; i++) {
+                if (new Date(shifts[i]['start']) > new_shift['start']) {
+                    shifts.splice(i, 0, new_shift);
+                    return;
+                }
+            }
+            shifts.push(new_shift);
+        }
+
+        $scope.open = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
+
+        $scope.save = function () {
+            var event = angular.copy($scope.event);
+            delete event['shifts'];
+            delete event['responsible'];
+
+            $http.post('/rest/event/', event).success(function (response) {
+                var event_id = response['id'];
+                var shifts = angular.copy($scope.event.shifts);
+
+                shifts.forEach(function (shift) {
+                    shift['stop'] = new Date(shift['start'].valueOf() + shift['duration'] * 3600 * 1000);
+                    shift['shift_type'] = shift['shift_type']['id'];
+                })
+                $http.post('/rest/shift/', shifts).success(function (response) {
+
+                });
+            });
+        }
+
+    });
+
+    module.controller('EventCloneController', function ($scope, EventService, $stateParams, $http, AuthService) {
+        $scope.current_user = AuthService.currentUser();
+        $scope.new_hour_count = 0;
+        EventService.get({id: $stateParams.eventId}, function (res) {
+            $scope.event = res;
+            delete $scope.event['id'];
+            for (var i = 0; i < $scope.event.shifts; i++) {
+                delete $scope.event.shifts[i]['id'];
+            }
+        });
+
+        $http.get('/shifttype/').success(function (res) {
+            $scope.shift_types = res;
+        })
+
+        $scope.new_shift = {duration: 6};
+
+        $scope.clone = function (index) {
+            var shift = $scope.event['shifts'][index];
+            var new_shift = angular.copy(shift);
+            new_shift['volunteer'] = null;
+            new_shift['id'] = null;
+            $scope.event['shifts'].splice(index + 1, 0, new_shift);
+        }
+
+        $scope.delete = function (index) {
+            $scope.event['shifts'].splice(index, 1);
+        }
+
+        $scope.$watch('event.start', function (new_value, old_value) {
+            if ($scope.event == undefined)
+                return;
+
+            for (var i = 0; i < $scope.event.shifts.length; i++) {
+                event = $scope.event.shifts[i];
+
+                var event_start = $scope.event['start'];
+                if (!(event_start instanceof Date))
+                    event_start = new Date(event_start);
+                if (!(event['start'] instanceof Date))
+                    event['start'] = new Date(event['start']);
+                if (isNaN(event_start.getTime()))
+                    return; // in case of invalid date
+                event['start'].setYear(event_start.getFullYear());
+                event['start'].setMonth(event_start.getMonth());
+                event['start'].setDate(event_start.getDate());
+            }
+        });
+
+        $scope.add_new_shift = function () {
+            var new_shift = angular.copy($scope.new_shift);
+            var shifts = $scope.event['shifts'];
+
+            var event_start = $scope.event['start'];
+            if (!(event_start instanceof Date))
+                event_start = new Date(event_start);
+            if (isNaN(event_start.getTime()))
+                return; // in case of invalid date
+            new_shift['start'].setYear(event_start.getFullYear());
+            new_shift['start'].setMonth(event_start.getMonth());
+            new_shift['start'].setDate(event_start.getDate());
+
+            new_shift['stop'] = new Date(new_shift['start'].valueOf() + new_shift['duration'] * 3600 * 1000);
+            for (var i = 0; i < shifts.length; i++) {
+                if (new Date(shifts[i]['start']) > new_shift['start']) {
+                    shifts.splice(i, 0, new_shift);
+                    return;
+                }
+            }
+            shifts.push(new_shift);
+        }
+
+        $scope.open = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
+
+        $scope.save = function () {
+            var event = angular.copy($scope.event);
+            delete event['id'];
+            delete event['shifts'];
+            delete event['responsible'];
+
+            $http.post('/rest/event/', event).success(function (response) {
+                var event_id = response['id'];
+                var shifts = angular.copy($scope.event.shifts);
+
+                shifts.forEach(function (shift) {
+                    shift['event'] = event_id;
+                    delete shift['id'];
+                    delete shift['end_report'];
+                    shift['stop'] = new Date(shift['start'].valueOf() + shift['duration'] * 3600 * 1000);
+                    shift['shift_type'] = shift['shift_type']['id'];
+                })
+                $http.post('/rest/shift/', shifts).success(function (response) {
+
+                });
+            });
+        }
+    });
 
     module.controller('EventController', function ($scope, $http, EventService, ShiftService, AuthService) {
         $scope.current_user = AuthService.currentUser();
@@ -314,8 +317,6 @@ module.controller('EventCloneController', function ($scope, EventService, $state
                 $scope.events = res;
             });
         }
-
-
 
 
         $scope.refresh_event();
