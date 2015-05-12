@@ -276,7 +276,6 @@ module.controller('EventCloneController', function ($scope, EventService, $state
     $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-
         $scope.opened = true;
     };
 
@@ -309,14 +308,35 @@ module.controller('EventCloneController', function ($scope, EventService, $state
     module.controller('EventController', function ($scope, $http, EventService, ShiftService, AuthService) {
         $scope.current_user = AuthService.currentUser();
 
+        $scope.min_date = moment();
+        $scope.max_date = moment().add(4, 'week');
+
         $scope.refresh_event = function () {
-            EventService.query(function (res) {
-                $scope.events = res;
+            $http.get('/rest/event/?min_date=' + $scope.min_date.format('YYYY-MM-DD') + '&max_date=' + $scope.max_date.format('YYYY-MM-DD')).success(function(data){
+                $scope.events = data;
             });
         }
 
+        $scope.min_date = moment();
+        $scope.max_date = moment().add(4, 'week');
 
+        $scope.more_future = function(){
+            var old_max = $scope.max_date.clone();
+            $scope.max_date = $scope.max_date.add(2, 'week');
+            $http.get('/rest/event/?min_date=' + old_max.format('YYYY-MM-DD') + '&max_date=' + $scope.max_date.format('YYYY-MM-DD')).success(function(data){
+                for(var i = 0; i < data.length; i++)
+                    $scope.events.push(data[i]);
+            });
+        }
 
+        $scope.more_past = function(){
+            var old_min = $scope.min_date.clone();
+            $scope.min_date = $scope.min_date.subtract(2, 'week');
+            $http.get('/rest/event/?min_date=' + $scope.min_date.format('YYYY-MM-DD') + '&max_date=' + old_min.format('YYYY-MM-DD')).success(function(data){
+                for(var i = 0; i < data.length; i++)
+                    $scope.events.splice(0, 0, data[i]);
+            });
+        }
 
         $scope.refresh_event();
 
@@ -352,12 +372,13 @@ module.controller('EventCloneController', function ($scope, EventService, $state
         }
 
         $scope.handle_response = function () {
-            EventService.query(function (res) {
+            $http.get('/rest/event/').get(function(){
                 $scope.events = res;
                 $scope.events.forEach(function (obj) {
                     obj['_volunteer'] = angular.copy(obj['volunteer']);
                 });
             });
+                
         }
     });
 
