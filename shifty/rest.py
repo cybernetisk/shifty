@@ -39,9 +39,10 @@ class RelativeDateFilter(django_filters.CharFilter):
 
 class EventFilter(django_filters.FilterSet):
     min_date = RelativeDateFilter(name="start", lookup_type='gte')
+    max_date = RelativeDateFilter(name="start", lookup_type='lte')
     class Meta:
         model = Event
-        fields = ['min_date']
+        fields = ['min_date', 'max_date']
 
 class ShiftFilter(django_filters.FilterSet):
     min_date = RelativeDateFilter(name="start", lookup_type='gte')

@@ -1,6 +1,7 @@
 {
   "name": "Shifty",
   "dependencies": {
+    "moment":"",
     "foundation": "~5.*",
     "jquery": "~2.*",
     "jquery.cookie":"1.4.*",

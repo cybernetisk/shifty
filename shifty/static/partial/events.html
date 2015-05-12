@@ -1,3 +1,5 @@
+<div class="jumbotron" ng-click="more_past();">(show events before {{min_date.format("YYYY-MM-DD")}})</div>
+
 <div ng-repeat="event in events">
     <div class="event_list">
         <h2>{{event.title}}</h2>
@@ -64,3 +66,5 @@
         </table>
     </div>
 </div>
+
+<div class="jumbotron" ng-click="more_future();">(show events after {{max_date.format("YYYY-MM-DD")}})</div>
