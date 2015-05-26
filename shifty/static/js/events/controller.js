@@ -362,12 +362,28 @@
     module.controller('EventController', function ($scope, $http, EventService, ShiftService, AuthService) {
         $scope.current_user = AuthService.currentUser();
 
-        $scope.refresh_event = function () {
-            EventService.query(function (res) {
-                $scope.events = res;
-            });
-        }
+        $scope.today = function() {
+            $scope.date_from = new Date();
+        };
+        $scope.today();
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
 
+            $scope.opened = true;
+        };
+
+        $scope.refresh_event = function () {
+            var min_date = moment($scope.date_from);
+            var max_date = moment($scope.date_from).add(4, 'week');
+            $http.get('/rest/event/?min_date=' + min_date.format('YYYY-MM-DD') + '&max_date=' + max_date.format('YYYY-MM-DD')).success(function(data){
+                $scope.events = data;
+            });
+        };
+
+        $scope.$watch('date_from', function(newValue, oldValue) {
+            $scope.refresh_event();
+        });
 
         $scope.refresh_event();
 
