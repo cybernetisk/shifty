@@ -13,7 +13,6 @@ from django.db import models
 import autocomplete_light
 
 
-
 class UserAutocomplete(autocomplete_light.AutocompleteModelBase):
     search_fields = ['^first_name', 'last_name', 'username']
 
