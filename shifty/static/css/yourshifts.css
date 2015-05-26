@@ -8,6 +8,9 @@
     max-width: 160px;
 }
 
+.heading_block {
+    clear: both;
+}
 .heading_block h2 {
     display: inline-block;
 }
@@ -17,4 +20,7 @@
 }
 .heading_block .staff-actions a {
     margin-left: 20px;
+}
+.events_filters {
+    float: right;
 }
