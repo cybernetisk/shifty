@@ -2,12 +2,20 @@
 
 <div ng-repeat="event in events">
     <div class="event_list">
-        <h2>{{event.title}}</h2>
+        <div class="heading_block">
+            <h2>{{event.title}}</h2>
+
+            <div class="staff-actions" ng-show="is_staff">
+                <a href="#/overview/{{event.id}}">Overview</a>
+                <a href="#/edit/{{event.id}}">Edit</a>
+                <a href="#/clone/{{event.id}}">Clone</a>
+            </div>
+        </div>
+
         {{event.start|date:"MMM dd, HH:mm"}}
 
-        <span class="staff-actions" ng-show="user.is_staff">
-            <a href="#/overview/{{event.id}}">Overview event</a>
-        </span>
+        {{user.admin}}
+
 
         <div>
             <h3>Ansvarlig</h3>

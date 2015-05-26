@@ -7,3 +7,14 @@
     min-width: 160px;
     max-width: 160px;
 }
+
+.heading_block h2 {
+    display: inline-block;
+}
+.heading_block .staff-actions {
+    float: right;
+    margin-top: 30px;
+}
+.heading_block .staff-actions a {
+    margin-left: 20px;
+}
