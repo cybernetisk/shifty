@@ -1,5 +1,6 @@
+'use strict';
 (function () {
-    'use strict';
+    
 
     var module = angular.module('cyb.shifty');
 
@@ -13,6 +14,11 @@
             url: '/overview/:eventId',
             templateUrl: 'static/partial/overview.html',
             controller: 'OverviewController as events'
+        });
+        $stateProvider.state('createevent', {
+            url: '/create',
+            templateUrl: 'static/partial/edit_event.html',
+            controller: 'EventCreateController as create_event'
         });
         $stateProvider.state('editevent', {
             url: '/edit/:eventId',
@@ -108,11 +114,41 @@
 
     }
 
+
+
+
+    module.controller('EventCreateController', function ($scope, EventService, $stateParams, $http, AuthService) {
+        $scope.current_user = AuthService.currentUser();
+        $scope.new_hour_count = 0;
+        EventService.get({id: $stateParams.eventId}, function(res) {
+            for(var i = 0; i < $scope.event.shifts; i++)
+            {
+                delete $scope.event.shifts[i]['id'];
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     module.controller('EventEditController', function ($scope, EventService, $stateParams, $http, AuthService) {
         $scope.current_user = AuthService.currentUser();
         $scope.new_hour_count = 0;
-        EventService.get({id: $stateParams.eventId}, function (res) {
-            for (var i = 0; i < $scope.event.shifts; i++) {
+        EventService.get({id: $stateParams.eventId}, function(res) {
+            for(var i = 0; i < $scope.event.shifts; i++)
+            {
                 delete $scope.event.shifts[i]['id'];
             }
         });
@@ -202,9 +238,23 @@
 
                 });
             });
-        }
 
+        };
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     module.controller('EventCloneController', function ($scope, EventService, $stateParams, $http, AuthService) {
         $scope.current_user = AuthService.currentUser();
