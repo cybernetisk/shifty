@@ -41,28 +41,9 @@ class EventInLine(admin.TabularInline):
     model = Event
     extra = 0
 
-
-def make_copy(modeladmin, request, queryset):
-    selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-    #ct = ContentType.objects.get_for_model(queryset.model)
-    return HttpResponseRedirect("/copy_events/?ids=%s" % ",".join(selected))
-    #queryset.update(status='p')
-make_copy.short_description = "Copy selected events"
-
-
-# class ShiftEndReportInLine(admin.TabularInline):
-#     model = ShiftEndReport
-#     extra = 0
-
-
-# class EventClose(reversion.VersionAdmin):
-#     inlines = [ShiftEndReportInLine]
-
-
 class EventAdmin(reversion.VersionAdmin):
     inlines = [ShiftInLine]
     list_display = ('title', 'start', 'availableShifts', 'totalShifts', 'responsible')
-    actions = [make_copy]
 
     class Media:
         js = (
@@ -72,7 +53,6 @@ class EventAdmin(reversion.VersionAdmin):
 
 class ShiftEndReportAdmin(reversion.VersionAdmin):
     pass
-
 
 class ShiftAdmin(reversion.VersionAdmin):
     list_display = ('shift_type', 'event', 'start')
