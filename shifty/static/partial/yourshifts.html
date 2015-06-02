@@ -1,4 +1,5 @@
 <h1>Your Shifts!!!!</h1>
+<h3 ng-show="isEmpty(shift_by_event)">You dont have any shifts. Go and take a few.</h3>
 <div ng-repeat="event in shift_by_event" class="event_list">
     <h3 style="text-transform: capitalize">{{ event['0']['event'].title }}</h3>
     <table class="yourshifts_table">

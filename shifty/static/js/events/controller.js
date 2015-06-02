@@ -57,6 +57,9 @@
             $scope.events = result;
         });
 
+        $scope.isEmpty = function(item){
+            return Object.keys(item).length === 0;
+        };
 
         $scope.sort_shifts = function () {
             $scope.shift_by_event = {};
