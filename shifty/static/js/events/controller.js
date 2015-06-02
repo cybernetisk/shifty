@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-    
+
 
     var module = angular.module('cyb.shifty');
 
@@ -383,9 +383,25 @@
                 $scope.events = data;
             });
         };
+        $scope.calendar_events = {};
+        $scope.refresh_calendar_event = function() {
+            // Magic needed to cover complete calendar range
+            var min_date = moment($scope.date_from).startOf('month').subtract(1, 'week');
+            var max_date = moment($scope.date_from).endOf('month').add(2, 'week');
+            $http.get('/rest/event_no_shift/?min_date=' + min_date.format('YYYY-MM-DD') + '&max_date=' + max_date.format('YYYY-MM-DD')).success(function(data) {
+                $scope.calendar_events = {};
+                data.forEach(function (item) {
+                    var temp = moment(item.start).format('YYYY-MM-DD');
+                    $scope.calendar_events[temp] = item.available;
+                });
+                // Refresh date pickers
+                $scope.$broadcast('refreshDatepickers');
+            });
+        };
 
         $scope.$watch('date_from', function(newValue, oldValue) {
             $scope.refresh_event();
+            $scope.refresh_calendar_event();
         });
 
         $scope.refresh_event();
@@ -403,8 +419,29 @@
                     }
                     else if (result['status'] == 'ok') {
                         $scope.refresh_event();
+                        // Refresh the calendar data as they could change
+                        $scope.refresh_calendar_event();
                     }
                 })
+        };
+
+        $scope.getDayClass = function (date, mode) {
+            if (mode !== 'day') {
+                return '';
+            }
+            var key = moment(date).format('YYYY-MM-DD');
+            if (key in $scope.calendar_events) {
+                if (moment(date) > moment().subtract(12, 'hour')) { // -12... not tu consider today as past.
+                    if ($scope.calendar_events[key] > 0) {
+                        return 'calendar_future_event_available';
+                    } else {
+                        return 'calendar_future_event_full';
+                    }
+                } else {
+                    return 'calendar_past_event';
+                }
+            }
+            return '';
         }
 
         $scope.thefilter = function (x) {

@@ -23,8 +23,29 @@
 }
 .events_filters {
     float: right;
+    margin-top: 20px;
 }
-
 .bold {
     font-weight: bold;
+}
+
+.calendar_future_event_full button span {
+    font-weight: bold;
+    background-color: green;
+    padding: 5px;
+    border-radius: 15px;
+    color: black;
+}
+
+.calendar_future_event_available button span {
+    font-weight: bold;
+    background-color: orange;
+    padding: 5px;
+    border-radius: 15px;
+    color: black;
+}
+
+.calendar_past_event button span {
+    font-weight: bold;
+    color: grey;
 }

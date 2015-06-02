@@ -1,7 +1,5 @@
-<div class="jumbotron" ng-click="more_past();">(show events before {{min_date.format("YYYY-MM-DD")}})</div>
-
 <div class="events_filters">
-    <input type="text" class="events_date_from" datepicker-popup="yyyy/MM/dd" ng-click="open($event)" is-open="opened" ng-model="date_from" ng-required="true" close-text="Close" />
+    <input type="text" class="events_date_from" custom-class="getDayClass(date, mode)" datepicker-popup="yyyy/MM/dd" ng-click="open($event)" is-open="opened" ng-model="date_from" ng-required="true" close-text="Close" />
     <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
     <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
 </div>
@@ -80,5 +78,3 @@
         </table>
     </div>
 </div>
-
-<div class="jumbotron" ng-click="more_future();">(show events after {{max_date.format("YYYY-MM-DD")}})</div>
