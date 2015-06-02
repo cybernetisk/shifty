@@ -2,31 +2,31 @@
     <h3 class="modal-title">{{ shifts['shift_type']['title'] }}</h3>
 </div>
 <div class="modal-body">
-    <p ng-show="shifts['shift_type']['description'] !='' ">
-        <span style="font-weight: bold;">Description:</span><br/>{{ shifts['shift_type']['description'] }}
+    <p ng-show="shifts['shift_type']['description'] != '' ">
+        <span class="bold">Description:</span><br/>{{ shifts['shift_type']['description'] }}
     </p>
     <p ng-show="shifts['shift_type']['description'] =='' ">
-        <span style="font-weight: bold;">Description:</span>No description :(
+        <span class="bold">Description:</span>No description :(
     </p>
     <p>
-        <span style="font-weight: bold;">Is responsible :</span>
+        <span class="bold">Is responsible :</span>
         <span class="glyphicon glyphicon-ok" ng-show="shifts['shift_type']['responsible']"></span>
         <span class="glyphicon glyphicon-remove" ng-show="!shifts['shift_type']['responsible']"></span>
 
     </p>
     <p>
-        <span style="font-weight: bold;">Shift Start:</span>
+        <span class="bold">Shift Start:</span>
         {{ shifts.start | date:"MMM dd, HH:mm" }}
     </p>
     <p>
-        <span style="font-weight: bold;">Shift End:</span>
+        <span class="bold">Shift End:</span>
         {{ shifts.stop | date:"MMM dd, HH:mm"}}
     </p>
     <p ng-show="shifts.comment == '' ">
-        <span style="font-weight: bold;">Comment: </span>No comments :(
+        <span class="bold">Comment: </span>No comments :(
     </p>
     <p ng-show="shifts.comment != '' ">
-        <span style="font-weight: bold;">Comment: </span>{{ shifts.comment }}
+        <span class="bold">Comment: </span>{{ shifts.comment }}
     </p>
     <p></p>
 

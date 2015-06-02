@@ -24,3 +24,7 @@
 .events_filters {
     float: right;
 }
+
+.bold {
+    font-weight: bold;
+}
