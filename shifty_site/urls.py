@@ -17,6 +17,7 @@ router = routers.DefaultRouter()
 
 router.register(r'yourshift', rest.YourShiftViewSet, base_name="lol")
 router.register(r'event', rest.EventViewSet)
+router.register(r'event_no_shift', rest.EventNoShiftViewSet)
 router.register(r'shift', rest.ShiftViewSet)
 router.register(r'shifttype', rest.ShiftTypeViewSet)
 #router.register(r'user', rest.UserViewSet, "user")

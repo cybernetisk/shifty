@@ -24,6 +24,10 @@ class Event(models.Model):
     start = models.DateTimeField()
 
     @property
+    def available(self):
+        return self.shifts.filter(volunteer=None).count()
+
+    @property
     def responsible(self):
         for shift in self.shifts.all():
             if shift.shift_type.responsible:

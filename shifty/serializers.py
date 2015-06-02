@@ -143,6 +143,14 @@ class EventSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'start', 'responsible', 'shifts')#, 'available', 'next', 'previous')
         depth = 0
 
+
+class EventNoShiftSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'title', 'description', 'start', 'available')
+        depth = 0
+
+
 class ShiftTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShiftType
