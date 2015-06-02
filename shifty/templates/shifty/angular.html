@@ -36,18 +36,17 @@
                 <span class='blue'>T</span>
                 <span class='yellow'>Y</span>
             </a>
-            <div id="authbox" style="display:inline-block;">
-                <a href="/" style="color:white;">Events</a>
 
-                <a href="/admin" style="color:white;">Admin</a>
-
+            <ul id="authbox" class="nav nav-pills" style="display:inline-block;">
+                <li><a href="/" style="color:white;">Events</a></li>
+                <li><a href="/admin" style="color:white;">Admin</a></li>
                 {% if user %}
-                <a href="/#/yourshifts" style="color:white;">Your shifts</a>
-                <a href="/logout" style="color:white;">Logout</a>
+                <li><a href="/#/yourshifts" style="color:white;">Your shifts</a></li>
+                <li><a href="/logout" style="color:white;">Logout</a></li>
                 {% else %}
-                <a href="/admin/login/?next=/" style="color:white;">Login</a>
+                <li><a href="/admin/login/?next=/" style="color:white;">Login</a></li>
                 {% endif %}
-            </div>
+            </ul>
         </div>
     {% endblock %}
 
