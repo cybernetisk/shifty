@@ -455,6 +455,8 @@
             $http.post('/free_shift', {shift_id: shift['id']})
                 .success(function (result) {
                     $scope.refresh_event();
+                    // Refresh the calendar data as they could change
+                    $scope.refresh_calendar_event();
                 });
         }
 
