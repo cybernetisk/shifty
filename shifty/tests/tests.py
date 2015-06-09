@@ -10,7 +10,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.client import RequestFactory
-from shifty.views import take_shift, create_shift_user
+from shifty.views import take_shift
 from shifty.models import Shift, Event, ShiftType
 import json
 
@@ -34,25 +34,6 @@ class SimpleTestCase(TestCase):
         self.shift = Shift(event=self.event, start=self.now, stop=self.now, shift_type = self.shift_type)
         self.shift.save()
 
-    def test_copy_event(self):
-        date = datetime.date.today()
-        offset = datetime.timedelta(days=4)
-        expected_date = date + offset
-        expected_time = self.now + offset
-
-        x = self.event.copy(expected_date)
-        self.assertIsNotNone(x)
-        self.assertEqual(x.title, "abc")
-        self.assertEqual(x.description, "desc")
-        self.assertEqual(x.start, expected_time)
-
-        self.assertEqual(x.shifts.count(), 1)
-        shift = x.shifts.all()[0]
-        self.assertEqual(shift.start, expected_time)
-        self.assertEqual(shift.stop, expected_time)
-        self.assertIsNone(shift.volunteer)
-        self.assertEqual(shift.shift_type_id, self.shift_type.id)
-
     def test_take_shift(self):
         """
 
@@ -68,22 +49,6 @@ class SimpleTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(shift.volunteer, self.user)
         self.assertEqual(shift.comment, "kommentar")
-
-    def test_create_shift_user(self):
-        user = {'username':'barfunk2',
-                'email':'lol',
-                'password':'test',
-                'firstname': 'gunnar',
-                'lastname':'granskau',
-                'phone':'123455'}
-        user = json.dumps(user)
-        request = self.factory.post('/create_shift_user', user, content_type='json')
-        response = create_shift_user(request)
-
-        user = User.objects.get(username="barfunk2")
-        self.assertEqual(user.username, "barfunk2")
-        self.assertEqual(user.contactinfo.phone, "123455")
-        self.assertEqual(user.email, "lol")
 
     def test_try_to_take_occupied_shift(self):
         

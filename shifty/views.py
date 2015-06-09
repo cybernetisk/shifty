@@ -112,6 +112,7 @@ def take_shift(request):
             contact_info.auto_user = True
             contact_info.claimed = False
             contact_info.save()
+
     shift_id = json_data['shift_id']
     #shift_id = request.POST['shift_id']
     shift = Shift.objects.get(pk=shift_id)
@@ -134,18 +135,11 @@ def take_shift(request):
 @reversion.create_revision()
 def free_shift(request):
     json_data = json.loads(request.read())
-    #user = User.objects.get(username=json_data['username'])
-    #if not user:
-    #    user = request.user
     shift_id = json_data['shift_id']
 
     shift = Shift.objects.get(pk=shift_id)
 
     with transaction.atomic(), reversion.create_revision():
-        # if shift.volunteer != user:
-        #     return JsonResponse({'status':'failed', 'msg':'Not your shift', 'reason':'notyourshift'})
-        # if shift.start - timezone.now() < timezone.timedelta(days=1):
-        #     return JsonResponse({'status':'failed', 'msg':'Too little time before shift, contact responsible', 'reason':'toshort'})
         removed_user = shift.volunteer
         shift.volunteer = None
         shift.save()

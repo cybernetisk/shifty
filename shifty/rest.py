@@ -108,6 +108,7 @@ class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter
 
+
 class ShiftViewSet(viewsets.ModelViewSet, RequestContext):
     permission_classes = (isAdminOrReadOnly, )
 
