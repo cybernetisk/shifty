@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayChangedException, ShiftEndReport
+from shifty.models import ShiftTakeException
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
@@ -120,14 +121,13 @@ def take_shift(request):
     with transaction.atomic(), reversion.create_revision():
         if shift.volunteer != None:# and user != shift.volunteer:
             return JsonResponse({'status':'taken'})
+        try:
+            shift.assign(user)
+            shift.save()
+            reversion.set_comment("Took shift")
+        except ShiftTakeException as ex:
+            return JsonResponse(ex.as_json())
 
-        collision = shift.user_collides(user)
-        if collision is not None:
-            return JsonResponse({'status':'collides', 'shift_id':collision.id, 'desc':collision.day_desc()})
-
-        shift.volunteer = user
-        shift.save()
-        reversion.set_comment("Took shift")
         return JsonResponse({'status':'ok'})
     return JsonResponse({'status':'failed'})
 
@@ -141,7 +141,7 @@ def free_shift(request):
 
     with transaction.atomic(), reversion.create_revision():
         removed_user = shift.volunteer
-        shift.volunteer = None
+        shift.unassign()
         shift.save()
         reversion.set_comment("Removed from shift")
 

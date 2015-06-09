@@ -197,3 +197,5 @@ JAVASCRIPT_DIRS = (
 HANDLEBARS_DIRS = (
         os.path.join(BASE_DIR, "assets/handlebars"),
         )
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'

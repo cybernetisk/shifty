@@ -75,12 +75,28 @@ reversion.register(Event, follow=["shifts"])
 
 
 class ShiftEndReport(models.Model):
-    verified = models.BooleanField()
+    verified = models.BooleanField(default=False)
     signed = models.ForeignKey(User, null=True, blank=True)
     corrected_hours = models.DecimalField(max_digits=3, decimal_places=1, null=True)
     bong_ref = models.IntegerField(null=True, blank=True)
     shift = models.ForeignKey("Shift", related_name='end_report')
 
+
+
+class ShiftTakeException(Exception):
+    pass
+
+class ShiftTaken(ShiftTakeException):
+    def as_json(self):
+        return {'status':'taken'}
+
+
+class ShiftCollides(ShiftTakeException):
+    def __init__(self, collision):
+        self.collision = collision
+
+    def as_json(self):
+        return {'status':'collides', 'shift_id':self.collision.id, 'desc':self.collision.day_desc()}
 
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
@@ -130,6 +146,17 @@ class Shift(models.Model):
         if shift.start <= self.start < shift.stop:
             return True
         return False
+
+    def assign(self, user):
+        if self.volunteer != None:
+            raise ShiftTaken()
+        collision = self.user_collides(user)
+        if collision is not None:
+            raise ShiftCollides(collision=collision)
+        self.volunteer = user
+
+    def unassign(self):
+        self.volunteer = None
 
     # Returns shift duration in hours
     def duration(self):
