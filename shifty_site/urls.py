@@ -1,28 +1,36 @@
 from django.conf.urls import patterns, include, url
 from rest_framework import routers
-from shifty import rest
+from shifty import rest, serializers
 
 from django.conf.urls import patterns, url, include
 
 import autocomplete_light
+from shifty.rest import BulkShiftsViewSet
+
 autocomplete_light.autodiscover()
+
+from rest_framework_bulk.routes import BulkRouter
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
 admin.autodiscover()
 
 
 router = routers.DefaultRouter()
+bulk_router = BulkRouter()
 
 
-router.register(r'yourshift', rest.YourShiftViewSet, base_name="lol")
-router.register(r'event', rest.EventViewSet)
-router.register(r'event_no_shift', rest.EventNoShiftViewSet)
-router.register(r'shift', rest.ShiftViewSet)
-router.register(r'shifttype', rest.ShiftTypeViewSet)
-#router.register(r'user', rest.UserViewSet, "user")
-router.register(r'free_shifts', rest.FreeShiftsViewSet)
-router.register(r'shift_end_report', rest.ShiftEndReportViewSet)
+#bulk_router.register(r'bulk-shifts',  rest.BulkShiftsViewSet, base_name="bulk")
+bulk_router.register(r'bulk-shifts',  rest.BulkShiftsViewSet, base_name="bulk")
+bulk_router.register(r'yourshift', rest.YourShiftViewSet, base_name="lol")
+bulk_router.register(r'event', rest.EventViewSet)
+bulk_router.register(r'event_no_shift', rest.EventNoShiftViewSet)
+bulk_router.register(r'shift', rest.ShiftViewSet)
+bulk_router.register(r'shifttype', rest.ShiftTypeViewSet)
+#bulk_router.register(r'user', rest.UserViewSet, "user")
+bulk_router.register(r'free_shifts', rest.FreeShiftsViewSet)
+bulk_router.register(r'shift_end_report', rest.ShiftEndReportViewSet)
 
 urlpatterns = patterns('',
     # Examples:
@@ -38,7 +46,7 @@ urlpatterns = patterns('',
     url(r'^myshifts$', 'shifty.views.backbone_router'),
     url(r'^event/info/(\d+)$', 'shifty.views.eventInfo'), #returns JSON
 #    url(r'^getEvents/(\d+)/(\d+)$', 'shifty.views.getEvents'), # with limit and offset
-    url(r'^rest/', include(router.urls)),
+    url(r'^rest/', include(bulk_router.urls)),
     url(r'^take_shift', 'shifty.views.take_shift'),
     url(r'^free_shift', 'shifty.views.free_shift'),
  #   url(r'^create_shift_user', 'shifty.views.create_shift_user'),
@@ -52,7 +60,9 @@ urlpatterns = patterns('',
     url(r'^whoami', 'shifty.views.whoami'),
     url(r'^logout', 'shifty.views.logout_view'),
 
-    url(r'^', include(router.urls)),
+    url(r'^', include(bulk_router.urls)),
+    url(r'^', include(bulk_router.urls)),
+
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 

@@ -3,6 +3,12 @@ from models import Event, Shift, ShiftType, User, ShiftEndReport
 from rest_framework import serializers
 from rest_framework import filters
 
+from rest_framework_bulk import (
+    BulkListSerializer,
+    BulkSerializerMixin,
+    ListBulkCreateUpdateDestroyAPIView,
+)
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -155,3 +161,15 @@ class ShiftTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShiftType
         fields = ('id', 'title', 'description', 'responsible')
+
+
+class BulkShiftSerializer(BulkSerializerMixin, ShiftWriteSerializer):
+    class Meta(object):
+        model = Shift
+        # only necessary in DRF3
+        list_serializer_class = BulkListSerializer
+
+
+class BulkShiftView(ListBulkCreateUpdateDestroyAPIView):
+    queryset = Shift.objects.all()
+    serializer_class = BulkShiftSerializer

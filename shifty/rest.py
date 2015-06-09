@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User, Group
 from django.core.serializers import get_serializer
 from rest_framework import viewsets, filters
+from rest_framework_bulk import BulkModelViewSet
 from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerializer, UserSerializer, \
-    ShiftEndReportSerializer, ShiftTakeSerializer, ShiftWriteSerializer, EventNoShiftSerializer
+    ShiftEndReportSerializer, ShiftTakeSerializer, ShiftWriteSerializer, EventNoShiftSerializer, BulkShiftSerializer
 from models import Event, Shift, ShiftType, User, ShiftEndReport
 
 import django_filters
@@ -12,6 +13,7 @@ from shifty.serializers import ShiftSerializer
 from shifty.permissions import isAdminOrReadOnly
 from rest_framework.mixins import CreateModelMixin
 from rest_framework import generics
+
 import datetime
 
 
@@ -149,3 +151,12 @@ class YourShiftViewSet(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         return Purchase.objects.filter(purchaser=user)
     """
+
+
+class BulkShiftsViewSet(BulkModelViewSet):
+    model = Shift
+    queryset = Shift.objects.all()
+    serializer_class = BulkShiftSerializer
+    def allow_bulk_destroy(self, qs, filtered):
+        #FIXME add suport for deletion of 1 object
+        return False
