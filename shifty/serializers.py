@@ -170,6 +170,6 @@ class BulkShiftSerializer(BulkSerializerMixin, ShiftWriteSerializer):
         list_serializer_class = BulkListSerializer
 
 
-class BulkShiftView(ListBulkCreateUpdateDestroyAPIView):
-    queryset = Shift.objects.all()
-    serializer_class = BulkShiftSerializer
+# class BulkShiftView(ListBulkCreateUpdateDestroyAPIView):
+#     queryset = Shift.objects.all()
+#     serializer_class = BulkShiftSerializer
