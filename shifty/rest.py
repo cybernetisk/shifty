@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User, Group
+from django.core.serializers import get_serializer
 from rest_framework import viewsets, filters
-from shifty.serializers import EventSerializer, ShiftSerializer, ShiftWriteSerializer, ShiftTypeSerializer, UserSerializer
-from models import Event, Shift, ShiftType, User
+from rest_framework_bulk import BulkModelViewSet
+from shifty.serializers import EventSerializer, ShiftSerializer, ShiftTypeSerializer, UserSerializer, \
+    ShiftEndReportSerializer, ShiftTakeSerializer, ShiftWriteSerializer, EventNoShiftSerializer, BulkShiftSerializer
+from models import Event, Shift, ShiftType, User, ShiftEndReport
 
 import django_filters
 from django.core import serializers
@@ -9,7 +12,19 @@ from django.core import serializers
 from shifty.serializers import ShiftSerializer
 from shifty.permissions import isAdminOrReadOnly
 from rest_framework.mixins import CreateModelMixin
+from rest_framework import generics
+
 import datetime
+
+
+from rest_framework.decorators import detail_route, list_route
+
+class RequestContext(object):
+
+    def get_serializer_context(self):
+        context = super(EventViewSet, self).get_serializer_context()
+        context['request'] = self.request
+        return context
 
 
 class RelativeDateFilter(django_filters.CharFilter):
@@ -26,9 +41,10 @@ class RelativeDateFilter(django_filters.CharFilter):
 
 class EventFilter(django_filters.FilterSet):
     min_date = RelativeDateFilter(name="start", lookup_type='gte')
+    max_date = RelativeDateFilter(name="start", lookup_type='lte')
     class Meta:
         model = Event
-        fields = ['min_date']
+        fields = ['min_date', 'max_date']
 
 class ShiftFilter(django_filters.FilterSet):
     min_date = RelativeDateFilter(name="start", lookup_type='gte')
@@ -39,7 +55,16 @@ class ShiftFilter(django_filters.FilterSet):
         fields = ['min_date', 'max_date', 'shift_type', 'volunteer']
 
 
-class EventViewSet(viewsets.ReadOnlyModelViewSet):
+class EventViewSet(viewsets.ModelViewSet, RequestContext):
+    #permission_classes = (isAdminOrReadOnly, )
+
+    queryset = Event.objects.all().order_by('start')
+    serializer_class = EventSerializer
+    #permission_classes = (isAdminOrReadOnly,)
+    filter_class = EventFilter
+
+
+class EventViewSet(viewsets.ModelViewSet, RequestContext):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Event.objects.all().order_by('start')
@@ -47,35 +72,30 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly,)
     filter_class = EventFilter
 
-    """
-    Create a model instance.
-    """
-    def create(self, request, *args, **kwargs):
-        if isinstance(request.DATA, dict) and len(request.DATA['shifts']) > 0:
-            shifts = request.DATA['shifts']
-            request.DATA['shifts'] = []
-            response = CreateModelMixin.create(self, request, *args, **kwargs)
 
-            result = response.data
-            event_id = result['id']
-            serializer = ShiftSerializer()
-            exceptions = {}
-            for i, _shift in enumerate(shifts):
-                try:
-                    if 'shift_type' in _shift:
-                        _shift['shift_type_id'] = _shift['shift_type']['id']
-                        del _shift['shift_type']
-                    _s = Shift(event_id=event_id, **_shift)
-                    _s.clean_fields()
-                    _s.save()
-                    json = serializer.to_native(_s)
-                    result['shifts'].append(json)
-                except Exception as ex:
-                    exceptions[i] = str(ex)
-            result['errors'] = exceptions
-            return response
 
-        return CreateModelMixin.create(self, request, *args, **kwargs)
+class EventNoShiftViewSet(viewsets.ModelViewSet, RequestContext):
+    permission_classes = (isAdminOrReadOnly, )
+
+    queryset = Event.objects.all().order_by('start')
+    serializer_class = EventNoShiftSerializer
+    permission_classes = (isAdminOrReadOnly,)
+    filter_class = EventFilter
+
+
+class ShiftEndReportViewSet(viewsets.ModelViewSet):
+
+    queryset = ShiftEndReport.objects.all()
+    serializer_class = ShiftEndReportSerializer
+
+    # FIXME: find a better way
+    def get_serializer(self, *args, **kwargs):
+        return ShiftEndReportSerializer(*args, many=True, **kwargs)
+
+
+    def perform_create(self, serializer):
+        serializer.save(signed=self.request.user)
+
 
 class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (isAdminOrReadOnly, )
@@ -90,17 +110,25 @@ class FreeShiftsViewSet(viewsets.ReadOnlyModelViewSet):
     #permission_classes = (isAdminOrReadOnly,)
     filter_class = ShiftFilter
 
-class ShiftViewSet(viewsets.ReadOnlyModelViewSet):
+class ShiftViewSet(viewsets.ModelViewSet, RequestContext):
     permission_classes = (isAdminOrReadOnly, )
 
     queryset = Shift.objects.all()
+    # serializer_class = ShiftSerializer
 
     def get_serializer_class(self):
         if self.request.method in ['PATCH', 'POST', 'PUT']:
             return ShiftWriteSerializer
         return ShiftSerializer
+
+    # # FIXME: find a better way
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(self.request.data, list):
+            many = kwargs.pop('many', True)
+        return super(ShiftViewSet, self).get_serializer(many=many, *args, **kwargs)
+
     #permission_classes = (isAdminOrReadOnly,)
-    filter_class = ShiftFilter
+    #filter_class = ShiftFilter
 
 
 class ShiftTypeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -109,20 +137,26 @@ class ShiftTypeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ShiftType.objects.all()
     serializer_class = ShiftTypeSerializer
 
-"""
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = (isAdminOrReadOnly, )
 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('username', 'first_name', 'last_name')
-"""
+class YourShiftViewSet(viewsets.ReadOnlyModelViewSet):
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_anonymous():
+            return None
+        return user.shifts.all()
+    serializer_class = ShiftSerializer
 
-"""class ViewSet(viewsets.ModelViewSet):
-    
-    API endpoint that allows groups to be viewed or edited.
-    
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-"""
+    """
+    def get_queryset(self):
+        user = self.request.user
+        return Purchase.objects.filter(purchaser=user)
+    """
+
+
+class BulkShiftsViewSet(BulkModelViewSet):
+    model = Shift
+    queryset = Shift.objects.all()
+    serializer_class = BulkShiftSerializer
+    def allow_bulk_destroy(self, qs, filtered):
+        #FIXME add suport for deletion of 1 object
+        return False

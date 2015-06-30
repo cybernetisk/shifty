@@ -24,6 +24,10 @@ class Event(models.Model):
     start = models.DateTimeField()
 
     @property
+    def available(self):
+        return self.shifts.filter(volunteer=None).count()
+
+    @property
     def responsible(self):
         for shift in self.shifts.all():
             if shift.shift_type.responsible:
@@ -67,61 +71,16 @@ class Event(models.Model):
     def totalShifts(self):
         return self.shifts.count()
 
-    def get_offset(self, date):
-        return date - self.start.date()
-
-    def copy(self, date=None, offset=None):
-        if date is not None:
-            offset = self.get_offset(date)
-
-        event_copy = {'start':None, 'title':None, 'description':None}
-        for k in event_copy.keys():
-            event_copy[k] = getattr(self, k)
-        event_copy['start'] += offset
-        event = Event(**event_copy)
-        event.save()
-        for shift in self.shifts.all():
-            shift_copy = {'shift_type_id':None, 'start':None, 'stop':None, 'comment':None}
-            for k in shift_copy.keys():
-                shift_copy[k] = getattr(shift, k)
-            shift_copy['start'] += offset
-            shift_copy['stop'] += offset
-            shift_copy['event'] = event
-            new_shift = Shift(**shift_copy).save()
-        return event
-
-    @classmethod
-    def get_max_offset(cls, events, date):
-        offset = None
-        for event in events:
-            tmp_offset = event.get_offset(date)
-            if offset is None or tmp_offset > offset:
-                offset = tmp_offset
-        return offset
-
-    @classmethod
-    def check_same_day(cls, events, date):
-        offset = Event.get_max_offset(events, date)
-        failed = []
-        for event in events:
-            now = event.start.date()
-            after_offset = now + offset
-            if now.weekday() != after_offset.weekday():
-                print now, after_offset
-                failed.append(event)
-        if failed:
-            raise WeekdayChangedException(failed)
-
-    @classmethod
-    def copy_events(cls, events, date):
-        offset = Event.get_max_offset(events, date)
-        copies = []
-        for event in events:
-            with transaction.atomic(), reversion.create_revision():
-                copies.append(event.copy(offset=offset))
-                reversion.set_comment("Copied event from %r" % event)
-        return copies
 reversion.register(Event, follow=["shifts"])
+
+
+class ShiftEndReport(models.Model):
+    verified = models.BooleanField()
+    signed = models.ForeignKey(User, null=True, blank=True)
+    corrected_hours = models.DecimalField(max_digits=3, decimal_places=1, null=True)
+    bong_ref = models.IntegerField(null=True, blank=True)
+    shift = models.ForeignKey("Shift", related_name='end_report')
+
 
 class Shift(models.Model):
     event = models.ForeignKey("Event", null=False, related_name='shifts')
@@ -130,6 +89,8 @@ class Shift(models.Model):
     comment = models.TextField(blank=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
+
+    #new = models.BooleanField
 
     def __unicode__(self):
         return self.shift_type.title
@@ -255,6 +216,8 @@ reversion.register(ShiftType)
 class ContactInfo(models.Model):
     user = models.OneToOneField(User)
     phone = models.CharField(max_length=100)
+    auto_user = models.BooleanField(default=False)
+    claimed = models.BooleanField(default=False)
 reversion.register(ContactInfo)
 
 class UserShiftQualification(models.Model):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shifty.models import Event, Shift, ShiftType, ContactInfo
+from shifty.models import Event, Shift, ShiftType, ContactInfo, ShiftEndReport  #, ShiftEndReport
 from shifty.models import UserShiftQualification
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
@@ -11,6 +11,7 @@ from django import forms
 from django.db import models
 
 import autocomplete_light
+
 
 class UserAutocomplete(autocomplete_light.AutocompleteModelBase):
     search_fields = ['^first_name', 'last_name', 'username']
@@ -39,27 +40,18 @@ class EventInLine(admin.TabularInline):
     model = Event
     extra = 0
 
-
-def make_copy(modeladmin, request, queryset):
-    selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-    #ct = ContentType.objects.get_for_model(queryset.model)
-    return HttpResponseRedirect("/copy_events/?ids=%s" % ",".join(selected))
-    #queryset.update(status='p')
-make_copy.short_description = "Copy selected events"
-
-
-
-
 class EventAdmin(reversion.VersionAdmin):
     inlines = [ShiftInLine]
     list_display = ('title', 'start', 'availableShifts', 'totalShifts', 'responsible')
-    actions = [make_copy]
 
     class Media:
         js = (
            # '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', # jquery
             '/static/js/admin_hack.js',
         )
+
+class ShiftEndReportAdmin(reversion.VersionAdmin):
+    pass
 
 class ShiftAdmin(reversion.VersionAdmin):
     list_display = ('shift_type', 'event', 'start')
@@ -84,3 +76,6 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(ShiftType, reversion.VersionAdmin)
 admin.site.register(Shift, ShiftAdmin)
+admin.site.register(ShiftEndReport, ShiftEndReportAdmin)
+
+#admin.site.register(Event, EventClose)

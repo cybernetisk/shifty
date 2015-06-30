@@ -102,14 +102,16 @@ shifty.views.Events = Backbone.View.extend({
     }
 });
 
-
-
 shifty.views.MyEvents = shifty.views.Events.extend({
     genView: function(viewModel)
     {
+        console.log("Doing new genview");
         this.sub.empty();
         this.collection.each(function(ev) {
-            ev.shifts.models = ev.shifts.filter(function(s){return s.get('volunteer') != null && s.get('volunteer').id == shifty.user.id;});
+            var my_shifts = ev.get('shifts').filter(function(s){return s.volunteer != null && s.volunteer.id == shifty.user.id;});
+
+            var collection = new shifty.collections.Shifts(my_shifts);
+            ev.set('shifts', my_shifts);
             var v = new viewModel({model: ev});
             v.parentView = this;
             this.sub.append(v.render());

@@ -1,6 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response
-from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayChangedException
+from shifty.models import Shift, Event, ShiftType, User, ContactInfo, WeekdayChangedException, ShiftEndReport
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
@@ -22,6 +22,9 @@ from django.db.models import Count
 import datetime
 from django.utils import timezone
 
+
+from django.forms.models import inlineformset_factory, modelformset_factory, formset_factory
+
 def eventInfo(request, eventId):
     event = Event.objects.get(id=eventId)
     p = {'event':event.toDict(), 'columns':event.getShiftColumns()}
@@ -29,7 +32,7 @@ def eventInfo(request, eventId):
 
 def logout_view(request):
     logout(request)
-    return JsonResponse({'status':'ok'})
+    return HttpResponseRedirect('/')
 
 def get_user_stuff(request):
     user = request.user
@@ -46,33 +49,33 @@ def login(request):
     return JsonResponse({'status':'failed'})
 
 
-# added by marill 
-def count_shifts(request):
-    result = []
-    for s in ShiftType.objects.all():
-        result.append({'title': s.title,
-                        'id': s.id,
-                        'free': Shift.objects.filter(volunteer__isnull=True, shift_type=s.id, start__gte=date.today()).count(), 
-                        'all': Shift.objects.filter(shift_type=s.id, start__gte=date.today()).count()})
+# # added by marill 
+# def count_shifts(request):
+#     result = []
+#     for s in ShiftType.objects.all():
+#         result.append({'title': s.title,
+#                         'id': s.id,
+#                         'free': Shift.objects.filter(volunteer__isnull=True, shift_type=s.id, start__gte=date.today()).count(), 
+#                         'all': Shift.objects.filter(shift_type=s.id, start__gte=date.today()).count()})
 
-    return JsonResponse({'result':result})
+#     return JsonResponse({'result':result})
 
 
-def best_volunteers(request):
-    today = date.today()
-    month = today.month
-    year = today.year
-    if month < 8:    
-        term = date(year, 1, 1)
-    else:
-        term = date(year, 8, 1)
+# def best_volunteers(request):
+#     today = date.today()
+#     month = today.month
+#     year = today.year
+#     if month < 8:    
+#         term = date(year, 1, 1)
+#     else:
+#         term = date(year, 8, 1)
 
-    users = User.objects.filter(shifts__start__range=(term, today)).annotate(num_shifts=Count('shifts')).order_by('-num_shifts')[:5]
+#     users = User.objects.filter(shifts__start__range=(term, today)).annotate(num_shifts=Count('shifts')).order_by('-num_shifts')[:5]
 
-    data = []
-    for u in users:
-        data.append({'user':u.username, 'num':u.num_shifts, 'id': u.id})
-    return JsonResponse({'result':data})
+#     data = []
+#     for u in users:
+#         data.append({'user':u.username, 'num':u.num_shifts, 'id': u.id})
+#     return JsonResponse({'result':data})
 
 def shifts(request):
     events = Event.objects.all()
@@ -85,54 +88,36 @@ def whoami(request):
         whoami = {}
     return JsonResponse(whoami)
 
-def test(request):
-    events = Event.objects.all()
-    return render_to_response('shifty/test.html', {'events':events})
+@ensure_csrf_cookie
+def angular_router(request):
+    user = None
+    if request.user.is_authenticated():
+        user = request.user
+    return render_to_response('shifty/angular.html', {'user':user})
 
-def getEvents(request, offset, limit):
-    events = Event.objects.order_by('start')[offset:offset+limit]
-    result = []
-    for e in events:
-        result.append({'event':e.toDict(), 'columns':e.getShiftColumns()})
-
-    return JsonResponse(result)
-
-def create_shift_user(request):
-    data = json.loads(request.body)
-
-    username = data['username']
-    firstname = data['firstname']
-    lastname = data['lastname']
-    email = data['email']
-    phone = data['phone']
-
-    password = "lol"
-
-    user = User.objects.create_user(username, email, first_name=firstname, last_name=lastname, password=password)
-    contact_info = ContactInfo(phone=phone)
-    contact_info.user = user
-    contact_info.save()
-
-    new_user = authenticate(username=username,
-                                    password=password)
-    django_login(request, new_user)
-
-    csrf = django.middleware.csrf.get_token(request)
-    return JsonResponse({'user':get_user_stuff(request), 'csrf':csrf})
-
-
+import json
 @reversion.create_revision()
 def take_shift(request):
-    user = request.user
-    assert user
-    # username = data['name']
-    # comment = data['comment'] if 'comment' in data else None
-    comment = None
-    shift_id = request.POST['shift_id']
+    json_data = json.loads(request.read())
+    if not 'username' in json_data:
+        user = request.user
+    else:
+        username = json_data['username']
+        try:
+            user = User.objects.get(username=username)
+        except:
+            user = User.objects.create_user(username, None, first_name=username, last_name="", password=username)
+            contact_info = ContactInfo()
+            contact_info.user = user
+            contact_info.auto_user = True
+            contact_info.claimed = False
+            contact_info.save()
+    shift_id = json_data['shift_id']
+    #shift_id = request.POST['shift_id']
     shift = Shift.objects.get(pk=shift_id)
 
     with transaction.atomic(), reversion.create_revision():
-        if shift.volunteer != None and user != shift.volunteer:
+        if shift.volunteer != None:# and user != shift.volunteer:
             return JsonResponse({'status':'taken'})
 
         collision = shift.user_collides(user)
@@ -140,8 +125,6 @@ def take_shift(request):
             return JsonResponse({'status':'collides', 'shift_id':collision.id, 'desc':collision.day_desc()})
 
         shift.volunteer = user
-        if comment is not None:
-            shift.comment = comment
         shift.save()
         reversion.set_comment("Took shift")
         return JsonResponse({'status':'ok'})
@@ -150,25 +133,34 @@ def take_shift(request):
 
 @reversion.create_revision()
 def free_shift(request):
-    user = request.user
-    assert user
+    json_data = json.loads(request.read())
+    #user = User.objects.get(username=json_data['username'])
+    #if not user:
+    #    user = request.user
+    shift_id = json_data['shift_id']
 
-    comment = None
-    shift_id = request.POST['shift_id']
     shift = Shift.objects.get(pk=shift_id)
 
     with transaction.atomic(), reversion.create_revision():
-        if shift.volunteer != user:
-            return JsonResponse({'status':'failed', 'msg':'Not your shift', 'reason':'notyourshift'})
-        if shift.start - timezone.now() < timezone.timedelta(days=1):
-            return JsonResponse({'status':'failed', 'msg':'Too little time before shift, contact responsible', 'reason':'toshort'})
+        # if shift.volunteer != user:
+        #     return JsonResponse({'status':'failed', 'msg':'Not your shift', 'reason':'notyourshift'})
+        # if shift.start - timezone.now() < timezone.timedelta(days=1):
+        #     return JsonResponse({'status':'failed', 'msg':'Too little time before shift, contact responsible', 'reason':'toshort'})
+        removed_user = shift.volunteer
         shift.volunteer = None
         shift.save()
         reversion.set_comment("Removed from shift")
+
+        try:
+            if removed_user.contactinfo.auto_user and not removed_user.contactinfo.claimed and removed_user.shifts.count() == 0:
+                removed_user.delete()
+        except AttributeError:
+            pass
         return JsonResponse({'status':'ok'})
     return JsonResponse({'status':'failed', 'reason':'unknown'})
 
 from django import forms
+
 
 from django.forms.extras.widgets import SelectDateWidget
 class CopyEventsForm(forms.Form):
@@ -229,3 +221,32 @@ def shift_types_colors(request):
     shift_types = ShiftType.objects.all()
     return render(request, 'shifty/shift_type.css', dict(shift_types=shift_types), content_type="text/css")
 
+from django.forms import ModelForm
+class EventEndForm(ModelForm):
+    class Meta:
+        model = Event
+        exclude = ['']
+
+class ShiftEndReportForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ShiftEndReportForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['signed'].widget.attrs['readonly'] = True
+
+    class Meta:
+        model = ShiftEndReport
+        fields = ['verified', 'corrected_hours', 'signed']
+        exclude = []
+
+def event_verify(request, eventId):
+    eventFormset = formset_factory(ShiftEndReportForm)
+    event = Event.objects.get(id=eventId)
+    shifts = []
+    for shift in event.shifts.all():
+        end_report = dict(shift_id=shift.id, event_id=event.id, verified=False, signed=request.user)
+        shifts.append(end_report)
+    print shifts
+    form = eventFormset(initial=shifts)
+
+    return render_to_response('shift_verify.html', dict(form=form))

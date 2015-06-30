@@ -137,7 +137,6 @@ INSTALLED_APPS = (
     'reversion',
     'colorful',
     'compressor',
-    'bong',
     'accessRights',
 )
 
@@ -170,12 +169,24 @@ LOGGING = {
     }
 }
 
+# REST_FRAMEWORK = {
+#     'PAGINATE_BY':200,
+#     'PAGINATE_BY_PARAM':'page_size',
+#     'MAX_PAGINATE_BY':200,
+#     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+#     }
+
 REST_FRAMEWORK = {
-    'PAGINATE_BY':200,
-    'PAGINATE_BY_PARAM':'page_size',
-    'MAX_PAGINATE_BY':200,
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
-    }
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticatedOrReadOnly',),
+    #'PAGINATE_BY': 10,
+    'PAGINATE_BY_PARAM': 'limit',
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
+    'DEFAULT_PAGINATION_SERIALIZER_CLASS': 'shifty_site.pagination.CybPaginationSerializer'
+}
 
 JAVASCRIPT_DIRS = (
         os.path.join(BASE_DIR, "assets/js/models"),

@@ -1,0 +1,57 @@
+<h1>Edit</h1>
+
+
+<div>
+    <h2><input ng-model="event.title" /></h2>
+    <p class="input-group">
+      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="event.start" is-open="opened" min-date="minDate" max-date="'2015-06-22'" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+      </span>
+    </p>
+
+    <div>
+        <h3>Ansvarlig</h3>
+        <table>
+            <tbody>
+            <tr>
+                <th>Navn</th>
+                <td>{{event.responsible.first_name}} {{event.responsible.last_name}}</td>
+            </tr>
+            <tr>
+                <th>Telefon</th>
+                <td>{{event.responsible.contactinfo.phone}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+            <div class="vertical-center pad_each">
+                <span>Add shift</span>
+                <select ng-options="type as type.title for type in shift_types track by type.id" ng-model="new_shift.shift_type">
+                <input style="display:inline-block; width:50px;" ng-model="new_shift.duration" ng-model="new_hour_count" type="number" placeholder="hours"/> <span>hours</span>
+                <timepicker style="display:inline-block;" ng-model="new_shift.start" ng-change="changed()" hour-step="1" minute-step="15" show-meridian="false"></timepicker>
+                <button class="btn btn-success" ng-click="add_new_shift()">Add</button>
+            </div>
+            <div class="event_list ">
+                <table>
+                    <tr class="shift" ng-repeat="shift in event.shifts track by $index|orderBy:'start'|orderBy:'shift_type.id'">
+                        <td><input type="checkbox" /></td>
+                        <td class="{{'shift_type_' + shift.shift_type.id}}" ng-class="{yourshift:shift.yourshift}"></td>
+                        <td>{{shift.shift_type.title}}</td>
+                        <td>{{shift.start|date:"HH:mm"}}-{{shift.stop|date:"HH:mm"}}</td>
+                        <td><input ng-model="shift.duration" /> hours</td>
+                        <td>{{shift.volunteer.first_name}} {{shift.volunteer.last_name}}</td>
+                        <td><button class="btn btn-success" ng-click="clone($index);">Duplicate</button>
+                            <button class="btn btn-warning" ng-click="delete($index);">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="text-align:right;">
+    <button ng-click="save()" class="btn btn-success">Save</button>
+</div>

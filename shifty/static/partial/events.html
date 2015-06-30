@@ -1,0 +1,80 @@
+<div class="events_filters">
+    <input type="text" class="events_date_from" custom-class="getDayClass(date, mode)" datepicker-popup="yyyy/MM/dd" ng-click="open($event)" is-open="opened" ng-model="date_from" ng-required="true" close-text="Close" />
+    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+    <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+</div>
+
+<div ng-repeat="event in events">
+    <div class="event_list">
+        <div class="heading_block">
+            <h2>{{event.title}}</h2>
+
+            <div class="staff-actions" ng-show="is_staff">
+                <a href="#/overview/{{event.id}}">Overview</a>
+                <a href="#/edit/{{event.id}}">Edit</a>
+                <a href="#/clone/{{event.id}}">Clone</a>
+            </div>
+        </div>
+
+        {{event.start|date:"MMM dd, HH:mm"}}
+
+        {{user.admin}}
+
+
+        <div>
+            <h3>Ansvarlig</h3>
+            <table>
+                <tbody>
+                <tr>
+                    <th>Navn</th>
+                    <td>{{event.responsible.first_name}} {{event.responsible.last_name}}</td>
+                </tr>
+                <tr>
+                    <th>Telefon</th>
+                    <td>{{event.responsible.contactinfo.phone}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <table>
+            <tr class="shift" ng-repeat="shift in event.shifts">
+                <td class="{{'shift_type_' + shift.shift_type.id}}" ng-class="{yourshift:shift.yourshift}"></td>
+                <td>{{shift.shift_type.title}}</td>
+                <td>{{shift.start|date:"HH:mm"}}-{{shift.stop|date:"HH:mm"}}</td>
+                <td>{{shift.duration}} hours</td>
+
+                <td ng-show="current_user.is_staff">
+                    {{shift.volunteer.first_name}} {{shift.volunteer.last_name}} 
+                </td>
+                <td ng-show="current_user.is_staff">
+                    {{shift.volunteer.contactinfo.phone}}
+                </td>
+                <td>
+                    <div ng-show="shift.volunteer!=null">
+                        {{ shift.volunteer.username }}
+                    </div>
+                    <div ng-show="shift.volunteer==null">
+                        <div ng-show="shift.fail_reason" style="color:red;">{{shift.fail_reason}}</div>
+                        <form ng-submit="take_shift(shift);">
+                            <input ng-model="shift.new_volunteer"/>
+                        </form>
+                    </div>
+                </td>
+                <td ng-show="shift.can_change">
+                    <div ng-show="shift.volunteer==null">
+                        <button class="btn btn-small" ng-click="take_shift(shift);">Take</button>
+                    </div>
+                    <div ng-show="shift.yourshift">
+                        <button class="btn" ng-click="remove_volunteer(shift)">Untake</button>
+                    </div>
+                    <div ng-show="!shift.yourshift && shift.volunteer!=null">
+                        <button class="btn" ng-click="remove_volunteer(shift)">Remove</button>
+                    </div>
+                </td>
+                <td ng-hide="shift.can_change">
+                    (ended)
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

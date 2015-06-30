@@ -1,0 +1,57 @@
+<html lang="en" ng-app="cyb.shifty">
+    <head>
+        <meta charset="utf-8">
+        <title>Shifty</title>
+        <link rel="stylesheet" href="/static/css/shifty.css">
+        <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="/shift_types.css">
+        <link rel="stylesheet" href="/static/css/yourshifts.css"/>
+
+        <script type="text/javascript" src="/static/angular/angular.min.js"></script>
+        <script type="text/javascript" src="/static/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script type="text/javascript" src="/static/angular-resource/angular-resource.min.js"></script>
+        <script type="text/javascript" src="/static/angular-local-storage/dist/angular-local-storage.min.js"></script>
+
+        
+        <script type="text/javascript" src="/static/moment/moment.js"></script>
+
+        <script type="text/javascript" src="/static/angular-bootstrap/ui-bootstrap.js"></script>
+        <script type="text/javascript" src="/static/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script type="text/javascript" src="/static/js/module.js"></script>
+        <script type="text/javascript" src="/static/js/events/controller.js"></script>
+        <script type="text/javascript" src="/static/js/user.js"></script>
+        <script type="text/javascript" src="/static/js/shifts/service.js"></script>
+        <script type="text/javascript" src="/static/js/events/services.js"></script>
+        <script type="text/javascript" src="/static/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+    {% block header %}
+        <div class='header'>
+            <a class='logo' href='/'>
+                <span class='blue'>S</span>
+                <span class='yellow'>H</span>
+                <span class='green'>I</span>
+                <span class='red'>F</span>
+                <span class='blue'>T</span>
+                <span class='yellow'>Y</span>
+            </a>
+
+            <ul id="authbox" class="nav nav-pills" style="display:inline-block;">
+                <li><a href="/" style="color:white;">Events</a></li>
+                <li><a href="/admin" style="color:white;">Admin</a></li>
+                {% if user %}
+                <li><a href="/#/yourshifts" style="color:white;">Your shifts</a></li>
+                <li><a href="/logout" style="color:white;">Logout</a></li>
+                {% else %}
+                <li><a href="/admin/login/?next=/" style="color:white;">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endblock %}
+
+    <div ui-view class="container">
+    </div>
+
+    </body>
+</html>

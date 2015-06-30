@@ -1,0 +1,51 @@
+.yourshifts_table{
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+}
+
+.yourshifts_table tr > td:not(:first-of-type):not(:last-of-type){
+    min-width: 160px;
+    max-width: 160px;
+}
+
+.heading_block {
+    clear: both;
+}
+.heading_block h2 {
+    display: inline-block;
+}
+.heading_block .staff-actions {
+    float: right;
+    margin-top: 30px;
+}
+.heading_block .staff-actions a {
+    margin-left: 20px;
+}
+.events_filters {
+    float: right;
+    margin-top: 20px;
+}
+.bold {
+    font-weight: bold;
+}
+
+.calendar_future_event_full button span {
+    font-weight: bold;
+    background-color: green;
+    padding: 5px;
+    border-radius: 15px;
+    color: black;
+}
+
+.calendar_future_event_available button span {
+    font-weight: bold;
+    background-color: orange;
+    padding: 5px;
+    border-radius: 15px;
+    color: black;
+}
+
+.calendar_past_event button span {
+    font-weight: bold;
+    color: grey;
+}
