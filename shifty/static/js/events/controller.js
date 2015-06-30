@@ -150,10 +150,7 @@
         $scope.current_user = AuthService.currentUser();
         $scope.new_hour_count = 0;
         EventService.get({id: $stateParams.eventId}, function(res) {
-            for(var i = 0; i < $scope.event.shifts; i++)
-            {
-                delete $scope.event.shifts[i]['id'];
-            }
+            $scope.event = res;
         });
 
         $http.get('/shifttype/').success(function (res) {
