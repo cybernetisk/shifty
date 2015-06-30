@@ -384,12 +384,32 @@
             });
         };
         $scope.calendar_events = {};
-        $scope.refresh_calendar_event = function() {
+        $scope.calendar_min = undefined;
+        $scope.calendar_max = undefined;
+
+        $scope.refresh_calendar_event = function(selected) {
             // Magic needed to cover complete calendar range
-            var min_date = moment($scope.date_from).startOf('month').subtract(1, 'week');
-            var max_date = moment($scope.date_from).endOf('month').add(2, 'week');
+            if(selected == undefined)
+            {
+                var min_date = moment($scope.date_from).startOf('month').subtract(1, 'week');
+                var max_date = moment($scope.date_from).endOf('month').add(2, 'week');
+            }
+            else
+            {
+                var min_date = moment(selected).startOf('month').subtract(1, 'week');
+                var max_date = moment(selected).endOf('month').add(2, 'week');
+            }
+
+            if($scope.calendar_min != undefined && $scope.calendar_max != undefined && 
+                    $scope.calendar_min <= min_date.valueOf() && $scope.calendar_max >= max_date.valueOf())
+                return;
+
+            if($scope.calendar_min == undefined || $scope.calendar_min > min_date.valueOf())
+                $scope.calendar_min = min_date.valueOf();
+            if($scope.calendar_max == undefined || $scope.calendar_max < max_date.valueOf())
+                $scope.calendar_max = max_date.valueOf();
+
             $http.get('/rest/event_no_shift/?min_date=' + min_date.format('YYYY-MM-DD') + '&max_date=' + max_date.format('YYYY-MM-DD')).success(function(data) {
-                $scope.calendar_events = {};
                 data.forEach(function (item) {
                     var temp = moment(item.start).format('YYYY-MM-DD');
                     $scope.calendar_events[temp] = item.available;
@@ -430,6 +450,8 @@
                 return '';
             }
             var key = moment(date).format('YYYY-MM-DD');
+
+            $scope.refresh_calendar_event(date);
             if (key in $scope.calendar_events) {
                 if (moment(date) > moment().subtract(12, 'hour')) { // -12... not tu consider today as past.
                     if ($scope.calendar_events[key] > 0) {
